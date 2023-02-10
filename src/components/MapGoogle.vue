@@ -25,19 +25,15 @@
     >
       <GMapMarker
         :key="index"
-        v-for="(m, index) in markers"
+        v-for="(m, index) in market.locations"
         :position="m.coordinates"
-        :icon="{
-          url: 'https://pbs.twimg.com/profile_images/527744422390161409/ZJZgwm_5_400x400.png',
-          scaledSize: { width: 30, height: 30 },
-          labelOrigin: { x: 16, y: -10 },
-        }"
+        :icon="icon"
         :clickable="true"
-        @click="openMarker(m.id)"
+        @click="openMarker(m._id)"
         ><GMapInfoWindow
           :closeclick="true"
           @closeclick="openMarker(null)"
-          :opened="openedMarkerID === m.id"
+          :opened="openedMarkerID === m._id"
         >
           <div>{{ m.address }}</div>
         </GMapInfoWindow></GMapMarker
@@ -58,7 +54,16 @@ export default {
       zoom: 11,
     };
   },
-  props: ["markers"],
+  props: ["market"],
+  computed: {
+    icon() {
+      return {
+        url: this.market.logo,
+        scaledSize: { width: 30, height: 30 },
+        labelOrigin: { x: 16, y: -10 },
+      };
+    },
+  },
   created() {
     navigator.geolocation.getCurrentPosition(
       (position) => {

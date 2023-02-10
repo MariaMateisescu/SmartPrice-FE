@@ -2,12 +2,12 @@
   <q-page>
     <div>
       <div class="markets-header">Markets</div>
+      <q-btn @click="showAddMarket = true">Add Market</q-btn>
       <MarketCard
         v-for="market in markets"
         :key="market._id"
         :marketInfo="market"
       ></MarketCard>
-      <q-btn @click="showAddMarket = true">Add Market</q-btn>
     </div>
     <q-dialog maximized v-model="showAddMarket">
       <q-card>
@@ -24,14 +24,20 @@
             label="Market Name"
             class="q-mb-lg"
           />
-          <q-file color="teal" filled v-model="marketLogo" label="Logo">
+          <q-file
+            color="teal"
+            filled
+            v-model="marketLogo"
+            label="Logo"
+            @update:model-value="uploadFile"
+          >
             <template v-slot:prepend>
               <q-icon name="cloud_upload" />
             </template>
           </q-file>
         </q-card-section>
+        <q-btn @click="addMarket">Add market</q-btn>
       </q-card>
-      {{ marketLogo }}
     </q-dialog>
   </q-page>
 </template>
@@ -45,8 +51,7 @@ export default {
     MarketCard,
   },
   async mounted() {
-    const res = await this.$api.get("/markets");
-    this.markets = res.data.data.markets;
+    this.fetchMarkets();
   },
   data() {
     return {
@@ -55,6 +60,34 @@ export default {
       marketLogo: null,
       marketName: "",
     };
+  },
+  methods: {
+    uploadFile() {
+      console.log(this.marketLogo);
+    },
+    async fetchMarkets() {
+      const res = await this.$api.get("/markets");
+      this.markets = res.data.data.markets;
+    },
+    resetFields() {
+      this.marketLogo = null;
+      this.marketName = "";
+    },
+    async addMarket() {
+      try {
+        let data = new FormData();
+        data.append("name", this.marketName);
+        data.append("logo", this.marketLogo);
+        const res = await this.$api.post("/markets", data);
+        if (res.data.status === "success") {
+          await this.fetchMarkets();
+          this.showAddMarket = false;
+          this.resetFields();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>

@@ -25,6 +25,6 @@ export default {
   gap: 20px;
   margin: 20px;
   padding: 10px;
-  background-color: aquamarine;
+  background-color: #f3f3f3;
 }
 </style>

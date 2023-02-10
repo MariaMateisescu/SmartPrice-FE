@@ -22,6 +22,6 @@ export default {
 .product-card {
   margin: 20px;
   padding: 10px;
-  background-color: beige;
+  background-color: #f3f3f3;
 }
 </style>

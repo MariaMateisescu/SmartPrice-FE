@@ -26,7 +26,7 @@ export default {
   display: flex;
   gap: 20px;
   margin: 20px;
-  background-color: cadetblue;
+  background-color: #f3f3f3;
 }
 img {
   width: 80px;
