@@ -16,7 +16,6 @@
         </q-card-section>
 
         <q-card-section>
-          {{ locationsLength }} {{ market.locations.length }}
           <MapGoogle @emitCoords="showCoords" :market="market" />
           <div>Address: {{ address }}</div>
           <q-input v-model="lat" type="text" label="Latitude" />
