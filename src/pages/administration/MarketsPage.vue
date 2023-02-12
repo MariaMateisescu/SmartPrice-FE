@@ -7,6 +7,7 @@
         v-for="market in markets"
         :key="market._id"
         :marketInfo="market"
+        @fetchMarkets="fetchMarkets"
       ></MarketCard>
     </div>
     <q-dialog maximized v-model="showAddMarket">
