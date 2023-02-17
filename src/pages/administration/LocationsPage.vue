@@ -1,11 +1,19 @@
 <template>
   <div v-if="market">
-    <div class="location-header">{{ market.name }} Locations</div>
+    <div class="style">
+      <img class="logo" :src="market.logo" alt="" />
+      <div class="location-header">{{ market.name }}</div>
+    </div>
+    <p>Locations</p>
     <q-btn @click="showAddLocation = true">Add Location</q-btn>
+
     <LocationCard
       v-for="location in market.locations"
       :key="location._id"
       :locationInfo="location"
+      :marketLogo="market.logo"
+      :marketName="market.name"
+      @fetchMarket="fetchMarket"
     />
     <q-dialog maximized v-model="showAddLocation">
       <q-card>
@@ -85,6 +93,7 @@ export default {
       this.market = res.data.data.market;
       this.locationsLength = this.market.locations.length;
     },
+
     resetFields() {
       this.lat = null;
       this.lng = null;
@@ -145,5 +154,17 @@ export default {
   font-size: 32px;
   text-align: center;
   margin-top: 20px;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+}
+
+.style {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 20px 0;
 }
 </style>
