@@ -77,7 +77,6 @@ export default {
     showEditMarketDialog(e) {
       e.stopPropagation();
       this.showEditMarket = true;
-      console.log("market edit");
     },
     async editMarket() {
       try {
@@ -104,7 +103,7 @@ export default {
     async deleteMarket() {
       try {
         const res = await this.$api.delete(`/markets/${this.marketInfo._id}`);
-        if (res.status >= 200 && res.status < 300) {
+        if (res.data.status === "success") {
           this.$emit("fetchMarkets");
           this.showDeleteMarket = false;
         }

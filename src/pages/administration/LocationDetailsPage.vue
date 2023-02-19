@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div v-if="location">
     <h5 v-if="location">{{ location.name }}</h5>
     <q-btn @click="showAddProduct = true">Add Product</q-btn>
     <ProductCard
-      v-for="product in products"
+      v-for="product in location.productsList"
       :key="product._id"
       :productInfo="product"
-      @editProductSuccess="fetchProducts"
-      @deleteProductSuccess="fetchProducts"
+      @editProductSuccess="fetchLocation"
+      @deleteProductSuccess="fetchLocation"
     />
     <q-dialog maximized v-model="showAddProduct">
       <q-card>
@@ -27,7 +27,7 @@
           <div>
             <q-option-group
               v-model="selectedLocations"
-              :options="options"
+              :options="locationOptions"
               color="green"
               type="checkbox"
             />
@@ -48,19 +48,16 @@ export default {
   },
 
   async mounted() {
-    this.fetchProducts();
-    const resMarket = await this.$api.get(
-      `/markets/${this.$route.params.marketId}`
-    );
-    this.market = resMarket.data.data.market;
+    this.fetchLocation();
+    const res = await this.$api.get(`/markets/${this.$route.params.marketId}`);
+    this.market = res.data.data.market;
     this.market.locations.map((loc) =>
-      this.options.push({ label: loc.name, value: loc._id })
+      this.locationOptions.push({ label: loc.name, value: loc._id })
     );
     this.selectedLocations.push(this.$route.params.locationId);
   },
   data() {
     return {
-      products: [],
       name: null,
       category: null,
       brand: null,
@@ -70,7 +67,7 @@ export default {
       showAddProduct: false,
       market: null,
       selectedLocations: [],
-      options: [],
+      locationOptions: [],
       location: null,
     };
   },
@@ -87,9 +84,8 @@ export default {
           selectedLocations: this.selectedLocations,
         };
         const res = await this.$api.post("/products", data);
-        console.log(res);
         if (res.data.status === "success") {
-          await this.fetchProducts();
+          await this.fetchLocation();
           this.showAddProduct = false;
           this.resetFields();
         }
@@ -107,12 +103,11 @@ export default {
       this.selectedLocations = [this.$route.params.locationId];
     },
 
-    async fetchProducts() {
+    async fetchLocation() {
       const res = await this.$api.get(
         `/locations/${this.$route.params.locationId}`
       );
       this.location = res.data.data.location;
-      this.products = res.data.data.location.productsList;
     },
   },
 };

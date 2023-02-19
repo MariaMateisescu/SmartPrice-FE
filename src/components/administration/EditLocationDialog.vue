@@ -1,20 +1,11 @@
 <template>
   <div>
-    <div
-      style="
-        max-width: 800px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      "
-    ></div>
+    <div class="coords-style"></div>
     <GMapMap
       :center="myCoordinates"
       :zoom="zoom"
-      style="width: 100%; height: 360px; margin: 16px auto"
-      ref="mapRef"
-      @click="mark"
+      class="map-style"
+      @click="markLocation"
     >
       <GMapMarker
         :position="myCoordinates"
@@ -34,14 +25,17 @@
     <q-input v-model="myCoordinates.lat" type="text" label="Latitude" />
     <q-input v-model="myCoordinates.lng" type="text" label="Longitude" />
     <q-input v-model="openingHours" type="text" label="Opening Hours" />
-    <q-btn color="primary" @click="editLocation" label="Edit location" />
+    <q-btn
+      color="primary"
+      @click="onSaveLocationChanges"
+      label="Save Changes"
+    />
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      map: null,
       openedMarkerID: null,
       myCoordinates: {
         lat: 0,
@@ -69,7 +63,7 @@ export default {
     },
   },
   methods: {
-    async mark(e) {
+    async markLocation(e) {
       this.myCoordinates.lat = e.latLng.lat();
       this.myCoordinates.lng = e.latLng.lng();
       await this.getStreetAddressFrom(
@@ -98,7 +92,7 @@ export default {
         console.log(error.message);
       }
     },
-    async editLocation() {
+    async onSaveLocationChanges() {
       try {
         const locationName = this.address.split(",")[0];
         const data = {
@@ -115,7 +109,7 @@ export default {
           data
         );
         if (res.data.status === "success") {
-          this.$emit("editSucces");
+          this.$emit("editLocationSuccess");
         }
       } catch (error) {
         console.log(error);
@@ -124,3 +118,19 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.coords-style {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.map-style {
+  width: 100%;
+  height: 360px;
+  margin: 16px auto;
+}
+</style>

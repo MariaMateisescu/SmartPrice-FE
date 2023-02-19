@@ -18,8 +18,8 @@
           </q-card-section>
 
           <q-card-section>
-            <EditLocationMapGoogle
-              @editSucces="onSuccessfulEdit"
+            <EditLocationDialog
+              @editLocationSuccess="editLocationSuccess"
               :locationInfo="locationInfo"
               :marketLogo="marketLogo"
               :marketName="marketName"
@@ -51,12 +51,12 @@
 </template>
 
 <script>
-import EditLocationMapGoogle from "src/components/administration/EditLocationMapGoogle.vue";
+import EditLocationDialog from "src/components/administration/EditLocationDialog.vue";
 export default {
   name: "LocationCard",
   props: ["locationInfo", "marketLogo", "marketName"],
   components: {
-    EditLocationMapGoogle,
+    EditLocationDialog,
   },
   data() {
     return {
@@ -83,7 +83,7 @@ export default {
         const res = await this.$api.delete(
           `/locations/${this.locationInfo._id}/${this.$route.params.marketId}`
         );
-        if (res.status >= 200 && res.status < 300) {
+        if (res.data.status === "success") {
           this.$emit("fetchMarket");
           this.showDeleteLocation = false;
         }
@@ -91,9 +91,9 @@ export default {
         console.log(err);
       }
     },
-    async onSuccessfulEdit() {
-      this.$emit("fetchMarket");
+    async editLocationSuccess() {
       this.showEditLocation = false;
+      this.$emit("fetchMarket");
     },
   },
 };

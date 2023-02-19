@@ -1,7 +1,7 @@
 <template>
   <div v-if="market">
     <div class="style">
-      <img class="logo" :src="market.logo" alt="" />
+      <img class="logo" :src="market.logo" alt="Market Logo" />
       <div class="location-header">{{ market.name }}</div>
     </div>
     <p>Locations</p>
@@ -120,9 +120,7 @@ export default {
             lng: this.lng,
           },
         });
-        console.log(this.market.locations.length);
       } else {
-        console.log(this.market.locations.length);
         this.locationsToBeDisplayed.push({
           _id: Date.now(),
           address: this.address,
@@ -131,7 +129,6 @@ export default {
             lng: this.lng,
           },
         });
-        console.log(this.market.locations.length);
       }
     },
     async getStreetAddressFrom(lat, long) {

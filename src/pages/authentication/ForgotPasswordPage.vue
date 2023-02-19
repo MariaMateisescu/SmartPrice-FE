@@ -21,7 +21,6 @@ export default {
         const data = {
           email: this.email,
         };
-        console.log(data.email);
       } catch (error) {
         console.log(error);
       }

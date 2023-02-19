@@ -47,14 +47,12 @@ export default {
           password: this.password,
         };
         const res = await this.$api.post("/users/login", data);
-        console.log(res);
         localStorage.setItem("token", res.data.token);
         this.$router.push("/");
         this.useUser.setUser(res.data.data.user);
       } catch (error) {
         console.log(error);
       }
-      console.log("login");
     },
   },
 };

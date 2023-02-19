@@ -1,12 +1,15 @@
 <template>
   <div>
     <q-card class="product-card">
-      <div>{{ productInfo.name }}</div>
-      <div>{{ productInfo.brand }}</div>
-      <div>{{ productInfo.category }}</div>
-      <div>{{ productInfo.price }}</div>
-      <div>{{ productInfo.weight }}</div>
-      <div>{{ productInfo.quantity }}</div>
+      <div class="products-style">
+        <div>{{ productInfo.name }}</div>
+        <div>{{ productInfo.brand }}</div>
+        <div>{{ productInfo.category }}</div>
+        <div>{{ productInfo.price }}</div>
+        <div>{{ productInfo.weight }}</div>
+        <div>{{ productInfo.quantity }}</div>
+      </div>
+
       <q-icon name="edit" class="icons" @click="showEditProductDialog"></q-icon>
       <q-dialog maximized v-model="showEditProduct">
         <q-card>
@@ -23,7 +26,7 @@
             <q-input v-model="weight" type="text" label="Weight" />
             <q-input v-model="price" type="number" label="Price" />
             <q-input v-model="quantity" type="number" label="Quantity" />
-            <q-btn color="primary" @click="editProduct">Edit Product</q-btn>
+            <q-btn color="primary" @click="saveProduct">Save Product</q-btn>
           </q-card-section>
         </q-card>
       </q-dialog>
@@ -35,7 +38,9 @@
       <q-dialog v-model="showDeleteProduct" persistent>
         <q-card>
           <q-card-section class="row items-center">
-            <span class="q-ml-sm">Are you sure you want to delete ?</span>
+            <span class="q-ml-sm"
+              >Are you sure you want to delete {{ productInfo.name }}?</span
+            >
           </q-card-section>
 
           <q-card-actions align="right">
@@ -69,7 +74,7 @@ export default {
       e.stopPropagation();
       this.showEditProduct = true;
     },
-    async editProduct() {
+    async saveProduct() {
       try {
         const data = {
           name: this.name,
@@ -100,7 +105,7 @@ export default {
         const res = await this.$api.delete(
           `/products/${this.productInfo._id}/${this.$route.params.locationId}`
         );
-        if (res.status >= 200 && res.status < 300) {
+        if (res.data.status === "success") {
           this.$emit("deleteProductSuccess");
           this.showDeleteProduct = false;
         }
@@ -121,5 +126,10 @@ export default {
 
 .icons {
   font-size: 32px;
+}
+
+.products-style {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

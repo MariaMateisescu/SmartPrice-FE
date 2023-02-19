@@ -66,7 +66,6 @@ export default {
           passwordConfirm: this.passwordConfirm,
         };
         const res = await this.$api.post("/users/signup", data);
-        console.log(res);
         if (res.data.status === "success") {
           localStorage.setItem("token", res.data.token);
           this.$router.push("/");
@@ -75,7 +74,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-      console.log("Signup");
     },
   },
 };
@@ -88,6 +86,5 @@ export default {
   flex-direction: column;
   justify-content: center;
   gap: 20px;
-  /* align-items: center; */
 }
 </style>
