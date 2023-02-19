@@ -16,7 +16,15 @@
             <q-btn icon="close" flat round dense v-close-popup />
           </q-card-section>
 
-          <q-card-section> INPUTS </q-card-section>
+          <q-card-section>
+            <q-input v-model="name" type="text" label="Name" />
+            <q-input v-model="category" type="text" label="Category" />
+            <q-input v-model="brand" type="text" label="Brand" />
+            <q-input v-model="weight" type="text" label="Weight" />
+            <q-input v-model="price" type="number" label="Price" />
+            <q-input v-model="quantity" type="number" label="Quantity" />
+            <q-btn color="primary" @click="editProduct">Edit Product</q-btn>
+          </q-card-section>
         </q-card>
       </q-dialog>
       <q-icon
@@ -48,6 +56,12 @@ export default {
     return {
       showEditProduct: false,
       showDeleteProduct: false,
+      name: this.productInfo.name,
+      category: this.productInfo.category,
+      brand: this.productInfo.brand,
+      weight: this.productInfo.weight,
+      price: this.productInfo.price,
+      quantity: this.productInfo.quantity,
     };
   },
   methods: {
@@ -55,13 +69,44 @@ export default {
       e.stopPropagation();
       this.showEditProduct = true;
     },
-
+    async editProduct() {
+      try {
+        const data = {
+          name: this.name,
+          category: this.category,
+          brand: this.brand,
+          weight: this.weight,
+          price: this.price,
+          quantity: this.quantity,
+        };
+        const res = await this.$api.patch(
+          `/products/${this.productInfo._id}`,
+          data
+        );
+        if (res.data.status === "success") {
+          this.$emit("editProductSuccess");
+          this.showEditProduct = false;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
     showDeleteProductDialog(e) {
       e.stopPropagation();
       this.showDeleteProduct = true;
     },
-    deleteProduct() {
-      console.log("deleted");
+    async deleteProduct() {
+      try {
+        const res = await this.$api.delete(
+          `/products/${this.productInfo._id}/${this.$route.params.locationId}`
+        );
+        if (res.status >= 200 && res.status < 300) {
+          this.$emit("deleteProductSuccess");
+          this.showDeleteProduct = false;
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };

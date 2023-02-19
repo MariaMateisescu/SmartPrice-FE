@@ -6,6 +6,8 @@
       v-for="product in products"
       :key="product._id"
       :productInfo="product"
+      @editProductSuccess="fetchProducts"
+      @deleteProductSuccess="fetchProducts"
     />
     <q-dialog maximized v-model="showAddProduct">
       <q-card>
