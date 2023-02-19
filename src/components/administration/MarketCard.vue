@@ -1,5 +1,5 @@
 <template>
-  <q-card class="market-card" @click="goToLocations">
+  <q-card class="market-card" @click="goToMarketDetailsPage">
     <img :src="marketInfo.logo" alt="" />
     <div class="market-card__name">{{ marketInfo.name }}</div>
     <q-icon name="edit" class="icons" @click="showEditMarketDialog"></q-icon>
@@ -71,7 +71,7 @@ export default {
     this.marketName = this.marketInfo.name;
   },
   methods: {
-    goToLocations() {
+    goToMarketDetailsPage() {
       this.$router.push(`/administration/markets/${this.marketInfo._id}`);
     },
     showEditMarketDialog(e) {

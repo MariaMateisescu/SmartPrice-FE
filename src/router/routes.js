@@ -7,18 +7,31 @@ const routes = [
   {
     path: "/login",
     component: () => import("layouts/AuthLayout.vue"),
-    children: [{ path: "", component: () => import("pages/LoginPage.vue") }],
+    children: [
+      {
+        path: "",
+        component: () => import("pages/authentication/LoginPage.vue"),
+      },
+    ],
   },
   {
     path: "/signup",
     component: () => import("layouts/AuthLayout.vue"),
-    children: [{ path: "", component: () => import("pages/SignupPage.vue") }],
+    children: [
+      {
+        path: "",
+        component: () => import("pages/authentication/SignupPage.vue"),
+      },
+    ],
   },
   {
     path: "/forgotPassword",
     component: () => import("layouts/AuthLayout.vue"),
     children: [
-      { path: "", component: () => import("pages/ForgotPasswordPage.vue") },
+      {
+        path: "",
+        component: () => import("pages/authentication/ForgotPasswordPage.vue"),
+      },
     ],
   },
   {
@@ -45,7 +58,8 @@ const routes = [
     children: [
       {
         path: "",
-        component: () => import("pages/administration/LocationsPage.vue"),
+        component: () =>
+          import("src/pages/administration/MarketDetailsPage.vue"),
       },
     ],
     meta: {
@@ -58,7 +72,7 @@ const routes = [
     children: [
       {
         path: "",
-        component: () => import("pages/administration/ProductsPage.vue"),
+        component: () => import("pages/administration/LocationDetailsPage.vue"),
       },
     ],
     meta: {

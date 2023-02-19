@@ -41,7 +41,13 @@
         <q-btn color="primary" @click="logout">Logout</q-btn>
       </q-list>
     </q-drawer>
-
+    <q-footer elevated>
+      <q-icon
+        name="arrow_back"
+        @click="$router.go(-1)"
+        style="margin-left: 10px; font-size: 25px"
+      ></q-icon>
+    </q-footer>
     <q-page-container>
       <router-view />
     </q-page-container>

@@ -1,5 +1,5 @@
 <template>
-  <q-card class="location-card" @click="goToProducts">
+  <q-card class="location-card" @click="goToLocationDetailsPage">
     <div>{{ locationInfo.name }}</div>
     <div>{{ locationInfo.address }}</div>
     <div>{{ locationInfo.openingHours }}</div>
@@ -18,7 +18,7 @@
           </q-card-section>
 
           <q-card-section>
-            <EditMapGoogle
+            <EditLocationMapGoogle
               @editSucces="onSuccessfulEdit"
               :locationInfo="locationInfo"
               :marketLogo="marketLogo"
@@ -51,12 +51,12 @@
 </template>
 
 <script>
-import EditMapGoogle from "components/administration/EditMapGoogle.vue";
+import EditLocationMapGoogle from "src/components/administration/EditLocationMapGoogle.vue";
 export default {
   name: "LocationCard",
   props: ["locationInfo", "marketLogo", "marketName"],
   components: {
-    EditMapGoogle,
+    EditLocationMapGoogle,
   },
   data() {
     return {
@@ -65,7 +65,7 @@ export default {
     };
   },
   methods: {
-    goToProducts() {
+    goToLocationDetailsPage() {
       this.$router.push(
         `/administration/markets/${this.$route.params.marketId}/${this.locationInfo._id}`
       );

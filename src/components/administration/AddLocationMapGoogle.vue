@@ -1,51 +1,34 @@
 <template>
   <div>
-    <div
-      style="
-        max-width: 800px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      "
-    >
-      <div>
-        <div>Your coordinates:</div>
-        <p>
-          {{ myCoordinates.lat }} Latitude, {{ myCoordinates.lng }} Longitude
-        </p>
-      </div>
-    </div>
     <GMapMap
       :center="myCoordinates"
       :zoom="zoom"
-      style="width: 100%; height: 360px; margin: 16px auto"
-      ref="mapRef"
-      @click="mark"
+      class="map-style"
+      @click="markLocation"
     >
       <GMapMarker
         :key="index"
-        v-for="(m, index) in market.locations"
-        :position="m.coordinates"
+        v-for="(location, index) in locationsToBeDisplayed"
+        :position="location.coordinates"
         :icon="icon"
         :clickable="true"
-        @click="openMarker(m._id)"
+        @click="openMarker(location._id)"
         ><GMapInfoWindow
           :closeclick="true"
           @closeclick="openMarker(null)"
-          :opened="openedMarkerID === m._id"
+          :opened="openedMarkerID === location._id"
         >
-          <div>{{ m.address }}</div>
+          <div>{{ location.address }}</div>
         </GMapInfoWindow></GMapMarker
       >
     </GMapMap>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
-      map: null,
       openedMarkerID: null,
       myCoordinates: {
         lat: 0,
@@ -54,7 +37,7 @@ export default {
       zoom: 10,
     };
   },
-  props: ["market"],
+  props: ["market", "locationsToBeDisplayed"],
   computed: {
     icon() {
       return {
@@ -75,11 +58,8 @@ export default {
       }
     );
   },
-  mounted() {
-    this.$refs.mapRef.$mapPromise.then((map) => (this.map = map));
-  },
   methods: {
-    mark(e) {
+    markLocation(e) {
       this.$emit("emitCoords", e.latLng);
     },
     openMarker(id) {
@@ -88,3 +68,19 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.coords-style {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.map-style {
+  width: 100%;
+  height: 360px;
+  margin: 16px auto;
+}
+</style>
