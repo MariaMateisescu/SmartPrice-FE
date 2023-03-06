@@ -1,8 +1,9 @@
 <template>
   <q-page>
-    <div>
-      <div class="markets-header">Markets</div>
-      <q-btn @click="showAddMarket = true">Add Market</q-btn>
+    <div class="page-style">
+      <q-btn class="add-market__btn" @click="showAddMarket = true"
+        >Add Market</q-btn
+      >
       <MarketCard
         v-for="market in markets"
         :key="market._id"
@@ -45,6 +46,7 @@
 
 <script>
 import MarketCard from "src/components/administration/MarketCard.vue";
+import { useDashHeaderStore } from "src/stores/dash-header";
 
 export default {
   name: "AdministrationPage",
@@ -52,7 +54,9 @@ export default {
     MarketCard,
   },
   async mounted() {
-    this.fetchMarkets();
+    const dashHeader = useDashHeaderStore();
+    dashHeader.$patch({ title: "Markets", showBackIcon: true });
+    await this.fetchMarkets();
   },
   data() {
     return {
@@ -99,8 +103,14 @@ export default {
   text-align: center;
   margin-top: 20px;
 }
+.page-style {
+  padding-top: 50px;
+}
 
+.add-market__btn {
+  color: #267378;
+}
 .add-market-modal {
-  background-color: beige;
+  background-color: #eee;
 }
 </style>

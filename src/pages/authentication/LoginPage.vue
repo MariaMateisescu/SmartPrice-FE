@@ -1,9 +1,18 @@
 <template>
+  <div class="illustration">
+    <img
+      class="illustration_img"
+      src="src/assets/illustrations/undraw_my_notifications_re_ehmk.svg"
+      alt="Login Illustration"
+    />
+  </div>
   <div class="login">
-    <q-input v-model="email" type="email" label="Email" />
+    <h3 class="login__header">Log In</h3>
+    <q-input rounded outlined v-model="email" type="email" label="Email" />
     <q-input
+      rounded
+      outlined
       v-model="password"
-      filled
       :type="isPwd ? 'password' : 'text'"
       label="Password"
     >
@@ -15,14 +24,17 @@
         />
       </template>
     </q-input>
-    <q-btn color="primary" @click="login" label="Login" />
     <q-btn
       flat
-      color="primary"
-      label="Don't have an account? Sign Up"
-      to="/signup"
+      class="forgot-pass-btn"
+      label="Forgot password"
+      to="/forgotPassword"
     />
-    <q-btn flat color="primary" label="Forgot password" to="/forgotPassword" />
+    <q-btn class="login-btn" @click="login" label="Log In" />
+    <div class="inline-style">
+      <p>Don't have an account?</p>
+      <q-btn class="signup-btn" flat label="Sign Up" to="/signup" />
+    </div>
   </div>
 </template>
 
@@ -48,8 +60,12 @@ export default {
         };
         const res = await this.$api.post("/users/login", data);
         localStorage.setItem("token", res.data.token);
-        this.$router.push("/");
         this.useUser.setUser(res.data.data.user);
+        if (res.data.data.user.role === "admin") {
+          this.$router.push("/administration");
+        } else {
+          this.$router.push("/");
+        }
       } catch (error) {
         console.log(error);
       }
@@ -59,12 +75,52 @@ export default {
 </script>
 
 <style scoped>
+.illustration {
+  height: 40vh;
+  padding-top: 50px;
+  background: radial-gradient(#bbeaec, #eeeeee 75%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .login {
-  padding: 20px;
+  padding: 0 25px 25px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 20px;
-  /* align-items: center; */
+}
+.login__header {
+  margin: 0px;
+  font-size: 36px;
+  font-weight: 500;
+  color: rgba(10, 25, 41, 0.8);
+}
+.forgot-pass-btn {
+  color: rgba(10, 25, 41, 0.65);
+}
+
+.login-btn {
+  width: 340px;
+  height: 56px;
+  background: #40c4cd;
+  color: rgba(10, 25, 41, 0.8);
+  font-size: 20px;
+  border-radius: 15px;
+}
+p {
+  text-transform: uppercase;
+  color: rgba(10, 25, 41, 0.65);
+  font-weight: 500;
+  margin-bottom: 0;
+}
+.signup-btn {
+  color: rgba(10, 25, 41, 0.8);
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.inline-style {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

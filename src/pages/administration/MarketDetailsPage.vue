@@ -42,11 +42,14 @@
 <script>
 import LocationCard from "src/components/administration/LocationCard.vue";
 import AddLocationMapGoogle from "src/components/administration/AddLocationMapGoogle.vue";
+import { useDashHeaderStore } from "src/stores/dash-header";
 
 export default {
   name: "MarketDetailPage",
   async mounted() {
-    this.fetchMarket();
+    await this.fetchMarket();
+    const dashHeader = useDashHeaderStore();
+    dashHeader.$patch({ title: this.market.name, showBackIcon: true });
   },
   components: {
     LocationCard,
@@ -78,6 +81,9 @@ export default {
           },
           productsList: [],
           marketId: this.$route.params.marketId,
+          coordinatesGeoJSON: {
+            coordinates: [this.lat, this.lng],
+          },
         };
         const res = await this.$api.post("/locations", data);
         if (res.data.status === "success") {

@@ -1,10 +1,19 @@
 <template>
+  <div class="illustration">
+    <img
+      class="illustration_img"
+      src="src/assets/illustrations/SignUp.svg"
+      alt="Signup Illustration"
+    />
+  </div>
   <div class="signup">
-    <q-input v-model="name" label="Name" />
-    <q-input v-model="email" type="email" label="Email" />
+    <h3 class="signup__header">Sign Up</h3>
+    <q-input rounded outlined v-model="name" label="Name" />
+    <q-input rounded outlined v-model="email" type="email" label="Email" />
     <q-input
+      rounded
+      outlined
       v-model="password"
-      filled
       :type="isPwd ? 'password' : 'text'"
       label="Password"
     >
@@ -18,8 +27,9 @@
     </q-input>
 
     <q-input
+      rounded
+      outlined
       v-model="passwordConfirm"
-      filled
       :type="isPwdConfirm ? 'password' : 'text'"
       label="Confirm Password"
     >
@@ -31,13 +41,11 @@
         />
       </template>
     </q-input>
-    <q-btn color="primary" @click="onSignup" label="Signup" />
-    <q-btn
-      flat
-      color="primary"
-      label="Already have an account? Log in"
-      to="/login"
-    />
+    <q-btn class="signup-btn" @click="onSignup" label="Sign Up" />
+    <div class="inline-style">
+      <p>Already have an account?</p>
+      <q-btn class="login-btn" flat label="Log in" to="/login" />
+    </div>
   </div>
 </template>
 
@@ -80,11 +88,57 @@ export default {
 </script>
 
 <style scoped>
+.illustration {
+  height: 40vh;
+  padding-top: 50px;
+  background: radial-gradient(#bbeaec, #eeeeee 75%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .signup {
-  padding: 20px;
+  padding: 0 25px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 20px;
+}
+.q-input {
+  width: 100%;
+  max-width: 500px;
+}
+
+.signup__header {
+  margin: 0px;
+  font-size: 36px;
+  font-weight: 500;
+  color: rgba(10, 25, 41, 0.8);
+}
+
+.signup-btn {
+  /* width: 340px; */
+  width: 100%;
+  max-width: 300px;
+  height: 56px;
+  background: #40c4cd;
+  color: rgba(10, 25, 41, 0.8);
+  font-size: 20px;
+  border-radius: 15px;
+}
+.inline-style {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+p {
+  text-transform: uppercase;
+  color: rgba(10, 25, 41, 0.65);
+  font-weight: 500;
+  margin-bottom: 0;
+}
+.login-btn {
+  color: rgba(10, 25, 41, 0.8);
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 </style>

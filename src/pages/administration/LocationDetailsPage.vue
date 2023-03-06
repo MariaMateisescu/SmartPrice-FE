@@ -41,6 +41,8 @@
 
 <script>
 import ProductCard from "src/components/administration/ProductCard.vue";
+import { useDashHeaderStore } from "src/stores/dash-header";
+
 export default {
   name: "ProductsPage",
   components: {
@@ -48,7 +50,11 @@ export default {
   },
 
   async mounted() {
-    this.fetchLocation();
+    await this.fetchLocation();
+
+    const dashHeader = useDashHeaderStore();
+    dashHeader.$patch({ title: this.location.name, showBackIcon: true });
+
     const res = await this.$api.get(`/markets/${this.$route.params.marketId}`);
     this.market = res.data.data.market;
     this.market.locations.map((loc) =>

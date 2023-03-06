@@ -10,6 +10,7 @@
 
 <script>
 import MainMapGoogle from "src/components/customer/MainMapGoogle.vue";
+import { useDashHeaderStore } from "src/stores/dash-header";
 
 export default {
   name: "HomePage",
@@ -28,6 +29,8 @@ export default {
     };
   },
   async mounted() {
+    const dashHeader = useDashHeaderStore();
+    dashHeader.$patch({ title: "Smart Price", showBackIcon: false });
     try {
       let position = await this.getPosition();
       this.myCoordinates.lat = position.coords.latitude;

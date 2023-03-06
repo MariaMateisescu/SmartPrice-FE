@@ -2,15 +2,6 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
         <q-toolbar-title> Smart Price </q-toolbar-title>
         <div v-if="userStore.authUser">
           {{ userStore.authUser.name }}
@@ -26,27 +17,19 @@
         </div>
       </q-toolbar>
     </q-header>
-
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Menu </q-item-label>
-        <q-btn
-          v-if="userStore.authUser && userStore.authUser.role === 'admin'"
-          color="primary"
-          @click="goToAdministration"
-          >Go to Administration</q-btn
-        >
-        <br />
-        <br />
-        <q-btn color="primary" @click="logout">Logout</q-btn>
-      </q-list>
-    </q-drawer>
-    <q-footer elevated>
-      <q-icon
-        name="arrow_back"
-        @click="$router.go(-1)"
-        style="margin-left: 10px; font-size: 25px"
-      ></q-icon>
+    <q-footer bordered class="bg-white text-primary">
+      <q-tabs
+        no-caps
+        active-color="primary"
+        class="bg-primary text-white shadow-2"
+        v-model="tab"
+        align="justify"
+      >
+        <q-tab name="map" icon="map" />
+        <q-tab name="inspo" icon="menu_book" />
+        <q-tab name="cart" icon="shopping_basket" />
+        <q-tab name="account" icon="person" />
+      </q-tabs>
     </q-footer>
     <q-page-container>
       <router-view />
@@ -88,5 +71,11 @@ export default defineComponent({
 .auth-buttons {
   display: flex;
   gap: 20px;
+}
+</style>
+
+<style>
+.q-tab__icon {
+  font-size: 40px !important;
 }
 </style>
