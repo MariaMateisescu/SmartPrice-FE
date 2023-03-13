@@ -1,37 +1,67 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header style="background-color: #267378; color: #fff" elevated>
       <q-toolbar>
         <q-toolbar-title> Smart Price </q-toolbar-title>
         <div v-if="userStore.authUser">
-          {{ userStore.authUser.name }}
-        </div>
-        <div class="auth-buttons" v-if="!userStore.authUser">
-          <q-btn color="white" text-color="black" label="Login" to="/login" />
-          <q-btn
-            color="white"
-            text-color="black"
-            label="Sign Up"
-            to="/signup"
-          />
+          <q-btn :label="`${userStore.authUser.name}`">
+            <q-menu :offset="[0, 10]">
+              <q-list style="min-width: 100px">
+                <q-item clickable v-close-popup>
+                  <q-item-section>
+                    <q-btn
+                      style="color: #267378"
+                      flat
+                      padding="none"
+                      @click="logout"
+                      >Logout</q-btn
+                    ></q-item-section
+                  >
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
         </div>
       </q-toolbar>
     </q-header>
     <q-footer bordered class="bg-white text-primary">
       <q-tabs
         no-caps
-        active-color="primary"
+        active-color="white"
         class="bg-primary text-white shadow-2"
-        v-model="tab"
         align="justify"
       >
-        <q-tab name="map" icon="map" />
-        <q-tab name="inspo" icon="menu_book" />
-        <q-tab name="cart" icon="shopping_basket" />
-        <q-tab name="account" icon="person" />
+        <q-route-tab
+          style="background-color: #267378; color: #fff"
+          name="map"
+          icon="map"
+          to="/"
+          exact
+        />
+        <q-route-tab
+          style="background-color: #267378; color: #fff"
+          name="inspo"
+          icon="menu_book"
+          to="/inspiration"
+          exact
+        />
+        <q-route-tab
+          style="background-color: #267378; color: #fff"
+          name="cart"
+          icon="shopping_basket"
+          to="/shopping"
+          exact
+        />
+        <q-route-tab
+          style="background-color: #267378; color: #fff"
+          name="account"
+          icon="person"
+          to="/profile"
+          exact
+        />
       </q-tabs>
     </q-footer>
-    <q-page-container>
+    <q-page-container class="q-page-container__style">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -60,9 +90,6 @@ export default defineComponent({
       localStorage.clear();
       this.$router.go();
     },
-    goToAdministration() {
-      this.$router.push("/administration/markets");
-    },
   },
 });
 </script>
@@ -71,6 +98,9 @@ export default defineComponent({
 .auth-buttons {
   display: flex;
   gap: 20px;
+}
+.q-page-container__style {
+  height: 100vh;
 }
 </style>
 

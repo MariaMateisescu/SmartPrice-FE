@@ -1,14 +1,18 @@
 <template>
   <div v-if="location">
     <h5 v-if="location">{{ location.name }}</h5>
-    <q-btn @click="showAddProduct = true">Add Product</q-btn>
-    <ProductCard
-      v-for="product in location.productsList"
-      :key="product._id"
-      :productInfo="product"
-      @editProductSuccess="fetchLocation"
-      @deleteProductSuccess="fetchLocation"
-    />
+    <q-btn class="add-product__btn" @click="showAddProduct = true"
+      >Add Product</q-btn
+    >
+    <div class="product-card__list">
+      <ProductCard
+        v-for="product in location.productsList"
+        :key="product._id"
+        :productInfo="product"
+        @editProductSuccess="fetchLocation"
+        @deleteProductSuccess="fetchLocation"
+      />
+    </div>
     <q-dialog maximized v-model="showAddProduct">
       <q-card>
         <q-card-section class="row items-center q-pb-none">
@@ -32,7 +36,11 @@
               type="checkbox"
             />
           </div>
-          <q-btn color="primary" @click="addProduct" label="Add product" />
+          <q-btn
+            style="background-color: #267378; color: #fff"
+            @click="addProduct"
+            label="Add product"
+          />
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -119,4 +127,18 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.text-h6 {
+  color: #267378;
+}
+.add-product__btn {
+  background-color: #267378;
+  color: white;
+  margin: 10px;
+}
+.product-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+</style>

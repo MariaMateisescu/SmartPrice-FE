@@ -121,8 +121,8 @@ export default {
   width: 100%;
   max-width: 300px;
   height: 56px;
-  background: #40c4cd;
-  color: rgba(10, 25, 41, 0.8);
+  background: #267378;
+  color: rgba(255, 255, 255, 0.8);
   font-size: 20px;
   border-radius: 15px;
 }

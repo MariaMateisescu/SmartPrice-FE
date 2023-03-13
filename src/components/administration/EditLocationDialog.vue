@@ -26,7 +26,7 @@
     <q-input v-model="myCoordinates.lng" type="text" label="Longitude" />
     <q-input v-model="openingHours" type="text" label="Opening Hours" />
     <q-btn
-      color="primary"
+      style="background-color: #267378; color: #fff"
       @click="onSaveLocationChanges"
       label="Save Changes"
     />

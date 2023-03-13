@@ -1,58 +1,73 @@
 <template>
-  <q-card class="market-card" @click="goToMarketDetailsPage">
-    <img :src="marketInfo.logo" alt="" />
-    <div class="market-card__name">{{ marketInfo.name }}</div>
-    <q-icon name="edit" class="icons" @click="showEditMarketDialog"></q-icon>
-    <q-dialog maximized v-model="showEditMarket">
-      <q-card>
-        <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">Edit Market</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
+  <q-slide-item
+    @left="showEditMarketDialog"
+    @right="showDeleteMarketDialog"
+    @click="goToMarketDetailsPage"
+  >
+    <template v-slot:left>
+      <div class="row items-center"><q-icon left name="edit" /> Edit</div>
+    </template>
+    <template v-slot:right>
+      <div class="row items-center">Delete <q-icon right name="delete" /></div>
+    </template>
 
-        <q-card-section>
-          <q-input
-            v-model="marketName"
-            type="text"
-            label="Market Name"
-            class="q-mb-lg"
-          />
-          <q-file
-            color="teal"
-            filled
-            v-model="marketLogo"
-            label="Logo"
-            @update:model-value="uploadFile"
-          >
-            <template v-slot:prepend>
-              <q-icon name="cloud_upload" />
-            </template>
-          </q-file>
-        </q-card-section>
-        <q-btn @click="editMarket">Edit market</q-btn>
-      </q-card>
-    </q-dialog>
-    <q-icon
-      name="delete"
-      class="icons"
-      @click="showDeleteMarketDialog"
-    ></q-icon>
-    <q-dialog v-model="showDeleteMarket" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <span class="q-ml-sm"
-            >Are you sure you want to delete {{ marketInfo.name }}?</span
-          >
-        </q-card-section>
+    <q-item>
+      <q-item-section avatar>
+        <q-avatar rounded>
+          <img :src="marketInfo.logo" />
+        </q-avatar>
+      </q-item-section>
+      <q-item-section
+        ><div class="market-card__name">
+          {{ marketInfo.name }}
+        </div></q-item-section
+      >
+    </q-item>
+  </q-slide-item>
+  <q-dialog maximized v-model="showEditMarket">
+    <q-card>
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">Edit Market</div>
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
+      </q-card-section>
 
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
-          <q-btn flat label="Delete" color="red" @click="deleteMarket" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-  </q-card>
+      <q-card-section>
+        <q-input
+          v-model="marketName"
+          type="text"
+          label="Market Name"
+          class="q-mb-lg"
+        />
+        <q-file
+          color="teal"
+          filled
+          v-model="marketLogo"
+          label="Logo"
+          @update:model-value="uploadFile"
+        >
+          <template v-slot:prepend>
+            <q-icon name="cloud_upload" />
+          </template>
+        </q-file>
+      </q-card-section>
+      <q-btn style="color: #267378" @click="editMarket">Edit market</q-btn>
+    </q-card>
+  </q-dialog>
+  <q-dialog v-model="showDeleteMarket" persistent>
+    <q-card>
+      <q-card-section class="row items-center">
+        <span class="q-ml-sm"
+          >Are you sure you want to delete {{ marketInfo.name }}?</span
+        >
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="primary" v-close-popup />
+        <q-btn flat label="Delete" color="red" @click="deleteMarket" />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -65,18 +80,28 @@ export default {
       showDeleteMarket: false,
       marketName: null,
       marketLogo: null,
+      timer: null,
     };
   },
+  emits: ["fetchMarkets"],
   mounted() {
     this.marketName = this.marketInfo.name;
   },
+  beforeUnmount() {
+    clearTimeout(this.timer);
+  },
   methods: {
+    finalize(reset) {
+      this.timer = setTimeout(() => {
+        reset();
+      }, 1000);
+    },
     goToMarketDetailsPage() {
       this.$router.push(`/administration/markets/${this.marketInfo._id}`);
     },
-    showEditMarketDialog(e) {
-      e.stopPropagation();
+    showEditMarketDialog({ reset }) {
       this.showEditMarket = true;
+      this.finalize(reset);
     },
     async editMarket() {
       try {
@@ -96,9 +121,9 @@ export default {
         console.log(err);
       }
     },
-    showDeleteMarketDialog(e) {
-      e.stopPropagation();
+    showDeleteMarketDialog({ reset }) {
       this.showDeleteMarket = true;
+      this.finalize(reset);
     },
     async deleteMarket() {
       try {
@@ -133,7 +158,8 @@ img {
   width: 80px;
   height: 80px;
 }
-.icons {
-  font-size: 32px;
+
+.text-h6 {
+  color: #267378;
 }
 </style>

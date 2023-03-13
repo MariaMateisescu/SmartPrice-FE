@@ -48,7 +48,7 @@ export default {
       });
     },
     async fetchLocationsWithin(newRadius) {
-      console.log(newRadius);
+      // console.log(newRadius);
       if (newRadius) this.radius = newRadius;
       const resWithin = await this.$api.get(
         `/locations/locations-within/${this.radius}/center/${this.latlng}`

@@ -13,7 +13,12 @@
     <q-btn class="forgot-password-btn" @click="onSendCode" label="Send Code" />
     <div class="inline-style">
       <p>Go back to</p>
-      <q-btn class="login-btn" flat label="Log In" to="/login" />
+      <q-btn
+        class="login-btn"
+        flat
+        label="Log In"
+        @click="this.$emit('emitLogin')"
+      />
     </div>
   </div>
 </template>
@@ -26,6 +31,7 @@ export default {
       email: "",
     };
   },
+  emits: ["emitLogin"],
   methods: {
     onSendCode() {
       try {
@@ -43,7 +49,6 @@ export default {
 <style scoped>
 .illustration {
   height: 40vh;
-  padding-top: 50px;
   background: radial-gradient(#bbeaec, #eeeeee 75%);
   display: flex;
   justify-content: center;
@@ -55,7 +60,9 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 20px;
+  height: 100%;
 }
 .forgot-password__header {
   margin: 0px;
@@ -63,9 +70,13 @@ export default {
   font-weight: 500;
   color: rgba(10, 25, 41, 0.8);
 }
+.q-input {
+  width: 100%;
+  max-width: 500px;
+}
 .forgot-password-btn {
-  width: 340px;
-  height: 56px;
+  width: 100%;
+  max-width: 300px;
   background: #267378;
   color: rgba(255, 255, 255, 0.8);
   font-size: 20px;

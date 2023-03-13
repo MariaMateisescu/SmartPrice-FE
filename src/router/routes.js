@@ -35,9 +35,21 @@ const routes = [
     ],
   },
   {
-    path: "/products",
+    path: "/profile",
     component: () => import("layouts/MainLayout.vue"),
-    children: [{ path: "", component: () => import("pages/ProductsPage.vue") }],
+    children: [{ path: "", component: () => import("pages/ProfilePage.vue") }],
+  },
+  {
+    path: "/inspiration",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [
+      { path: "", component: () => import("pages/InspirationPage.vue") },
+    ],
+  },
+  {
+    path: "/shopping",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [{ path: "", component: () => import("pages/ShoppingPage.vue") }],
   },
   {
     path: "/administration",

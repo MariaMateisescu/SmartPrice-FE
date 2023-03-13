@@ -4,12 +4,14 @@
       <q-btn class="add-market__btn" @click="showAddMarket = true"
         >Add Market</q-btn
       >
-      <MarketCard
-        v-for="market in markets"
-        :key="market._id"
-        :marketInfo="market"
-        @fetchMarkets="fetchMarkets"
-      ></MarketCard>
+      <div class="market-card__list">
+        <MarketCard
+          v-for="market in markets"
+          :key="market._id"
+          :marketInfo="market"
+          @fetchMarkets="fetchMarkets"
+        ></MarketCard>
+      </div>
     </div>
     <q-dialog maximized v-model="showAddMarket">
       <q-card>
@@ -38,7 +40,7 @@
             </template>
           </q-file>
         </q-card-section>
-        <q-btn @click="addMarket">Add market</q-btn>
+        <q-btn class="btn" @click="addMarket">Add market</q-btn>
       </q-card>
     </q-dialog>
   </q-page>
@@ -106,11 +108,22 @@ export default {
 .page-style {
   padding-top: 50px;
 }
-
 .add-market__btn {
+  background-color: #267378;
+  color: white;
+  margin: 10px;
+}
+.text-h6,
+.btn {
   color: #267378;
 }
 .add-market-modal {
   background-color: #eee;
+}
+
+.market-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 </style>

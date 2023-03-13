@@ -4,16 +4,19 @@
       <img class="logo" :src="market.logo" alt="Market Logo" />
       <div class="location-header">{{ market.name }}</div>
     </div>
-    <p>Locations</p>
-    <q-btn @click="showAddLocation = true">Add Location</q-btn>
-    <LocationCard
-      v-for="location in market.locations"
-      :key="location._id"
-      :locationInfo="location"
-      :marketLogo="market.logo"
-      :marketName="market.name"
-      @fetchMarket="fetchMarket"
-    />
+    <q-btn class="add-location__btn" @click="showAddLocation = true"
+      >Add Location</q-btn
+    >
+    <div class="location-card__list">
+      <LocationCard
+        v-for="location in market.locations"
+        :key="location._id"
+        :locationInfo="location"
+        :marketLogo="market.logo"
+        :marketName="market.name"
+        @fetchMarket="fetchMarket"
+      />
+    </div>
     <q-dialog maximized v-model="showAddLocation">
       <q-card>
         <q-card-section class="row items-center q-pb-none">
@@ -28,11 +31,15 @@
             :market="market"
             :locationsToBeDisplayed="locationsToBeDisplayed"
           />
-          <div>Address: {{ address }}</div>
+          <div style="font-size: 18px">Address: {{ address }}</div>
           <q-input v-model="lat" type="text" label="Latitude" />
           <q-input v-model="lng" type="text" label="Longitude" />
           <q-input v-model="openingHours" type="text" label="Opening Hours" />
-          <q-btn color="primary" @click="saveLocation" label="Save Location" />
+          <q-btn
+            style="margin: 20px; background-color: #267378; color: #fff"
+            @click="saveLocation"
+            label="Save Location"
+          />
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -175,6 +182,22 @@ export default {
   display: flex;
   justify-content: center;
   gap: 30px;
-  margin: 20px 0;
+  margin: 10px 0;
+}
+
+.text-h6 {
+  color: #267378;
+}
+
+.location-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.add-location__btn {
+  background-color: #267378;
+  color: white;
+  margin: 10px;
 }
 </style>

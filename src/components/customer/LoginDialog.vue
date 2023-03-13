@@ -7,7 +7,6 @@
     />
   </div>
   <div class="login">
-    <h3 class="login__header">Log In</h3>
     <q-input rounded outlined v-model="email" type="email" label="Email" />
     <q-input
       rounded
@@ -28,12 +27,17 @@
       flat
       class="forgot-pass-btn"
       label="Forgot password"
-      to="/forgotPassword"
+      @click="this.$emit('emitForgotPassword')"
     />
     <q-btn class="login-btn" @click="login" label="Log In" />
     <div class="inline-style">
       <p>Don't have an account?</p>
-      <q-btn class="signup-btn" flat label="Sign Up" to="/signup" />
+      <q-btn
+        class="signup-btn"
+        flat
+        label="Sign Up"
+        @click="this.$emit('emitSignup')"
+      />
     </div>
   </div>
 </template>
@@ -51,6 +55,7 @@ export default {
       useUser: useUserStore(),
     };
   },
+  emits: ["emitForgotPassword", "emitSignup"],
   methods: {
     async login() {
       try {
@@ -77,7 +82,6 @@ export default {
 <style scoped>
 .illustration {
   height: 40vh;
-  padding-top: 50px;
   background: radial-gradient(#bbeaec, #eeeeee 75%);
   display: flex;
   justify-content: center;
@@ -90,6 +94,7 @@ export default {
   justify-content: center;
   align-items: center;
   gap: 20px;
+  height: 100%;
 }
 .login__header {
   margin: 0px;
@@ -104,11 +109,9 @@ export default {
   width: 100%;
   max-width: 500px;
 }
-
 .login-btn {
   width: 100%;
   max-width: 300px;
-  height: 56px;
   background: #267378;
   color: rgba(255, 255, 255, 0.8);
   font-size: 20px;
