@@ -1,7 +1,80 @@
+a
 <template>
   <div class="profile-page">
     <div v-if="userStore.authUser">
-      <h5>Profile page for {{ userStore.authUser.name }}</h5>
+      <p>Profile page for {{ userStore.authUser.name }}</p>
+
+      <q-card>
+        <q-tabs
+          v-model="tab"
+          dense
+          class="text-grey"
+          active-color="teal"
+          indicator-color="teal"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab name="statistics" label="Statistics" />
+          <q-tab name="accountSettings" label="Account Settings" />
+        </q-tabs>
+
+        <q-separator />
+
+        <q-tab-panels v-model="tab" animated>
+          <q-tab-panel name="statistics">
+            <div class="text-h6">See your shopping behaviour</div>
+          </q-tab-panel>
+
+          <q-tab-panel name="accountSettings">
+            <div class="text-h6">
+              <avatar :fullname="userStore.authUser.name"></avatar>
+              <q-input rounded outlined v-model="name" label="Name" />
+              <q-input
+                rounded
+                outlined
+                v-model="email"
+                type="email"
+                label="Email"
+              />
+              <q-input
+                rounded
+                outlined
+                v-model="password"
+                :type="isPwd ? 'password' : 'text'"
+                label="New Password"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwd = !isPwd"
+                  />
+                </template>
+              </q-input>
+              <q-input
+                rounded
+                outlined
+                v-model="passwordConfirm"
+                :type="isPwdConfirm ? 'password' : 'text'"
+                label="Confirm New Password"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwdConfirm ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwdConfirm = !isPwdConfirm"
+                  />
+                </template>
+              </q-input>
+              <q-btn
+                class="savechanges-btn"
+                @click="onSaveChanges"
+                label="Save Changes"
+              />
+            </div>
+          </q-tab-panel>
+        </q-tab-panels>
+      </q-card>
     </div>
     <EmptyState v-else :image="image" :title="title" :message="message">
     </EmptyState>
@@ -9,20 +82,39 @@
 </template>
 
 <script>
+import Avatar from "vue-avatar-component";
 import { useUserStore } from "../stores/UserStore";
+import { useDashHeaderStore } from "src/stores/dash-header";
 import EmptyState from "src/components/customer/EmptyState.vue";
 
 export default {
   name: "ProfilePage",
   components: {
     EmptyState,
+    Avatar,
   },
   data() {
     return {
-      image: "ForgotPassword.svg",
+      image: "EmptyState.svg",
       title: "you are not logged in",
       message: "Log in to view your profile",
+      name: "",
+      email: "",
+      password: "",
+      passwordConfirm: "",
+      tab: "accountSettings",
     };
+  },
+  mounted() {
+    const dashHeader = useDashHeaderStore();
+    dashHeader.$patch({
+      title: "Profile",
+      showBackIcon: false,
+    });
+    if (this.userStore.authUser) {
+      this.name = this.userStore.authUser.name;
+      this.email = this.userStore.authUser.email;
+    }
   },
   setup() {
     const userStore = useUserStore();
@@ -36,5 +128,15 @@ export default {
 <style scoped>
 .profile-page {
   height: 100%;
+}
+.q-input {
+  width: 100%;
+  max-width: 500px;
+  margin-top: 20px;
+}
+.savechanges-btn {
+  background-color: #267378;
+  color: white;
+  margin: 10px;
 }
 </style>

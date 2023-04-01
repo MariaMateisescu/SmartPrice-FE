@@ -52,6 +52,16 @@ const routes = [
     children: [{ path: "", component: () => import("pages/ShoppingPage.vue") }],
   },
   {
+    path: "/shopping/:categoryId",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [
+      {
+        path: "",
+        component: () => import("pages/CategorisedProductsPage.vue"),
+      },
+    ],
+  },
+  {
     path: "/administration",
     component: () => import("layouts/AdminLayout.vue"),
     children: [
@@ -91,7 +101,6 @@ const routes = [
       needsAdmin: true,
     },
   },
-
   {
     path: "/administration/markets/:marketId/:locationId",
     component: () => import("layouts/AdminLayout.vue"),
@@ -99,6 +108,20 @@ const routes = [
       {
         path: "",
         component: () => import("pages/administration/LocationDetailsPage.vue"),
+      },
+    ],
+    meta: {
+      needsAdmin: true,
+    },
+  },
+  {
+    path: "/administration/markets/:marketId/:locationId/:categoryId",
+    component: () => import("layouts/AdminLayout.vue"),
+    children: [
+      {
+        path: "",
+        component: () =>
+          import("pages/administration/CategorisedProductsPage.vue"),
       },
     ],
     meta: {

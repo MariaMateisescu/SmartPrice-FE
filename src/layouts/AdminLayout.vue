@@ -62,12 +62,12 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import { useUserStore } from "../stores/UserStore";
 import { useDashHeaderStore } from "../stores/dash-header";
 
 export default defineComponent({
-  name: "MainLayout",
+  name: "AdminLayout",
 
   setup() {
     const userStore = useUserStore();

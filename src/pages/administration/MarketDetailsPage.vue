@@ -7,9 +7,14 @@
     <q-btn class="add-location__btn" @click="showAddLocation = true"
       >Add Location</q-btn
     >
+    <q-input v-model="search" filled type="search" hint="Search">
+      <template v-slot:append>
+        <q-icon name="search" />
+      </template>
+    </q-input>
     <div class="location-card__list">
       <LocationCard
-        v-for="location in market.locations"
+        v-for="location in filteredLocations"
         :key="location._id"
         :locationInfo="location"
         :marketLogo="market.logo"
@@ -72,7 +77,15 @@ export default {
       locationsLength: 0,
       openingHours: "",
       locationsToBeDisplayed: [],
+      search: "",
     };
+  },
+  computed: {
+    filteredLocations() {
+      return this.market.locations.filter(
+        (loc) => loc.address.toLowerCase().indexOf(this.search) > -1
+      );
+    },
   },
   methods: {
     async saveLocation() {

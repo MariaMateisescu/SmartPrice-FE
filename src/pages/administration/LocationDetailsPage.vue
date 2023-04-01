@@ -4,7 +4,14 @@
     <q-btn class="add-product__btn" @click="showAddProduct = true"
       >Add Product</q-btn
     >
-    <div class="product-card__list">
+    <div>
+      <CategoryCardAdmin
+        v-for="category in categoryOptions"
+        :key="category.value"
+        :categoryInfo="category"
+      />
+    </div>
+    <!-- <div class="product-card__list">
       <ProductCard
         v-for="product in location.productsList"
         :key="product._id"
@@ -12,7 +19,7 @@
         @editProductSuccess="fetchLocation"
         @deleteProductSuccess="fetchLocation"
       />
-    </div>
+    </div> -->
     <q-dialog maximized v-model="showAddProduct">
       <q-card>
         <q-card-section class="row items-center q-pb-none">
@@ -23,7 +30,15 @@
 
         <q-card-section>
           <q-input v-model="name" type="text" label="Name" />
-          <q-input v-model="category" type="text" label="Category" />
+          {{ category }}
+          <q-select
+            v-model="category"
+            :options="showedOptions"
+            label="Category"
+            use-input
+            input-debounce="0"
+            @filter="filterFn"
+          />
           <q-input v-model="brand" type="text" label="Brand" />
           <q-input v-model="weight" type="text" label="Weight" />
           <q-input v-model="price" type="number" label="Price" />
@@ -48,17 +63,18 @@
 </template>
 
 <script>
-import ProductCard from "src/components/administration/ProductCard.vue";
 import { useDashHeaderStore } from "src/stores/dash-header";
+import CategoryCardAdmin from "src/components/administration/CategoryCardAdmin.vue";
 
 export default {
   name: "ProductsPage",
   components: {
-    ProductCard,
+    CategoryCardAdmin,
   },
 
   async mounted() {
     await this.fetchLocation();
+    await this.fetchCategories();
 
     const dashHeader = useDashHeaderStore();
     dashHeader.$patch({ title: this.location.name, showBackIcon: true });
@@ -83,6 +99,8 @@ export default {
       selectedLocations: [],
       locationOptions: [],
       location: null,
+      categoryOptions: [],
+      showedOptions: [],
     };
   },
   methods: {
@@ -90,7 +108,7 @@ export default {
       try {
         const data = {
           name: this.name,
-          category: this.category,
+          category: this.category.value,
           brand: this.brand,
           weight: this.weight,
           price: this.price,
@@ -116,12 +134,36 @@ export default {
       this.quantity = null;
       this.selectedLocations = [this.$route.params.locationId];
     },
-
     async fetchLocation() {
       const res = await this.$api.get(
         `/locations/${this.$route.params.locationId}`
       );
       this.location = res.data.data.location;
+    },
+    async fetchCategories() {
+      const res = await this.$api.get("/categories");
+      this.categoryOptions = res.data.data.categories.map(
+        ({ _id: value, name: label }) => ({
+          value,
+          label,
+        })
+      );
+      this.showedOptions = Object.assign(this.categoryOptions);
+    },
+    filterFn(val, update) {
+      if (val === "") {
+        update(() => {
+          this.showedOptions = this.categoryOptions;
+        });
+        return;
+      }
+
+      update(() => {
+        const needle = val.toLowerCase();
+        this.showedOptions = this.categoryOptions.filter(
+          (v) => v.label.toLowerCase().indexOf(needle) > -1
+        );
+      });
     },
   },
 };

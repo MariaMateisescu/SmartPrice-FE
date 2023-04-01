@@ -11,7 +11,7 @@
       <q-item-section>
         <div>Nume: {{ productInfo.name }}</div>
         <div>Brand: {{ productInfo.brand }}</div>
-        <div>Categorie: {{ productInfo.category }}</div>
+        <div>Categorie: {{ productInfo.category.name }}</div>
         <div>Pret: {{ productInfo.price }} lei</div>
         <div>Gramaj: {{ productInfo.weight }}</div>
         <div>Cantitate: {{ productInfo.quantity }}</div></q-item-section

@@ -1,26 +1,31 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header style="background-color: #267378; color: #fff" elevated>
+    <q-header elevated class="header">
       <q-toolbar>
-        <q-toolbar-title> Smart Price </q-toolbar-title>
+        <q-icon
+          v-if="dashHeader.showBackIcon"
+          name="arrow_back_ios"
+          @click="$router.go(-1)"
+          style="margin-left: 10px; font-size: 25px"
+        ></q-icon>
+        <q-toolbar-title>{{ dashHeader.title }}</q-toolbar-title>
         <div v-if="userStore.authUser">
-          <q-btn :label="`${userStore.authUser.name}`">
-            <q-menu :offset="[0, 10]">
-              <q-list style="min-width: 100px">
-                <q-item clickable v-close-popup>
-                  <q-item-section>
-                    <q-btn
-                      style="color: #267378"
-                      flat
-                      padding="none"
-                      @click="logout"
-                      >Logout</q-btn
-                    ></q-item-section
-                  >
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
+          <avatar :fullname="userStore.authUser.name" color="#FF8574"></avatar>
+          <q-menu :offset="[0, 10]">
+            <q-list style="min-width: 100px">
+              <q-item clickable v-close-popup>
+                <q-item-section>
+                  <q-btn
+                    style="color: #267378"
+                    flat
+                    padding="none"
+                    @click="logout"
+                    >Logout</q-btn
+                  ></q-item-section
+                >
+              </q-item>
+            </q-list>
+          </q-menu>
         </div>
       </q-toolbar>
     </q-header>
@@ -68,21 +73,22 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import { useUserStore } from "../stores/UserStore";
+import { useDashHeaderStore } from "../stores/dash-header";
+import Avatar from "vue-avatar-component";
 
 export default defineComponent({
   name: "MainLayout",
-
+  components: {
+    Avatar,
+  },
   setup() {
-    const leftDrawerOpen = ref(false);
     const userStore = useUserStore();
+    const dashHeader = useDashHeaderStore();
     return {
-      leftDrawerOpen,
       userStore,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
+      dashHeader,
     };
   },
   methods: {
@@ -101,6 +107,12 @@ export default defineComponent({
 }
 .q-page-container__style {
   height: 100vh;
+}
+.header {
+  background: #267378;
+  height: 50px;
+  color: #fff;
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
 }
 </style>
 
