@@ -24,7 +24,7 @@
             :key="recipe.id"
             :recipeInfo="recipe"
             :isSaved="check(recipe.id)"
-            @recipeSaved="fetchSavedRecipes"
+            @recipeSaved="fetchLastSavedRecipes"
             @recipeUnsaved="fetchSavedRecipes"
           />
         </q-tab-panel>
@@ -64,7 +64,7 @@ export default {
       title: "Inspiration",
       showBackIcon: false,
     });
-    await this.fetchRecipes();
+    await this.fetchRandomRecipes();
     await this.fetchSavedRecipes();
   },
   data() {
@@ -79,7 +79,7 @@ export default {
     };
   },
   methods: {
-    async fetchRecipes() {
+    async fetchRandomRecipes() {
       const res = await this.$api.get(
         "https://api.spoonacular.com/recipes/random?apiKey=9f0ab28e89cd42ae85e66402ba83f236&number=10"
       );
@@ -95,6 +95,9 @@ export default {
         )}`
       );
       this.savedRecipes = resRecipe.data;
+    },
+    async fetchLastSavedRecipes() {
+      console.log("aici testam");
     },
     check(recId) {
       if (this.savedRecipesIds.includes(recId)) return true;

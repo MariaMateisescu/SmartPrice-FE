@@ -52,6 +52,13 @@ const routes = [
     children: [{ path: "", component: () => import("pages/ShoppingPage.vue") }],
   },
   {
+    path: "/shopping/:shoppingListId",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [
+      { path: "", component: () => import("pages/ManageShoppingListPage.vue") },
+    ],
+  },
+  {
     path: "/shopping/:categoryId",
     component: () => import("layouts/MainLayout.vue"),
     children: [
