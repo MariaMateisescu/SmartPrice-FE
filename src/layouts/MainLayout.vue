@@ -3,14 +3,20 @@
     <q-header elevated class="header">
       <q-toolbar>
         <q-icon
-          v-if="dashHeader.showBackIcon"
+          v-if="dashHeader.showBackIcon && !dashHeader.backIconTo"
           name="arrow_back_ios"
           @click="$router.go(-1)"
           style="margin-left: 10px; font-size: 25px"
         ></q-icon>
+        <q-icon
+          v-if="dashHeader.showBackIcon && dashHeader.backIconTo"
+          name="arrow_back_ios"
+          @click="$router.push(`${dashHeader.backIconTo}`)"
+          style="margin-left: 10px; font-size: 25px"
+        ></q-icon>
         <q-toolbar-title>{{ dashHeader.title }}</q-toolbar-title>
         <div v-if="userStore.authUser">
-          <avatar :fullname="userStore.authUser.name" color="#FF8574"></avatar>
+          <avatar :fullname="userStore.authUser.name" color="#DE8E83"></avatar>
           <q-menu :offset="[0, 10]">
             <q-list style="min-width: 100px">
               <q-item clickable v-close-popup>
@@ -100,7 +106,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .auth-buttons {
   display: flex;
   gap: 20px;

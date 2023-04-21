@@ -1,17 +1,25 @@
 <template>
   <div v-if="list">
-    {{ list.name }}
-    {{ list.status }}
-
+    <div class="list-header">
+      <div class="list-header__count">{{ list.listItems.length }} items</div>
+      <div class="list-header__status">{{ list.status }}</div>
+    </div>
     <q-list
       dense
       bordered
       padding
-      class="rounded-borders"
-      v-if="list.status === 'pending'"
+      class="rounded-borders list"
+      v-if="list.status !== 'active'"
     >
       <q-item clickable v-ripple v-for="item in list.listItems" :key="item._id">
-        <q-item-section> {{ item.item }} </q-item-section>
+        <q-item-section>
+          <div>
+            {{ item.item }}
+            <q-icon v-if="item.status === 'bought'" name="done_outline" />
+            <q-icon v-if="item.status === 'not_bought'" name="close" />
+          </div>
+          <q-separator />
+        </q-item-section>
       </q-item>
     </q-list>
     <q-list
@@ -35,7 +43,7 @@
         @click="startShopping"
         fab
         label="go shopping"
-        color="teal"
+        color="cyan-9"
         class="shopping-page-sticky-btn"
       />
       <q-btn
@@ -43,7 +51,16 @@
         @click="endShopping"
         fab
         label="end shopping"
-        color="purple"
+        color="cyan-9"
+        class="shopping-page-sticky-btn"
+      />
+      <q-btn
+        v-if="list.status === 'completed'"
+        @click="reuseShoppingList"
+        fab
+        icon="refresh"
+        label="reuse list"
+        color="cyan-9"
         class="shopping-page-sticky-btn"
       />
     </q-page-sticky>
@@ -69,6 +86,7 @@ export default {
     dashHeader.$patch({
       title: this.list.name,
       showBackIcon: true,
+      backIconTo: "/shopping",
     });
   },
   methods: {
@@ -77,7 +95,6 @@ export default {
         `/shopping-lists/get-shopping-lists/${this.$route.params.shoppingListId}`
       );
       this.list = res.data.data.list;
-      console.log(this.list);
     },
     async changeListStatus() {
       try {
@@ -97,16 +114,85 @@ export default {
       }
     },
     async startShopping() {
-      console.log(this.boughtItems);
-      console.log("start shopping");
       await this.changeListStatus();
       await this.fetchList();
     },
-    endShopping() {
-      console.log("shopping ended!!!!");
+    async endShopping() {
+      try {
+        const data = {
+          status: "completed",
+          boughtItems: this.boughtItems,
+        };
+        const res = await this.$api.patch(
+          `/shopping-lists/end-shopping-list/${this.$route.params.shoppingListId}`,
+          data
+        );
+
+        if (res.data.status === "success") {
+          await this.fetchList();
+          console.log("end shopping list changed successfully");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async reuseShoppingList() {
+      try {
+        const itemsToReuse = this.list.listItems.map((item) => item.item);
+        const data = {
+          name:
+            new Date().toLocaleDateString("en-GB") +
+            " " +
+            new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          selectedProducts: itemsToReuse,
+        };
+
+        const res = await this.$api.post(
+          "/shopping-lists/create-shopping-list",
+          data
+        );
+
+        if (res.data.status === "success") {
+          await this.$router.push(`/shopping/${res.data.newListId}`);
+          this.$router.go(0);
+        }
+
+        console.log(res.data.status);
+        console.log("gbhjkl", itemsToReuse);
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.list-header {
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+}
+.list-header__count {
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.list-header__status {
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.list {
+  padding-left: 10px;
+  font-size: 16px;
+}
+
+.shopping-page-sticky-btn {
+  margin-right: 20px;
+  margin-bottom: 30px;
+}
+</style>

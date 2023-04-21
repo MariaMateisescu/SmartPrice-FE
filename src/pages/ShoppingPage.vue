@@ -13,9 +13,8 @@
             <q-icon name="search" />
           </template>
         </q-input>
-
         {{ selectedProducts }}
-        <q-list dense bordered padding class="rounded-borders">
+        <!-- <q-list dense bordered padding class="rounded-borders">
           <q-checkbox
             v-for="product in filteredProducts"
             :key="product"
@@ -23,14 +22,27 @@
             :val="product"
             :label="product"
           ></q-checkbox>
+        </q-list> -->
+        <q-list>
+          <q-item
+            clickable
+            v-ripple
+            v-for="category in categories"
+            :key="category._id"
+          >
+            <q-item-section thumbnail>
+              <q-icon :name="category.icon" />
+            </q-item-section>
+            <q-item-section>{{ category.name }}</q-item-section>
+          </q-item>
         </q-list>
       </q-card>
       <q-page-sticky position="bottom-right" class="shopping-page-sticky">
         <q-btn
           @click="createShoppingList"
           fab
-          icon="add"
-          color="teal"
+          label="Create List"
+          color="cyan-9"
           class="shopping-page-sticky-btn"
         />
       </q-page-sticky>
@@ -75,6 +87,7 @@ export default {
       showNewListDialog: false,
       search: [],
       products: [],
+      categories: [],
       val: false,
       status: "pending",
       selectedProducts: [],
@@ -105,6 +118,7 @@ export default {
     });
     if (this.userStore.authUser) {
       await this.fetchShoppingLists();
+      await this.fetchCategories();
       await this.fetchProducts();
     }
   },
@@ -113,6 +127,11 @@ export default {
     async fetchProducts() {
       const res = await this.$api.get("/products/get-unique-names");
       this.products = res.data.data.productNames;
+    },
+    async fetchCategories() {
+      const res = await this.$api.get("/categories/");
+      this.categories = res.data.data.categories;
+      console.log(this.categories);
     },
     async fetchShoppingLists() {
       const res = await this.$api.get("/shopping-lists/get-shopping-lists");
@@ -147,13 +166,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .shopping-page {
   height: 100%;
 }
 
 .newlist-btn {
-  background-color: #267378;
+  // background-color: #267378;
+  background-color: $cyan-9;
   color: white;
   margin: 10px;
 }
@@ -171,7 +191,7 @@ export default {
 }
 
 .shopping-page-sticky-btn {
-  margin-bottom: 20px;
   margin-right: 20px;
+  margin-bottom: 30px;
 }
 </style>

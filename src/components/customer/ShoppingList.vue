@@ -2,16 +2,18 @@
   <div>
     <q-expansion-item
       expand-separator
-      icon="receipt"
+      icon="receipt_long"
       :label="shoppingListInfo.name"
-      :caption="`${shoppingListInfo.listItems.length}`"
+      :caption="`${shoppingListInfo.listItems.length} items | ${shoppingListInfo.status}`"
       :to="`/shopping/${this.shoppingListInfo._id}`"
     >
       <q-card
+        class="items"
         v-for="listItem in shoppingListInfo.listItems"
         :key="listItem._id"
       >
         {{ listItem.item }}
+        <q-separator></q-separator>
       </q-card>
     </q-expansion-item>
   </div>
@@ -30,4 +32,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.items {
+  padding-left: 50px;
+}
+</style>

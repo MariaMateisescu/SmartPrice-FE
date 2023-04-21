@@ -5,8 +5,8 @@
         v-model="tab"
         dense
         class="text-grey"
-        active-color="teal"
-        indicator-color="teal"
+        active-color="cyan-9"
+        indicator-color="cyan-9"
         align="justify"
         narrow-indicator
       >
@@ -24,8 +24,9 @@
             :key="recipe.id"
             :recipeInfo="recipe"
             :isSaved="check(recipe.id)"
-            @recipeSaved="fetchLastSavedRecipes"
+            @recipeSaved="addRecipeToSavedRecipes"
             @recipeUnsaved="fetchSavedRecipes"
+            @detailedRecipe="showDetailedRecipeDialog"
           />
         </q-tab-panel>
 
@@ -37,12 +38,35 @@
             :recipeInfo="recipe"
             :isSaved="check(recipe.id)"
             @recipeUnsaved="fetchSavedRecipes"
+            @detailedRecipe="showDetailedRecipeDialog"
           />
         </q-tab-panel>
       </q-tab-panels>
     </div>
     <EmptyState v-else :image="image" :title="title" :message="message">
     </EmptyState>
+    <q-dialog maximized v-model="showDetailedRecipe">
+      <q-card>
+        <q-card-section class="row items-center q-pb-none">
+          <q-btn icon="close" flat round dense v-close-popup />
+          <img
+            :src="detailedRecipeToShow.image"
+            alt="Recipe image"
+            width="300"
+            height="300"
+          />
+        </q-card-section>
+
+        <q-card-section>
+          <div class="text-h6">{{ detailedRecipeToShow.title }}</div>
+          <q-space />
+          <div>Servings: {{ detailedRecipeToShow.servings }}</div>
+          <div>Ready in: {{ detailedRecipeToShow.readyInMinutes }} minutes</div>
+          <a :href="detailedRecipeToShow.sourceUrl">See recipe</a>
+          <div v-html="detailedRecipeToShow.instructions"></div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -76,6 +100,8 @@ export default {
       recipes: [],
       savedRecipes: [],
       savedRecipesIds: [],
+      showDetailedRecipe: false,
+      detailedRecipeToShow: null,
     };
   },
   methods: {
@@ -96,8 +122,15 @@ export default {
       );
       this.savedRecipes = resRecipe.data;
     },
-    async fetchLastSavedRecipes() {
-      console.log("aici testam");
+    async addRecipeToSavedRecipes(recipeInfo) {
+      console.log("aici testam", recipeInfo);
+      this.savedRecipes.push(recipeInfo);
+      this.savedRecipesIds.push(recipeInfo.id);
+    },
+    showDetailedRecipeDialog(recipeInfo) {
+      this.showDetailedRecipe = true;
+      this.detailedRecipeToShow = recipeInfo;
+      console.log(this.detailedRecipeToShow);
     },
     check(recId) {
       if (this.savedRecipesIds.includes(recId)) return true;

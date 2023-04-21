@@ -1,7 +1,7 @@
 <template>
   <div class="recipe-card__title">{{ recipeInfo.title }} {{ isSaved }}</div>
   <q-card class="recipe-card">
-    <div class="asd">
+    <div class="asd" @click="$emit('detailedRecipe', recipeInfo)">
       <q-img class="recipe-card__image" :src="recipeInfo.image"> </q-img>
     </div>
     <q-icon
@@ -21,17 +21,19 @@
 
 <script>
 import { matFavoriteBorder } from "@quasar/extras/material-icons";
+
 export default {
   name: "RecipeCard",
   props: ["recipeInfo", "isSaved"],
+
   created() {
     this.matFavoriteBorder = matFavoriteBorder;
   },
-  emits: ["recipeSaved", "recipeUnsaved"],
+  emits: ["recipeSaved", "recipeUnsaved", "detailedRecipe"],
   methods: {
     async onAddToFavourites() {
       const res = await this.$api.patch(`/recipes/save/${this.recipeInfo.id}`);
-      this.$emit("recipeSaved");
+      this.$emit("recipeSaved", this.recipeInfo);
     },
     async onRemoveFromFavourites() {
       const res = await this.$api.patch(
