@@ -1,5 +1,27 @@
 <template>
   <div class="shopping-page">
+    <q-drawer
+      side="right"
+      v-model="drawerRight"
+      bordered
+      elevated
+      :width="200"
+      :breakpoint="500"
+    >
+      <q-scroll-area class="fit">
+        <div class="q-pa-sm">
+          <div v-for="product in selectedProducts" :key="product">
+            {{ product }}
+          </div>
+        </div>
+        <q-btn
+          @click="createShoppingList"
+          fab
+          label="Create List"
+          color="cyan-9"
+        />
+      </q-scroll-area>
+    </q-drawer>
     <q-dialog v-model="showNewListDialog" seamless position="bottom">
       <q-card class="q-card__height">
         <q-card-section class="row items-center q-pb-none">
@@ -7,44 +29,65 @@
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
-
-        <q-input v-model="search" filled type="search" hint="Search">
+        <!-- <q-input v-model="search" filled type="search" hint="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
-        </q-input>
-        {{ selectedProducts }}
-        <!-- <q-list dense bordered padding class="rounded-borders">
-          <q-checkbox
-            v-for="product in filteredProducts"
-            :key="product"
-            v-model="selectedProducts"
-            :val="product"
-            :label="product"
-          ></q-checkbox>
-        </q-list> -->
-        <q-list>
+        </q-input> -->
+        <q-select
+          filled
+          v-model="query"
+          use-input
+          hide-selected
+          fill-input
+          input-debounce="0"
+          :options="search"
+          @update:model-value="test"
+          @filter="filterFn"
+          hint="Minimum 2 characters to trigger filtering"
+          style="width: 100%; padding-bottom: 32px"
+        >
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey"> No results </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+        <div v-if="!categoryUniqueProductsInfo">
           <q-item
             clickable
             v-ripple
             v-for="category in categories"
             :key="category._id"
           >
-            <q-item-section thumbnail>
+            <q-item-section thumbnail style="padding-left: 10px">
               <q-icon :name="category.icon" />
             </q-item-section>
-            <q-item-section>{{ category.name }}</q-item-section>
+            <q-item-section @click="viewProductsInCategory(category)">{{
+              category.name
+            }}</q-item-section>
           </q-item>
-        </q-list>
+        </div>
+        <CategoryUniqueProducts
+          v-if="categoryUniqueProductsInfo"
+          :categoryUniqueProductsInfo="categoryUniqueProductsInfo"
+          @goBackToCategories="categoryUniqueProductsInfo = null"
+          :modelValue="selectedProducts"
+          @update:modelValue="(value) => (selectedProducts = value)"
+        />
       </q-card>
       <q-page-sticky position="bottom-right" class="shopping-page-sticky">
         <q-btn
-          @click="createShoppingList"
           fab
-          label="Create List"
+          icon="shopping_cart"
           color="cyan-9"
           class="shopping-page-sticky-btn"
-        />
+          @click="drawerRight = true"
+        >
+          <q-badge color="red" floating v-if="selectedProducts.length">{{
+            selectedProducts.length
+          }}</q-badge></q-btn
+        >
       </q-page-sticky>
     </q-dialog>
 
@@ -70,6 +113,7 @@ import { useUserStore } from "../stores/UserStore";
 import { useDashHeaderStore } from "src/stores/dash-header";
 import EmptyState from "src/components/customer/EmptyState.vue";
 import ShoppingList from "src/components/customer/ShoppingList.vue";
+import CategoryUniqueProducts from "src/components/customer/CategoryUniqueProducts.vue";
 import useQuasar from "quasar/src/composables/use-quasar.js";
 
 export default {
@@ -77,6 +121,7 @@ export default {
   components: {
     EmptyState,
     ShoppingList,
+    CategoryUniqueProducts,
   },
   data() {
     return {
@@ -85,7 +130,9 @@ export default {
       message: "Log in to continue shopping",
       shoppingLists: [],
       showNewListDialog: false,
+      drawerRight: false,
       search: [],
+      query: "",
       products: [],
       categories: [],
       val: false,
@@ -101,6 +148,7 @@ export default {
           hour: "2-digit",
           minute: "2-digit",
         }),
+      categoryUniqueProductsInfo: null,
     };
   },
   computed: {
@@ -127,11 +175,11 @@ export default {
     async fetchProducts() {
       const res = await this.$api.get("/products/get-unique-names");
       this.products = res.data.data.productNames;
+      this.search = [...this.products];
     },
     async fetchCategories() {
       const res = await this.$api.get("/categories/");
       this.categories = res.data.data.categories;
-      console.log(this.categories);
     },
     async fetchShoppingLists() {
       const res = await this.$api.get("/shopping-lists/get-shopping-lists");
@@ -156,11 +204,32 @@ export default {
             this.timer = void 0;
           }, 3000);
           await this.fetchShoppingLists();
+          this.drawerRight = false;
           this.showNewListDialog = false;
         }
       } catch (err) {
         console.log(err);
       }
+    },
+    viewProductsInCategory(category) {
+      this.categoryUniqueProductsInfo = category;
+    },
+    filterFn(val, update, abort) {
+      if (val.length < 2) {
+        abort();
+        return;
+      }
+
+      update(() => {
+        const needle = val.toLowerCase();
+        this.search = this.products.filter(
+          (v) => v.toLowerCase().indexOf(needle) > -1
+        );
+      });
+    },
+    test() {
+      console.log("testtttttttttttt");
+      this.selectedProducts.push(this.query);
     },
   },
 };
@@ -188,10 +257,17 @@ export default {
   transform: translate(0px, 0px) !important;
   display: flex;
   justify-content: flex-end;
+  height: 100px;
 }
 
 .shopping-page-sticky-btn {
   margin-right: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+}
+</style>
+
+<style>
+.q-drawer--on-top {
+  z-index: 7000 !important;
 }
 </style>

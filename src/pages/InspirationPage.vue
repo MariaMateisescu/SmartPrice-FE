@@ -25,7 +25,7 @@
             :recipeInfo="recipe"
             :isSaved="check(recipe.id)"
             @recipeSaved="addRecipeToSavedRecipes"
-            @recipeUnsaved="fetchSavedRecipes"
+            @recipeUnsaved="removeRecipeFromSavedRecipes"
             @detailedRecipe="showDetailedRecipeDialog"
           />
         </q-tab-panel>
@@ -37,7 +37,7 @@
             :key="recipe.id"
             :recipeInfo="recipe"
             :isSaved="check(recipe.id)"
-            @recipeUnsaved="fetchSavedRecipes"
+            @recipeUnsaved="removeRecipeFromSavedRecipes"
             @detailedRecipe="showDetailedRecipeDialog"
           />
         </q-tab-panel>
@@ -63,6 +63,15 @@
           <div>Servings: {{ detailedRecipeToShow.servings }}</div>
           <div>Ready in: {{ detailedRecipeToShow.readyInMinutes }} minutes</div>
           <a :href="detailedRecipeToShow.sourceUrl">See recipe</a>
+          <div>
+            <li
+              v-for="ingredient in detailedRecipeToShow.extendedIngredients"
+              :key="ingredient.id"
+            >
+              {{ ingredient.amount }} {{ ingredient.unit }}
+              {{ ingredient.nameClean }}
+            </li>
+          </div>
           <div v-html="detailedRecipeToShow.instructions"></div>
         </q-card-section>
       </q-card>
@@ -122,10 +131,19 @@ export default {
       );
       this.savedRecipes = resRecipe.data;
     },
-    async addRecipeToSavedRecipes(recipeInfo) {
-      console.log("aici testam", recipeInfo);
-      this.savedRecipes.push(recipeInfo);
-      this.savedRecipesIds.push(recipeInfo.id);
+    addRecipeToSavedRecipes(recipeInfo) {
+      this.savedRecipes.unshift(recipeInfo);
+      this.savedRecipesIds.unshift(recipeInfo.id);
+    },
+    removeRecipeFromSavedRecipes(recipeInfo) {
+      const index = this.savedRecipes.indexOf(recipeInfo);
+      if (index > -1) {
+        this.savedRecipes.splice(index, 1);
+      }
+      const indexId = this.savedRecipesIds.indexOf(recipeInfo.id);
+      if (index > -1) {
+        this.savedRecipesIds.splice(indexId, 1);
+      }
     },
     showDetailedRecipeDialog(recipeInfo) {
       this.showDetailedRecipe = true;

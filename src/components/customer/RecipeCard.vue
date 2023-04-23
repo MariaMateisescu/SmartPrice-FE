@@ -1,5 +1,5 @@
 <template>
-  <div class="recipe-card__title">{{ recipeInfo.title }} {{ isSaved }}</div>
+  <div class="recipe-card__title">{{ recipeInfo.title }}</div>
   <q-card class="recipe-card">
     <div class="asd" @click="$emit('detailedRecipe', recipeInfo)">
       <q-img class="recipe-card__image" :src="recipeInfo.image"> </q-img>
@@ -39,7 +39,7 @@ export default {
       const res = await this.$api.patch(
         `/recipes/unsave/${this.recipeInfo.id}`
       );
-      this.$emit("recipeUnsaved");
+      this.$emit("recipeUnsaved", this.recipeInfo);
     },
   },
 };
