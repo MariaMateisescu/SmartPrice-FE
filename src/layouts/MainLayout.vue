@@ -115,7 +115,7 @@ export default defineComponent({
   height: 100vh;
 }
 .header {
-  background: #267378;
+  background: $brand-color;
   height: 50px;
   color: #fff;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);

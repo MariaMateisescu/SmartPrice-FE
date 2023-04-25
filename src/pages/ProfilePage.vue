@@ -23,6 +23,10 @@ a
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="statistics">
             <div class="text-h6">See your shopping behaviour</div>
+            <div>Average time spent shopping: {{ averageTime }}</div>
+            <div v-for="list in lists" :key="list.name">
+              {{ calculateTimeSpentShopping(list) }}
+            </div>
           </q-tab-panel>
 
           <q-tab-panel name="accountSettings">
@@ -102,10 +106,13 @@ export default {
       email: "",
       password: "",
       passwordConfirm: "",
-      tab: "accountSettings",
+      tab: "statistics",
+      lists: [],
+      averageTime: null,
+      totalTime: null,
     };
   },
-  mounted() {
+  async mounted() {
     const dashHeader = useDashHeaderStore();
     dashHeader.$patch({
       title: "Profile",
@@ -115,12 +122,35 @@ export default {
       this.name = this.userStore.authUser.name;
       this.email = this.userStore.authUser.email;
     }
+    await this.fetchShoppingLists();
   },
   setup() {
     const userStore = useUserStore();
     return {
       userStore,
     };
+  },
+  methods: {
+    async fetchShoppingLists() {
+      const res = await this.$api.get("/shopping-lists/get-shopping-lists");
+      this.lists = res.data.shoppingLists;
+
+      let totalTime = 0;
+      this.lists.forEach(
+        (list) => (totalTime = totalTime + (list.timeEnded - list.timeStarted))
+      );
+      console.log("totalTime", totalTime);
+
+      let avgTime = totalTime / this.lists.length;
+      this.averageTime = new Date(avgTime).toISOString().slice(11, 19);
+    },
+    calculateTimeSpentShopping(list) {
+      if (list.status === "completed") {
+        const time = list.timeEnded - list.timeStarted;
+        const formattedTime = new Date(time).toISOString().slice(11, 19);
+        return formattedTime;
+      } else return null;
+    },
   },
 };
 </script>

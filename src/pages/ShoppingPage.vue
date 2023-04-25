@@ -1,111 +1,123 @@
 <template>
-  <div class="shopping-page">
-    <q-drawer
-      side="right"
-      v-model="drawerRight"
-      bordered
-      elevated
-      :width="200"
-      :breakpoint="500"
-    >
-      <q-scroll-area class="fit">
-        <div class="q-pa-sm">
-          <div v-for="product in selectedProducts" :key="product">
-            {{ product }}
-          </div>
-        </div>
-        <q-btn
-          @click="createShoppingList"
-          fab
-          label="Create List"
-          color="cyan-9"
-        />
-      </q-scroll-area>
-    </q-drawer>
-    <q-dialog v-model="showNewListDialog" seamless position="bottom">
-      <q-card class="q-card__height">
-        <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">What do you need?</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
-        <!-- <q-input v-model="search" filled type="search" hint="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input> -->
-        <q-select
-          filled
-          v-model="query"
-          use-input
-          hide-selected
-          fill-input
-          input-debounce="0"
-          :options="search"
-          @update:model-value="test"
-          @filter="filterFn"
-          hint="Minimum 2 characters to trigger filtering"
-          style="width: 100%; padding-bottom: 32px"
-        >
-          <template v-slot:no-option>
-            <q-item>
-              <q-item-section class="text-grey"> No results </q-item-section>
-            </q-item>
-          </template>
-        </q-select>
-        <div v-if="!categoryUniqueProductsInfo">
-          <q-item
-            clickable
-            v-ripple
-            v-for="category in categories"
-            :key="category._id"
-          >
-            <q-item-section thumbnail style="padding-left: 10px">
-              <q-icon :name="category.icon" />
-            </q-item-section>
-            <q-item-section @click="viewProductsInCategory(category)">{{
-              category.name
-            }}</q-item-section>
-          </q-item>
-        </div>
-        <CategoryUniqueProducts
-          v-if="categoryUniqueProductsInfo"
-          :categoryUniqueProductsInfo="categoryUniqueProductsInfo"
-          @goBackToCategories="categoryUniqueProductsInfo = null"
-          :modelValue="selectedProducts"
-          @update:modelValue="(value) => (selectedProducts = value)"
-        />
-      </q-card>
-      <q-page-sticky position="bottom-right" class="shopping-page-sticky">
-        <q-btn
-          fab
-          icon="shopping_cart"
-          color="cyan-9"
-          class="shopping-page-sticky-btn"
-          @click="drawerRight = true"
-        >
-          <q-badge color="red" floating v-if="selectedProducts.length">{{
-            selectedProducts.length
-          }}</q-badge></q-btn
-        >
-      </q-page-sticky>
-    </q-dialog>
-
-    <div v-if="userStore.authUser">
-      <q-btn
-        class="newlist-btn"
-        @click="showNewListDialog = true"
-        label="New List"
-      />
-      <ShoppingList
-        v-for="shoppingList in shoppingLists"
-        :key="shoppingList.id"
-        :shoppingListInfo="shoppingList"
-      />
-    </div>
-    <EmptyState v-else :image="image" :title="title" :message="message">
-    </EmptyState>
+  <div
+    v-if="!shoppingLists && userStore.authUser"
+    class="q-gutter-md row justify-center"
+  >
+    <q-spinner-oval color="cyan-9" size="5em" />
   </div>
+  <div v-if="shoppingLists && userStore.authUser">
+    <div class="shopping-page">
+      <q-drawer
+        side="right"
+        v-model="drawerRight"
+        bordered
+        elevated
+        :width="200"
+        :breakpoint="500"
+      >
+        <q-scroll-area class="fit">
+          <div class="q-pa-sm">
+            <div v-for="product in selectedProducts" :key="product">
+              {{ product }}
+            </div>
+          </div>
+          <q-btn
+            @click="createShoppingList"
+            fab
+            label="Create List"
+            color="cyan-9"
+          />
+        </q-scroll-area>
+      </q-drawer>
+      <q-dialog v-model="showNewListDialog" seamless position="bottom">
+        <q-card class="q-card__height">
+          <q-card-section class="row items-center q-pb-none">
+            <div class="text-h6">What do you need?</div>
+            <q-space />
+            <q-btn icon="close" flat round dense v-close-popup />
+          </q-card-section>
+
+          <q-select
+            filled
+            v-model="query"
+            use-input
+            hide-selected
+            fill-input
+            input-debounce="0"
+            :options="search"
+            @update:model-value="test"
+            @filter="filterFn"
+            hint="Minimum 2 characters to trigger filtering"
+            style="width: 100%; padding-bottom: 32px"
+          >
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-grey"> No results </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+          <div v-if="!categoryUniqueProductsInfo">
+            <q-item
+              clickable
+              v-ripple
+              v-for="category in categories"
+              :key="category._id"
+            >
+              <q-item-section thumbnail style="padding-left: 10px">
+                <q-icon :name="category.icon" />
+              </q-item-section>
+              <q-item-section @click="viewProductsInCategory(category)">{{
+                category.name
+              }}</q-item-section>
+            </q-item>
+          </div>
+          <CategoryUniqueProducts
+            v-if="categoryUniqueProductsInfo"
+            :categoryUniqueProductsInfo="categoryUniqueProductsInfo"
+            @goBackToCategories="categoryUniqueProductsInfo = null"
+            :modelValue="selectedProducts"
+            @update:modelValue="(value) => (selectedProducts = value)"
+          />
+        </q-card>
+        <q-page-sticky position="bottom-right" class="shopping-page-sticky">
+          <q-btn
+            fab
+            icon="shopping_cart"
+            color="cyan-9"
+            class="shopping-page-sticky-btn"
+            @click="drawerRight = true"
+          >
+            <q-badge color="red" floating v-if="selectedProducts.length">{{
+              selectedProducts.length
+            }}</q-badge></q-btn
+          >
+        </q-page-sticky>
+      </q-dialog>
+
+      <div v-if="userStore.authUser">
+        <q-btn
+          class="newlist-btn"
+          @click="showNewListDialog = true"
+          label="New List"
+        />
+        <ShoppingList
+          v-for="shoppingList in shoppingLists"
+          :key="shoppingList.id"
+          :shoppingListInfo="shoppingList"
+          @deletedList="removeListFromArray"
+        />
+      </div>
+      <!-- <EmptyState v-else :image="image" :title="title" :message="message">
+      </EmptyState> -->
+    </div>
+  </div>
+  <EmptyState
+    v-if="!userStore.authUser"
+    :image="image"
+    :title="title"
+    :message="message"
+  >
+  </EmptyState>
 </template>
 
 <script>
@@ -128,7 +140,7 @@ export default {
       image: "EmptyState.svg",
       title: "you are not logged in",
       message: "Log in to continue shopping",
-      shoppingLists: [],
+      shoppingLists: null,
       showNewListDialog: false,
       drawerRight: false,
       search: [],
@@ -165,9 +177,12 @@ export default {
       showBackIcon: false,
     });
     if (this.userStore.authUser) {
-      await this.fetchShoppingLists();
-      await this.fetchCategories();
-      await this.fetchProducts();
+      // await this.fetchShoppingLists();
+      // await this.fetchCategories();
+      // await this.fetchProducts();
+      this.fetchShoppingLists();
+      await Promise.all([this.fetchCategories(), this.fetchProducts()]);
+      console.log("fsdfds");
     }
   },
 
@@ -230,6 +245,12 @@ export default {
     test() {
       console.log("testtttttttttttt");
       this.selectedProducts.push(this.query);
+    },
+    removeListFromArray(shoppingListInfo) {
+      const index = this.shoppingLists.indexOf(shoppingListInfo);
+      if (index > -1) {
+        this.shoppingLists.splice(index, 1);
+      }
     },
   },
 };

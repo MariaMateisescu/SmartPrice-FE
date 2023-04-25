@@ -99,7 +99,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .markets-header {
   font-size: 32px;
   text-align: center;
@@ -109,13 +109,13 @@ export default {
   padding-top: 50px;
 }
 .add-market__btn {
-  background-color: #267378;
+  background-color: $brand-color;
   color: white;
   margin: 10px;
 }
 .text-h6,
 .btn {
-  color: #267378;
+  color: $brand-color;
 }
 .add-market-modal {
   background-color: #eee;

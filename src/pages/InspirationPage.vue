@@ -72,6 +72,9 @@
               {{ ingredient.nameClean }}
             </li>
           </div>
+          <q-btn style="color: #267378" @click="createShoppingListFromRecipe"
+            >Make a shopping list</q-btn
+          >
           <div v-html="detailedRecipeToShow.instructions"></div>
         </q-card-section>
       </q-card>
@@ -144,6 +147,24 @@ export default {
       if (index > -1) {
         this.savedRecipesIds.splice(indexId, 1);
       }
+    },
+    async createShoppingListFromRecipe() {
+      console.log("click");
+      const listItemsFromRecipe = [];
+      this.detailedRecipeToShow.extendedIngredients.map((ing) => {
+        const ingredient = ing.amount + " " + ing.unit + " " + ing.nameClean;
+        listItemsFromRecipe.push(ingredient);
+      });
+      console.log(listItemsFromRecipe);
+      const data = {
+        name: this.detailedRecipeToShow.title,
+        selectedProducts: listItemsFromRecipe,
+      };
+      const res = await this.$api.post(
+        "/shopping-lists/create-shopping-list",
+        data
+      );
+      console.log(res);
     },
     showDetailedRecipeDialog(recipeInfo) {
       this.showDetailedRecipe = true;

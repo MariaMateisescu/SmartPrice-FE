@@ -10,6 +10,7 @@
 
 <script>
 import { useDashHeaderStore } from "src/stores/dash-header";
+import { useGeolocationInfoStore } from "src/stores/geolocation-info";
 import MainMapGoogle from "src/components/customer/MainMapGoogle.vue";
 
 export default {
@@ -20,12 +21,12 @@ export default {
   data() {
     return {
       marketsList: [],
-      radius: 4,
       latlng: "",
       myCoordinates: {
         lat: 0,
         lng: 0,
       },
+      geolocationInfo: null,
     };
   },
   async mounted() {
@@ -34,6 +35,7 @@ export default {
       title: "Smart Price",
       showBackIcon: false,
     });
+    this.geolocationInfo = useGeolocationInfoStore();
     try {
       let position = await this.getPosition();
       this.myCoordinates.lat = position.coords.latitude;
@@ -51,9 +53,14 @@ export default {
       });
     },
     async fetchLocationsWithin(newRadius) {
-      if (newRadius) this.radius = newRadius;
+      if (newRadius)
+        this.geolocationInfo.$patch({
+          radius: newRadius,
+        });
+      //this.radius = newRadius;
+      console.log(this.geolocationInfo.$state.radius);
       const resWithin = await this.$api.get(
-        `/locations/locations-within/${this.radius}/center/${this.latlng}`
+        `/locations/locations-within/${this.geolocationInfo.$state.radius}/center/${this.latlng}`
       );
       this.marketsList = resWithin.data.marketsWithin;
     },
@@ -69,6 +76,7 @@ export default {
           });
         });
       });
+      console.log(locations);
       return locations;
     },
   },
