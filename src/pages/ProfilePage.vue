@@ -1,4 +1,3 @@
-a
 <template>
   <div class="profile-page">
     <div v-if="userStore.authUser">
@@ -23,10 +22,14 @@ a
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="statistics">
             <div class="text-h6">See your shopping behaviour</div>
-            <div>Average time spent shopping: {{ averageTime }}</div>
-            <div v-for="list in lists" :key="list.name">
-              {{ calculateTimeSpentShopping(list) }}
+            <div>
+              Average time spent shopping:
+              <strong>{{ averageTime }}</strong>
             </div>
+            <!-- <div v-for="list in completedLists" :key="list.name">
+              {{ list.name }} : {{ calculateTimeSpentShopping(list) }}
+            </div> -->
+            <Chart :completedLists="completedLists" />
           </q-tab-panel>
 
           <q-tab-panel name="accountSettings">
@@ -90,12 +93,14 @@ import Avatar from "vue-avatar-component";
 import { useUserStore } from "../stores/UserStore";
 import { useDashHeaderStore } from "src/stores/dash-header";
 import EmptyState from "src/components/customer/EmptyState.vue";
+import Chart from "src/components/customer/Chart.vue";
 
 export default {
   name: "ProfilePage",
   components: {
     EmptyState,
     Avatar,
+    Chart,
   },
   data() {
     return {
@@ -108,8 +113,9 @@ export default {
       passwordConfirm: "",
       tab: "statistics",
       lists: [],
+      completedLists: [],
+      timeSpentArray: [],
       averageTime: null,
-      totalTime: null,
     };
   },
   async mounted() {
@@ -134,21 +140,31 @@ export default {
     async fetchShoppingLists() {
       const res = await this.$api.get("/shopping-lists/get-shopping-lists");
       this.lists = res.data.shoppingLists;
-
+      this.completedLists = this.lists.filter(
+        (list) => list.status === "completed"
+      );
       let totalTime = 0;
-      this.lists.forEach(
+      this.completedLists.forEach(
         (list) => (totalTime = totalTime + (list.timeEnded - list.timeStarted))
       );
-      console.log("totalTime", totalTime);
 
-      let avgTime = totalTime / this.lists.length;
-      this.averageTime = new Date(avgTime).toISOString().slice(11, 19);
+      let avgTime = totalTime / this.completedLists.length;
+
+      let hours = new Date(avgTime).getUTCHours();
+      let minutes = new Date(avgTime).getUTCMinutes();
+      let seconds = new Date(avgTime).getUTCSeconds();
+      if (seconds > 30) minutes++;
+      this.averageTime = hours ? hours + " hours " : "" + minutes + " minutes";
+      console.log(this.averageTime);
     },
     calculateTimeSpentShopping(list) {
       if (list.status === "completed") {
         const time = list.timeEnded - list.timeStarted;
-        const formattedTime = new Date(time).toISOString().slice(11, 19);
-        return formattedTime;
+        let hours = new Date(time).getUTCHours();
+        let minutes = new Date(time).getUTCMinutes();
+        let seconds = new Date(time).getUTCSeconds();
+        if (seconds > 30) minutes++;
+        return hours ? hours + " hours " : "" + minutes + " minutes";
       } else return null;
     },
   },

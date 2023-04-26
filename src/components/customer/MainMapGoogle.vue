@@ -65,7 +65,27 @@
           <div>Nume: {{ locationInfo.location.name }}</div>
           <div>Adresa: {{ locationInfo.location.address }}</div>
           <div>Program: {{ locationInfo.location.openingHours }}</div>
-          <div>Produse: {{ locationInfo.location.productsList }}</div>
+          <div v-if="!categoryInfo">
+            <q-item
+              clickable
+              v-ripple
+              v-for="category in categories"
+              :key="category._id"
+            >
+              <q-item-section thumbnail style="padding-left: 10px">
+                <q-icon :name="category.icon" />
+              </q-item-section>
+              <q-item-section @click="viewProductsInCategory(category)">{{
+                category.name
+              }}</q-item-section>
+            </q-item>
+          </div>
+          <ProductsInCategoryInLocation
+            v-if="categoryInfo"
+            :categoryInfo="categoryInfo"
+            :locationInfo="locationInfo"
+            @goBackToCategories="categoryInfo = null"
+          />
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -76,7 +96,10 @@
 import { useUserStore } from "src/stores/UserStore";
 import { useGeolocationInfoStore } from "src/stores/geolocation-info";
 import dot from "src/assets/bluedot.png";
+import ProductsInCategoryInLocation from "./ProductsInCategoryInLocation.vue";
+
 export default {
+  components: { ProductsInCategoryInLocation },
   data() {
     return {
       openedMarkerID: null,
@@ -91,6 +114,8 @@ export default {
       },
       locationInfo: null,
       showLocationDetails: false,
+      categories: [],
+      categoryInfo: null,
     };
   },
   setup() {
@@ -102,6 +127,9 @@ export default {
     };
   },
   props: ["marketsList", "myCoordinates"],
+  async mounted() {
+    await this.fetchCategories();
+  },
   methods: {
     openMarker(id) {
       this.openedMarkerID = id;
@@ -116,6 +144,13 @@ export default {
       this.locationInfo = location;
       this.showLocationDetails = true;
       console.log(this.locationInfo);
+    },
+    async fetchCategories() {
+      const res = await this.$api.get("/categories");
+      this.categories = res.data.data.categories;
+    },
+    viewProductsInCategory(category) {
+      this.categoryInfo = category;
     },
   },
   computed: {

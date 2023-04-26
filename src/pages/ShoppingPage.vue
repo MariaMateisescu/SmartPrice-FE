@@ -45,7 +45,7 @@
             fill-input
             input-debounce="0"
             :options="search"
-            @update:model-value="test"
+            @update:model-value="addProductFromSearch"
             @filter="filterFn"
             hint="Minimum 2 characters to trigger filtering"
             style="width: 100%; padding-bottom: 32px"
@@ -193,7 +193,7 @@ export default {
       this.search = [...this.products];
     },
     async fetchCategories() {
-      const res = await this.$api.get("/categories/");
+      const res = await this.$api.get("/categories");
       this.categories = res.data.data.categories;
     },
     async fetchShoppingLists() {
@@ -242,8 +242,7 @@ export default {
         );
       });
     },
-    test() {
-      console.log("testtttttttttttt");
+    addProductFromSearch() {
       this.selectedProducts.push(this.query);
     },
     removeListFromArray(shoppingListInfo) {
