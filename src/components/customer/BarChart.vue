@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: "Chart",
+  name: "BarChart",
   props: ["completedLists"],
   computed: {
     calculatedTimeSpent() {

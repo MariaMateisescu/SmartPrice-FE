@@ -1,8 +1,8 @@
 <template>
-  <q-slide-item @right="showDeleteListDialog">
-    <!-- <template v-slot:left>
+  <q-slide-item @right="showDeleteListDialog" @left="showEditListDialog">
+    <template v-slot:left>
       <div class="row items-center"><q-icon left name="edit" /> Edit</div>
-    </template> -->
+    </template>
     <template v-slot:right>
       <div class="row items-center">Delete <q-icon right name="delete" /></div>
     </template>
@@ -40,6 +40,19 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
+  <q-dialog v-model="showEditList" persistent>
+    <q-card>
+      <q-card-section class="row items-center">
+        <span class="q-ml-sm">Edit "{{ shoppingListInfo.name }}" </span>
+        <q-input type="text"></q-input>
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="red" v-close-popup />
+        <q-btn flat label="Save" color="primary" @click="saveName" />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -50,6 +63,7 @@ export default {
   data() {
     return {
       showDeleteList: false,
+      showEditList: false,
       timer: null,
     };
   },
@@ -69,6 +83,12 @@ export default {
     showDeleteListDialog({ reset }) {
       this.showDeleteList = true;
       this.finalize(reset);
+    },
+    showEditListDialog() {
+      this.showEditList = true;
+    },
+    saveName() {
+      console.log("name saved");
     },
     async deleteShoppingList() {
       try {

@@ -148,12 +148,12 @@ export default {
   font-size: 20px;
   font-weight: 600;
 }
-.market-card {
+/* .market-card {
   display: flex;
   gap: 20px;
   margin: 20px;
   background-color: #f3f3f3;
-}
+} */
 img {
   width: 80px;
   height: 80px;

@@ -29,12 +29,15 @@
             <!-- <div v-for="list in completedLists" :key="list.name">
               {{ list.name }} : {{ calculateTimeSpentShopping(list) }}
             </div> -->
-            <Chart :completedLists="completedLists" />
+            <BarChart :completedLists="completedLists" />
+            <PieChart />
           </q-tab-panel>
 
           <q-tab-panel name="accountSettings">
             <div class="text-h6">
-              <avatar :fullname="userStore.authUser.name"></avatar>
+              <q-avatar color="primary" text-color="white">{{
+                userStore.authUser.name[0]
+              }}</q-avatar>
               <q-input rounded outlined v-model="name" label="Name" />
               <q-input
                 rounded
@@ -89,18 +92,18 @@
 </template>
 
 <script>
-import Avatar from "vue-avatar-component";
 import { useUserStore } from "../stores/UserStore";
 import { useDashHeaderStore } from "src/stores/dash-header";
 import EmptyState from "src/components/customer/EmptyState.vue";
-import Chart from "src/components/customer/Chart.vue";
+import BarChart from "src/components/customer/BarChart.vue";
+import PieChart from "src/components/customer/PieChart.vue";
 
 export default {
   name: "ProfilePage",
   components: {
     EmptyState,
-    Avatar,
-    Chart,
+    BarChart,
+    PieChart,
   },
   data() {
     return {
@@ -127,8 +130,8 @@ export default {
     if (this.userStore.authUser) {
       this.name = this.userStore.authUser.name;
       this.email = this.userStore.authUser.email;
+      await this.fetchShoppingLists();
     }
-    await this.fetchShoppingLists();
   },
   setup() {
     const userStore = useUserStore();

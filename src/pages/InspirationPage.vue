@@ -1,6 +1,6 @@
 <template>
   <div class="inspiration-page">
-    <div v-if="userStore.authUser">
+    <div>
       <q-tabs
         v-model="tab"
         dense
@@ -30,7 +30,7 @@
           />
         </q-tab-panel>
 
-        <q-tab-panel name="myRecipes">
+        <q-tab-panel name="myRecipes" v-if="userStore.authUser">
           <div class="text-h6">Saved recipes</div>
           <RecipeCard
             v-for="recipe in savedRecipes"
@@ -41,10 +41,12 @@
             @detailedRecipe="showDetailedRecipeDialog"
           />
         </q-tab-panel>
+        <q-tab-panel name="myRecipes" v-else>
+          <EmptyState :image="image" :title="title" :message="message">
+          </EmptyState>
+        </q-tab-panel>
       </q-tab-panels>
     </div>
-    <EmptyState v-else :image="image" :title="title" :message="message">
-    </EmptyState>
     <q-dialog maximized v-model="showDetailedRecipe">
       <q-card>
         <q-card-section class="row items-center q-pb-none">
@@ -52,29 +54,35 @@
           <img
             :src="detailedRecipeToShow.image"
             alt="Recipe image"
-            width="300"
-            height="300"
+            width="380"
+            height="200"
           />
         </q-card-section>
-
+        <q-card-section
+          ><div class="text-h6">
+            {{ detailedRecipeToShow.title }}
+          </div></q-card-section
+        >
         <q-card-section>
-          <div class="text-h6">{{ detailedRecipeToShow.title }}</div>
-          <q-space />
           <div>Servings: {{ detailedRecipeToShow.servings }}</div>
           <div>Ready in: {{ detailedRecipeToShow.readyInMinutes }} minutes</div>
           <a :href="detailedRecipeToShow.sourceUrl">See recipe</a>
-          <div>
-            <li
-              v-for="ingredient in detailedRecipeToShow.extendedIngredients"
-              :key="ingredient.id"
-            >
-              {{ ingredient.amount }} {{ ingredient.unit }}
-              {{ ingredient.nameClean }}
-            </li>
-          </div>
+        </q-card-section>
+        <q-separator></q-separator>
+
+        <q-card-section>
+          <li
+            v-for="ingredient in detailedRecipeToShow.extendedIngredients"
+            :key="ingredient.id"
+          >
+            {{ ingredient.amount }} {{ ingredient.unit }}
+            {{ ingredient.nameClean }}
+          </li>
           <q-btn style="color: #267378" @click="createShoppingListFromRecipe"
             >Make a shopping list</q-btn
           >
+
+          <q-separator></q-separator>
           <div v-html="detailedRecipeToShow.instructions"></div>
         </q-card-section>
       </q-card>
@@ -100,8 +108,10 @@ export default {
       title: "Inspiration",
       showBackIcon: false,
     });
+    if (this.userStore.authUser) {
+      await this.fetchSavedRecipes();
+    }
     await this.fetchRandomRecipes();
-    await this.fetchSavedRecipes();
   },
   data() {
     return {
@@ -132,7 +142,7 @@ export default {
           ","
         )}`
       );
-      this.savedRecipes = resRecipe.data;
+      this.savedRecipes = [...this.savedRecipes, ...resRecipe.data];
     },
     addRecipeToSavedRecipes(recipeInfo) {
       this.savedRecipes.unshift(recipeInfo);

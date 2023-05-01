@@ -106,7 +106,7 @@ export default {
   margin-top: 20px;
 }
 .page-style {
-  padding-top: 50px;
+  padding-top: 30px;
 }
 .add-market__btn {
   background-color: $brand-color;
@@ -124,6 +124,6 @@ export default {
 .market-card__list {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 15px;
 }
 </style>

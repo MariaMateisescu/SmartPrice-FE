@@ -177,9 +177,6 @@ export default {
       showBackIcon: false,
     });
     if (this.userStore.authUser) {
-      // await this.fetchShoppingLists();
-      // await this.fetchCategories();
-      // await this.fetchProducts();
       this.fetchShoppingLists();
       await Promise.all([this.fetchCategories(), this.fetchProducts()]);
       console.log("fsdfds");

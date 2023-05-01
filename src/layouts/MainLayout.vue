@@ -16,7 +16,9 @@
         ></q-icon>
         <q-toolbar-title>{{ dashHeader.title }}</q-toolbar-title>
         <div v-if="userStore.authUser">
-          <avatar :fullname="userStore.authUser.name" color="#DE8E83"></avatar>
+          <q-avatar color="primary" text-color="white">{{
+            userStore.authUser.name[0]
+          }}</q-avatar>
           <q-menu :offset="[0, 10]">
             <q-list style="min-width: 100px">
               <q-item clickable v-close-popup>
@@ -82,13 +84,9 @@
 import { defineComponent } from "vue";
 import { useUserStore } from "../stores/UserStore";
 import { useDashHeaderStore } from "../stores/dash-header";
-import Avatar from "vue-avatar-component";
 
 export default defineComponent({
   name: "MainLayout",
-  components: {
-    Avatar,
-  },
   setup() {
     const userStore = useUserStore();
     const dashHeader = useDashHeaderStore();

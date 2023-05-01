@@ -9,13 +9,12 @@
 
     <q-item>
       <q-item-section>
-        <div>Nume: {{ productInfo.name }}</div>
-        <div>Brand: {{ productInfo.brand }}</div>
-        <div>Categorie: {{ productInfo.category.name }}</div>
-        <div>Pret: {{ productInfo.price }} lei</div>
-        <div>Gramaj: {{ productInfo.weight }}</div>
-        <div>Cantitate: {{ productInfo.quantity }}</div></q-item-section
-      >
+        <div class="product">
+          {{ productInfo.brand }} {{ productInfo.name }}
+          {{ productInfo.weight }}
+          <strong>{{ productInfo.price }} lei</strong>
+        </div>
+      </q-item-section>
     </q-item>
   </q-slide-item>
 
@@ -33,8 +32,7 @@
         <q-input v-model="brand" type="text" label="Brand" />
         <q-input v-model="weight" type="text" label="Weight" />
         <q-input v-model="price" type="number" label="Price" />
-        <q-input v-model="quantity" type="number" label="Quantity" />
-        <q-btn color="primary" @click="saveProduct">Save Product</q-btn>
+        <q-btn color="secondary" @click="saveProduct">Save Product</q-btn>
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -65,11 +63,10 @@ export default {
       showEditProduct: false,
       showDeleteProduct: false,
       name: this.productInfo.name,
-      category: this.productInfo.category,
+      category: this.productInfo.category.name,
       brand: this.productInfo.brand,
       weight: this.productInfo.weight,
       price: this.productInfo.price,
-      quantity: this.productInfo.quantity,
     };
   },
   beforeUnmount() {
@@ -97,7 +94,6 @@ export default {
           brand: this.brand,
           weight: this.weight,
           price: this.price,
-          quantity: this.quantity,
         };
         const res = await this.$api.patch(
           `/products/${this.productInfo._id}`,
@@ -128,4 +124,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.product {
+  display: flex;
+  justify-content: space-between;
+}
+</style>

@@ -4,22 +4,31 @@
     <q-btn class="add-product__btn" @click="showAddProduct = true"
       >Add Product</q-btn
     >
-    <div>
-      <CategoryCardAdmin
+    <div v-if="!categoryInfo">
+      <!-- <CategoryCardAdmin
         v-for="category in categoryOptions"
         :key="category.value"
         :categoryInfo="category"
-      />
+      /> -->
+      <q-item
+        clickable
+        v-ripple
+        v-for="category in categories"
+        :key="category._id"
+      >
+        <q-item-section thumbnail style="padding-left: 10px">
+          <q-icon :name="category.icon" />
+        </q-item-section>
+        <q-item-section @click="viewProductsInCategory(category)">{{
+          category.name
+        }}</q-item-section>
+      </q-item>
     </div>
-    <!-- <div class="product-card__list">
-      <ProductCard
-        v-for="product in location.productsList"
-        :key="product._id"
-        :productInfo="product"
-        @editProductSuccess="fetchLocation"
-        @deleteProductSuccess="fetchLocation"
-      />
-    </div> -->
+    <ProductsInCategory
+      v-if="categoryInfo"
+      :categoryInfo="categoryInfo"
+      @goBackToCategories="categoryInfo = null"
+    />
     <q-dialog maximized v-model="showAddProduct">
       <q-card>
         <q-card-section class="row items-center q-pb-none">
@@ -30,7 +39,6 @@
 
         <q-card-section>
           <q-input v-model="name" type="text" label="Name" />
-          {{ category }}
           <q-select
             v-model="category"
             :options="showedOptions"
@@ -42,7 +50,7 @@
           <q-input v-model="brand" type="text" label="Brand" />
           <q-input v-model="weight" type="text" label="Weight" />
           <q-input v-model="price" type="number" label="Price" />
-          <q-input v-model="quantity" type="number" label="Quantity" />
+
           <div>
             <q-option-group
               v-model="selectedLocations"
@@ -64,12 +72,12 @@
 
 <script>
 import { useDashHeaderStore } from "src/stores/dash-header";
-import CategoryCardAdmin from "src/components/administration/CategoryCardAdmin.vue";
+import ProductsInCategory from "src/components/administration/ProductsInCategory.vue";
 
 export default {
   name: "ProductsPage",
   components: {
-    CategoryCardAdmin,
+    ProductsInCategory,
   },
 
   async mounted() {
@@ -93,7 +101,6 @@ export default {
       brand: null,
       weight: null,
       price: null,
-      quantity: null,
       showAddProduct: false,
       market: null,
       selectedLocations: [],
@@ -101,6 +108,8 @@ export default {
       location: null,
       categoryOptions: [],
       showedOptions: [],
+      categories: [],
+      categoryInfo: null,
     };
   },
   methods: {
@@ -112,7 +121,6 @@ export default {
           brand: this.brand,
           weight: this.weight,
           price: this.price,
-          quantity: this.quantity,
           selectedLocations: this.selectedLocations,
         };
         const res = await this.$api.post("/products", data);
@@ -131,7 +139,6 @@ export default {
       this.brand = null;
       this.weight = null;
       this.price = null;
-      this.quantity = null;
       this.selectedLocations = [this.$route.params.locationId];
     },
     async fetchLocation() {
@@ -148,6 +155,8 @@ export default {
           label,
         })
       );
+      this.categories = res.data.data.categories;
+      console.log(this.categories);
       this.showedOptions = Object.assign(this.categoryOptions);
     },
     filterFn(val, update) {
@@ -164,6 +173,10 @@ export default {
           (v) => v.label.toLowerCase().indexOf(needle) > -1
         );
       });
+    },
+    viewProductsInCategory(category) {
+      this.categoryInfo = category;
+      console.log(this.categoryInfo);
     },
   },
 };

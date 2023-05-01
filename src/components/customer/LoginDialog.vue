@@ -2,7 +2,7 @@
   <div class="illustration">
     <img
       class="illustration_img"
-      src="src/assets/illustrations/Login.svg"
+      src="~/assets/illustrations/Login.svg"
       alt="Login Illustration"
     />
   </div>
@@ -66,6 +66,9 @@ export default {
         const res = await this.$api.post("/users/login", data);
         localStorage.setItem("token", res.data.token);
         this.useUser.setUser(res.data.data.user);
+        this.$api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${localStorage.getItem("token")}`;
         if (res.data.data.user.role === "admin") {
           this.$router.push("/administration");
         } else {

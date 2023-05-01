@@ -61,6 +61,9 @@ export default {
         const res = await this.$api.post("/users/login", data);
         localStorage.setItem("token", res.data.token);
         this.useUser.setUser(res.data.data.user);
+        this.$api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${localStorage.getItem("token")}`;
         if (res.data.data.user.role === "admin") {
           this.$router.push("/administration");
         } else {

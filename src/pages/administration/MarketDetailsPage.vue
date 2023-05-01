@@ -7,21 +7,24 @@
     <q-btn class="add-location__btn" @click="showAddLocation = true"
       >Add Location</q-btn
     >
-    <q-input v-model="search" filled type="search" hint="Search">
-      <template v-slot:append>
-        <q-icon name="search" />
-      </template>
-    </q-input>
-    <div class="location-card__list">
-      <LocationCard
-        v-for="location in filteredLocations"
-        :key="location._id"
-        :locationInfo="location"
-        :marketLogo="market.logo"
-        :marketName="market.name"
-        @fetchMarket="fetchMarket"
-      />
+    <div v-if="filteredLocations.length">
+      <q-input v-model="search" filled type="search" hint="Search">
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+      <div class="location-card__list">
+        <LocationCard
+          v-for="location in filteredLocations"
+          :key="location._id"
+          :locationInfo="location"
+          :marketLogo="market.logo"
+          :marketName="market.name"
+          @fetchMarket="fetchMarket"
+        />
+      </div>
     </div>
+    <div v-if="!filteredLocations.length">No locations to show.</div>
     <q-dialog maximized v-model="showAddLocation">
       <q-card>
         <q-card-section class="row items-center q-pb-none">
@@ -205,7 +208,7 @@ export default {
 .location-card__list {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 }
 
 .add-location__btn {
