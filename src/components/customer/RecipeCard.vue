@@ -74,6 +74,7 @@ export default {
   );
 }
 .recipe-card__title {
+  font-size: 16px;
   margin: 0px 5px 0px;
 }
 .recipe-card__heart {
@@ -82,7 +83,6 @@ export default {
   right: 10px;
   z-index: 999;
   font-size: 28px;
-  /* color: #b41010; */
   color: #fff;
 }
 </style>

@@ -16,7 +16,7 @@
         ></q-icon>
         <q-toolbar-title>{{ dashHeader.title }}</q-toolbar-title>
         <div v-if="userStore.authUser">
-          <q-avatar color="primary" text-color="white">{{
+          <q-avatar color="brown-3" text-color="white">{{
             userStore.authUser.name[0]
           }}</q-avatar>
           <q-menu :offset="[0, 10]">
@@ -41,7 +41,8 @@
       <q-tabs
         no-caps
         active-color="white"
-        class="bg-primary text-white shadow-2"
+        class="text-white shadow-2"
+        style="background-color: #267378"
         align="justify"
       >
         <q-route-tab
@@ -63,6 +64,13 @@
           name="cart"
           icon="shopping_basket"
           to="/shopping"
+          exact
+        />
+        <q-route-tab
+          style="background-color: #267378; color: #fff"
+          name="insights"
+          icon="bar_chart"
+          to="/insights"
           exact
         />
         <q-route-tab
@@ -122,6 +130,6 @@ export default defineComponent({
 
 <style>
 .q-tab__icon {
-  font-size: 40px !important;
+  font-size: 38px !important;
 }
 </style>

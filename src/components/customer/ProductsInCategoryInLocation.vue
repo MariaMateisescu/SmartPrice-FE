@@ -6,10 +6,19 @@
     <q-separator></q-separator>
   </div>
   <q-card>
-    <q-list dense bordered padding class="rounded-borders">
-      <q-item v-for="product in products" :key="product._id"
-        >{{ product.name }} : {{ product.price }} lei</q-item
-      >
+    <q-list
+      dense
+      bordered
+      padding
+      class="rounded-borders"
+      v-if="products.length"
+    >
+      <div v-for="product in products" :key="product._id">
+        <q-item v-if="product" class="flex justify-between">
+          <div>{{ product.brand }} {{ product.name }} {{ product.weight }}</div>
+          <div>{{ product.price }} lei</div>
+        </q-item>
+      </div>
     </q-list>
   </q-card>
 </template>
@@ -35,4 +44,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.q-item {
+  padding: 4px 16px;
+  min-height: fit-content;
+}
+</style>

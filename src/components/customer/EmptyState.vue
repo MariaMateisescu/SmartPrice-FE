@@ -2,20 +2,24 @@
   <div class="empty-state">
     <img :src="`src/assets/illustrations/${image}`" alt="" />
     <div class="empty-state__title">{{ title }}</div>
-    <p>
+    <div class="message">
       {{ message }}
-    </p>
+    </div>
     <div>
       <q-btn
+        class="btn"
         style="background-color: #267378; color: #fff"
-        label="Login"
+        label="Log In"
         @click="onLogin"
       />
+
       <q-btn
+        class="btn"
         style="background-color: #267378; color: #fff"
         label="Sign Up"
         @click="onSignup"
       />
+
       <q-dialog v-model="showAuthDialog" seamless position="bottom">
         <q-card class="q-card__height">
           <q-card-section class="row items-center q-pb-none">
@@ -26,13 +30,16 @@
 
           <q-card-section>
             <LoginDialog
-              v-if="this.state === 'login'"
+              v-if="this.state === 'Log In'"
               @emitForgotPassword="onForgotPassword"
               @emitSignup="onSignup"
             />
-            <SignupDialog v-if="this.state === 'signup'" @emitLogin="onLogin" />
+            <SignupDialog
+              v-if="this.state === 'Sign Up'"
+              @emitLogin="onLogin"
+            />
             <ForgotPasswordDialog
-              v-if="this.state === 'forgotPassword'"
+              v-if="this.state === 'Forgot Password'"
               @emitLogin="onLogin"
             />
           </q-card-section>
@@ -63,15 +70,15 @@ export default {
   },
   methods: {
     onLogin() {
-      this.state = "login";
+      this.state = "Log In";
       this.showAuthDialog = true;
     },
     onSignup() {
-      this.state = "signup";
+      this.state = "Sign Up";
       this.showAuthDialog = true;
     },
     onForgotPassword() {
-      this.state = "forgotPassword";
+      this.state = "Forgot Password";
       this.showAuthDialog = true;
     },
   },
@@ -96,5 +103,19 @@ export default {
   height: 100vh;
   max-height: calc(100vh - 50px) !important;
   background-color: #eee;
+}
+
+.btn {
+  width: 100%;
+  max-width: 300px;
+  background: #267378;
+  color: rgb(255, 255, 255, 0.9);
+  font-size: 20px;
+  border-radius: 15px;
+  margin-top: 20px;
+}
+
+.message {
+  font-size: 18px;
 }
 </style>

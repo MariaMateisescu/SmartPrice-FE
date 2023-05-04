@@ -122,7 +122,7 @@ export default {
   max-width: 300px;
   height: 56px;
   background: #267378;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 20px;
   border-radius: 15px;
 }

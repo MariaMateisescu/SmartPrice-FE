@@ -12,11 +12,12 @@
         v-model="drawerRight"
         bordered
         elevated
-        :width="200"
+        :width="250"
         :breakpoint="500"
       >
         <q-scroll-area class="fit">
           <div class="q-pa-sm">
+            <div v-if="!selectedProducts.length">Shopping cart is empty.</div>
             <div v-for="product in selectedProducts" :key="product">
               {{ product }}
             </div>
@@ -26,18 +27,39 @@
             fab
             label="Create List"
             color="cyan-9"
+            :disable="isDisabled"
           />
         </q-scroll-area>
       </q-drawer>
-      <q-dialog v-model="showNewListDialog" seamless position="bottom">
+      <q-dialog
+        v-model="showNewListDialog"
+        seamless
+        position="bottom"
+        class="addToListDialog"
+      >
         <q-card class="q-card__height">
           <q-card-section class="row items-center q-pb-none">
             <div class="text-h6">What do you need?</div>
             <q-space />
             <q-btn icon="close" flat round dense v-close-popup />
           </q-card-section>
+          <q-input
+            color="cyan-9"
+            filled
+            v-model="name"
+            label="List name"
+            class="q-mb-md"
+          >
+            <template v-slot:prepend>
+              <q-icon name="edit_note" />
+            </template>
+          </q-input>
+          <q-separator></q-separator>
 
           <q-select
+            class="searchProduct"
+            ref="selectProduct"
+            label="Search for product"
             filled
             v-model="query"
             use-input
@@ -55,8 +77,11 @@
                 <q-item-section class="text-grey"> No results </q-item-section>
               </q-item>
             </template>
+            <template v-slot:prepend>
+              <q-icon name="search" />
+            </template>
           </q-select>
-          <div v-if="!categoryUniqueProductsInfo">
+          <div v-if="!categoryUniqueProductsInfo" class="addToListDialog">
             <q-item
               clickable
               v-ripple
@@ -70,6 +95,17 @@
                 category.name
               }}</q-item-section>
             </q-item>
+            <q-btn
+              fab
+              icon="shopping_cart"
+              color="cyan-9"
+              class="shopping-page-sticky-btn"
+              @click="drawerRight = true"
+            >
+              <q-badge color="red" floating v-if="selectedProducts.length">{{
+                selectedProducts.length
+              }}</q-badge></q-btn
+            >
           </div>
           <CategoryUniqueProducts
             v-if="categoryUniqueProductsInfo"
@@ -79,19 +115,6 @@
             @update:modelValue="(value) => (selectedProducts = value)"
           />
         </q-card>
-        <q-page-sticky position="bottom-right" class="shopping-page-sticky">
-          <q-btn
-            fab
-            icon="shopping_cart"
-            color="cyan-9"
-            class="shopping-page-sticky-btn"
-            @click="drawerRight = true"
-          >
-            <q-badge color="red" floating v-if="selectedProducts.length">{{
-              selectedProducts.length
-            }}</q-badge></q-btn
-          >
-        </q-page-sticky>
       </q-dialog>
 
       <div v-if="userStore.authUser">
@@ -105,10 +128,9 @@
           :key="shoppingList.id"
           :shoppingListInfo="shoppingList"
           @deletedList="removeListFromArray"
+          @editedList="editListFromArray"
         />
       </div>
-      <!-- <EmptyState v-else :image="image" :title="title" :message="message">
-      </EmptyState> -->
     </div>
   </div>
   <EmptyState
@@ -138,7 +160,7 @@ export default {
   data() {
     return {
       image: "EmptyState.svg",
-      title: "you are not logged in",
+      title: "Ooops! You are not logged in!",
       message: "Log in to continue shopping",
       shoppingLists: null,
       showNewListDialog: false,
@@ -169,6 +191,9 @@ export default {
         (prod) => prod.toLowerCase().indexOf(this.search) > -1
       );
     },
+    isDisabled() {
+      return !this.selectedProducts.length;
+    },
   },
   async mounted() {
     const dashHeader = useDashHeaderStore();
@@ -179,7 +204,6 @@ export default {
     if (this.userStore.authUser) {
       this.fetchShoppingLists();
       await Promise.all([this.fetchCategories(), this.fetchProducts()]);
-      console.log("fsdfds");
     }
   },
 
@@ -202,7 +226,9 @@ export default {
         const data = {
           name: this.name,
           selectedProducts: this.selectedProducts,
+          isRecipe: 0,
         };
+
         const res = await this.$api.post(
           "/shopping-lists/create-shopping-list",
           data
@@ -241,12 +267,18 @@ export default {
     },
     addProductFromSearch() {
       this.selectedProducts.push(this.query);
+      this.query = "";
+      this.$refs.selectProduct.blur();
     },
     removeListFromArray(shoppingListInfo) {
       const index = this.shoppingLists.indexOf(shoppingListInfo);
       if (index > -1) {
         this.shoppingLists.splice(index, 1);
       }
+    },
+    editListFromArray(shoppingListInfo, newName) {
+      const index = this.shoppingLists.indexOf(shoppingListInfo);
+      this.shoppingLists[index]["name"] = newName;
     },
   },
 };
@@ -278,13 +310,24 @@ export default {
 }
 
 .shopping-page-sticky-btn {
-  margin-right: 20px;
-  margin-bottom: 20px;
+  position: fixed;
+  right: 20px;
+  bottom: 30px;
+}
+
+.addToListDialog {
+  position: relative;
 }
 </style>
 
 <style>
 .q-drawer--on-top {
   z-index: 7000 !important;
+}
+.q-select__dialog {
+  position: absolute;
+  top: 100px;
+  width: 100vw !important;
+  max-width: 100vw !important;
 }
 </style>

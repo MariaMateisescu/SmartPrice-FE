@@ -78,7 +78,7 @@ export default {
   width: 100%;
   max-width: 300px;
   background: #267378;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 20px;
   border-radius: 15px;
 }
@@ -92,6 +92,7 @@ p {
   color: rgba(10, 25, 41, 0.65);
   font-weight: 500;
   margin-bottom: 0;
+  text-align: center;
 }
 .login-btn {
   color: rgba(10, 25, 41, 0.8);

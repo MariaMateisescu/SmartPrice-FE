@@ -1,17 +1,23 @@
 <template>
-  <div>
+  <div class="one-category">
     <q-icon name="arrow_back_ios" @click="$emit('goBackToCategories')"></q-icon>
-    <span>{{ categoryUniqueProductsInfo.name }}</span>
+    <span class="">{{ categoryUniqueProductsInfo.name }}</span>
   </div>
   <q-card>
     <q-list dense bordered padding class="rounded-borders">
-      <q-checkbox
+      <q-item
         v-for="product in uniqueNames"
         :key="product"
-        v-model="value"
-        :val="product"
-        :label="product"
-      ></q-checkbox>
+        tag="label"
+        v-ripple
+      >
+        <q-item-section avatar>
+          <q-checkbox v-model="value" :val="product" color="cyan-9" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ product }}</q-item-label>
+        </q-item-section>
+      </q-item>
     </q-list>
   </q-card>
 </template>
@@ -52,7 +58,11 @@ export default {
 
 <style scoped>
 .q-card {
-  padding: 15px;
   margin-top: 10px;
+}
+
+.one-category {
+  padding-left: 10px;
+  font-size: 16px;
 }
 </style>

@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div class="asd">
     <!-- <div>{{ calculatedTimeSpent }}</div>
     <div>{{ calculatedDates }}</div> -->
     <apexchart
       type="bar"
       height="350"
+      width="100%"
       :options="chartOptions"
       :series="series"
     ></apexchart>
@@ -79,14 +80,17 @@ export default {
         },
 
         xaxis: {
+          range: 9,
           categories: this.calculatedDates,
           position: "bottom",
           axisBorder: {
             show: false,
           },
           axisTicks: {
-            show: false,
+            show: true,
           },
+          tickPlacement: "on",
+          tickAmount: 8,
           crosshairs: {
             fill: {
               type: "gradient",

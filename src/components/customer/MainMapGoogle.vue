@@ -60,11 +60,16 @@
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
 
-        <q-card-section>
-          <img class="logo" :src="locationInfo.market.logo" alt="logo" />
-          <div>Nume: {{ locationInfo.location.name }}</div>
-          <div>Adresa: {{ locationInfo.location.address }}</div>
-          <div>Program: {{ locationInfo.location.openingHours }}</div>
+        <q-card-section style="font-size: 16px">
+          <div class="logo-container">
+            <img class="logo" :src="locationInfo.market.logo" alt="logo" />
+            <div>
+              <div>{{ locationInfo.location.name }}</div>
+              <div>Adresa: {{ locationInfo.location.address }}</div>
+              <div>Program: {{ locationInfo.location.openingHours }}</div>
+            </div>
+          </div>
+          <q-separator></q-separator>
           <div v-if="!categoryInfo">
             <q-item
               clickable
@@ -201,7 +206,13 @@ export default {
   background: radial-gradient(#e5e5e5, #e5e5e562);
 }
 .logo {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
+}
+.logo-container {
+  display: flex;
+  /* justify-content: center; */
+  margin-bottom: 10px;
+  gap: 15px;
 }
 </style>

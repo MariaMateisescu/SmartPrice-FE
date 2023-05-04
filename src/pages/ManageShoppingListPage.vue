@@ -1,6 +1,7 @@
 <template>
   <div v-if="list">
     <q-tabs
+      v-if="!list.isRecipe"
       v-model="tab"
       dense
       class="text-grey"
@@ -51,13 +52,23 @@
           class="rounded-borders"
           v-if="list.status === 'active'"
         >
-          <q-checkbox
+          <q-item
             v-for="item in list.listItems"
             :key="item._id"
-            v-model="boughtItems"
-            :val="item.item"
-            :label="item.item"
-          ></q-checkbox>
+            tag="label"
+            v-ripple
+          >
+            <q-item-section avatar>
+              <q-checkbox
+                v-model="boughtItems"
+                :val="item.item"
+                color="cyan-9"
+              />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ item.item }}</q-item-label>
+            </q-item-section>
+          </q-item>
         </q-list>
         <q-page-sticky position="bottom-right" class="shopping-page-sticky">
           <q-btn
@@ -175,7 +186,6 @@ export default {
     }
 
     await this.calculateLocations();
-    console.log(this.calculatedLocations);
   },
   methods: {
     getPosition() {
@@ -263,7 +273,6 @@ export default {
       this.calculatedLocations = res.data.calculatedLocations;
     },
     async sliderChanged() {
-      console.log("sliderChanged");
       await this.calculateLocations();
     },
     addKm(value) {

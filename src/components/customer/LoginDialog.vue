@@ -2,7 +2,7 @@
   <div class="illustration">
     <img
       class="illustration_img"
-      src="~/assets/illustrations/Login.svg"
+      src="~assets/illustrations/Login.svg"
       alt="Login Illustration"
     />
   </div>
@@ -116,7 +116,7 @@ export default {
   width: 100%;
   max-width: 300px;
   background: #267378;
-  color: rgba(255, 255, 255, 0.8);
+  color: #fff;
   font-size: 20px;
   border-radius: 15px;
 }

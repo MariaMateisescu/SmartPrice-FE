@@ -40,7 +40,7 @@
           class="q-mb-lg"
         />
         <q-file
-          color="teal"
+          color="cyan-9"
           filled
           v-model="marketLogo"
           label="Logo"
