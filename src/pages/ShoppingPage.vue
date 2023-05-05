@@ -95,17 +95,6 @@
                 category.name
               }}</q-item-section>
             </q-item>
-            <q-btn
-              fab
-              icon="shopping_cart"
-              color="cyan-9"
-              class="shopping-page-sticky-btn"
-              @click="drawerRight = true"
-            >
-              <q-badge color="red" floating v-if="selectedProducts.length">{{
-                selectedProducts.length
-              }}</q-badge></q-btn
-            >
           </div>
           <CategoryUniqueProducts
             v-if="categoryUniqueProductsInfo"
@@ -114,6 +103,17 @@
             :modelValue="selectedProducts"
             @update:modelValue="(value) => (selectedProducts = value)"
           />
+          <q-btn
+            fab
+            icon="shopping_cart"
+            color="cyan-9"
+            class="shopping-page-sticky-btn"
+            @click="openDrawer"
+          >
+            <q-badge color="red" floating v-if="selectedProducts.length">{{
+              selectedProducts.length
+            }}</q-badge></q-btn
+          >
         </q-card>
       </q-dialog>
 
@@ -237,10 +237,8 @@ export default {
           message: "Some important process  is in progress. Hang on...",
         });
         if (res.data.status === "success") {
-          this.timer = setTimeout(() => {
-            this.$q.loading.hide();
-            this.timer = void 0;
-          }, 3000);
+          this.$q.loading.hide();
+
           await this.fetchShoppingLists();
           this.drawerRight = false;
           this.showNewListDialog = false;
@@ -251,6 +249,10 @@ export default {
     },
     viewProductsInCategory(category) {
       this.categoryUniqueProductsInfo = category;
+    },
+    openDrawer() {
+      console.log("IN ");
+      this.drawerRight = true;
     },
     filterFn(val, update, abort) {
       if (val.length < 2) {
@@ -313,6 +315,7 @@ export default {
   position: fixed;
   right: 20px;
   bottom: 30px;
+  // z-index: 9999;
 }
 
 .addToListDialog {

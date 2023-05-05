@@ -4,9 +4,16 @@
 
 <script>
 import { defineComponent } from "vue";
-
+import { useQuasar } from "quasar";
+import { useDashHeaderStore } from "src/stores/dash-header";
 export default defineComponent({
   name: "App",
+  setup() {
+    const $q = useQuasar();
+
+    const dashHeader = useDashHeaderStore();
+    $q.dark.set(dashHeader.$state.darkMode);
+  },
 });
 </script>
 

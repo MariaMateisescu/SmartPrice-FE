@@ -41,7 +41,9 @@
         label="Save Changes"
       />
       <div class="flex toggle-dark">
-        <div>Switch to {{ darkMode ? "light mode" : "dark mode" }}</div>
+        <div style="padding-left: 18px">
+          Switch to {{ darkMode ? "light mode" : "dark mode" }}
+        </div>
         <q-toggle
           v-model="darkMode"
           checked-icon="dark_mode"
@@ -78,7 +80,7 @@ export default {
       passwordConfirm: "",
       isPwd: true,
       isPwdConfirm: true,
-      darkMode: false,
+      darkMode: null,
     };
   },
   async mounted() {
@@ -87,6 +89,7 @@ export default {
       title: "Profile",
       showBackIcon: false,
     });
+    this.darkMode = dashHeader.$state.darkMode;
     if (this.userStore.authUser) {
       this.name = this.userStore.authUser.name;
       this.email = this.userStore.authUser.email;
@@ -94,11 +97,14 @@ export default {
   },
   setup() {
     const userStore = useUserStore();
+    const $q = useQuasar();
+    const dashHeader = useDashHeaderStore();
     const toggleDarkMode = (e) => {
       $q.dark.set(e);
+      dashHeader.$patch({
+        darkMode: e,
+      });
     };
-    const $q = useQuasar();
-    $q.dark.set(false);
     return {
       userStore,
       toggleDarkMode,

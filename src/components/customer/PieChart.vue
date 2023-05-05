@@ -58,4 +58,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#chart {
+  margin-bottom: 20px;
+}
+</style>

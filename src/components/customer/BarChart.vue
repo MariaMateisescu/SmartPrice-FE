@@ -4,8 +4,9 @@
     <div>{{ calculatedDates }}</div> -->
     <apexchart
       type="bar"
-      height="350"
-      width="100%"
+      class="apex-chart-time"
+      height="300"
+      width="90%"
       :options="chartOptions"
       :series="series"
     ></apexchart>
@@ -59,7 +60,7 @@ export default {
         },
         plotOptions: {
           bar: {
-            borderRadius: 10,
+            borderRadius: 2,
             dataLabels: {
               position: "top", // top, center, bottom
             },
@@ -138,4 +139,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.apex-chart-time {
+  display: flex;
+  justify-content: center;
+}
+</style>

@@ -1,13 +1,14 @@
 <template>
   <div class="insights-page">
     <div v-if="userStore.authUser">
-      <div class="text-h6">See your shopping behaviour</div>
-      <div>
-        Average time spent shopping:
-        <strong>{{ averageTime }}</strong>
+      <div class="insights-page-title">
+        <div class="text-h6">See your shopping behaviour</div>
+        <div>
+          Average time spent shopping:
+          <strong>{{ averageTime }}</strong>
+        </div>
       </div>
       <BarChart :completedLists="completedLists" />
-      <br />
       <PieChart />
     </div>
     <EmptyState v-else :image="image" :title="title" :message="message">
@@ -90,5 +91,9 @@ export default {
 <style scoped>
 .insights-page {
   height: 100%;
+  overflow-y: scroll;
+}
+.insights-page-title {
+  margin: 8px 20px;
 }
 </style>

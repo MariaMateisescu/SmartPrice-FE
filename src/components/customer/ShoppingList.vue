@@ -146,4 +146,10 @@ export default {
 .shopping-list-expension-item :deep(.text-caption) {
   font-size: 14px !important;
 }
+:deep(.q-item__section--avatar) {
+  min-width: 41px !important;
+}
+.shopping-list-expension-item :deep(.q-icon) {
+  color: rgb(92, 91, 91) !important;
+}
 </style>

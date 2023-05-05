@@ -5,6 +5,7 @@ export const useDashHeaderStore = defineStore("dashHeader", {
     title: "Smart Price",
     showBackIcon: false,
     backIconTo: "",
+    darkMode: false,
   }),
   persist: true,
 });
