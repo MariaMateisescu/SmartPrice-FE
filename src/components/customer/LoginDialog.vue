@@ -44,6 +44,7 @@
 
 <script>
 import { useUserStore } from "../../stores/UserStore";
+import useQuasar from "quasar/src/composables/use-quasar.js";
 
 export default {
   name: "LoginPage",
@@ -53,6 +54,7 @@ export default {
       password: "",
       isPwd: true,
       useUser: useUserStore(),
+      $q: useQuasar(),
     };
   },
   emits: ["emitForgotPassword", "emitSignup"],
@@ -64,15 +66,24 @@ export default {
           password: this.password,
         };
         const res = await this.$api.post("/users/login", data);
-        localStorage.setItem("token", res.data.token);
-        this.useUser.setUser(res.data.data.user);
-        this.$api.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${localStorage.getItem("token")}`;
-        if (res.data.data.user.role === "admin") {
-          this.$router.push("/administration");
-        } else {
-          this.$router.push("/");
+        if (res.data.status === "success") {
+          this.$q.notify({
+            type: "positive",
+            position: "top",
+            message: "Logged in successfully",
+            color: "positive",
+            timeout: "2500",
+          });
+          localStorage.setItem("token", res.data.token);
+          this.useUser.setUser(res.data.data.user);
+          this.$api.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${localStorage.getItem("token")}`;
+          if (res.data.data.user.role === "admin") {
+            this.$router.push("/administration");
+          } else {
+            this.$router.push("/");
+          }
         }
       } catch (error) {
         console.log(error);

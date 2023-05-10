@@ -5,7 +5,21 @@
       <q-input rounded outlined v-model="name" label="Name" />
       <q-input rounded outlined v-model="email" type="email" label="Email" />
       <q-input
-        hint="Password should have at least 8 characters"
+        rounded
+        outlined
+        v-model="passwordCurrent"
+        :type="isPwd ? 'password' : 'text'"
+        label="Current Password"
+      >
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+      </q-input>
+      <q-input
         rounded
         outlined
         v-model="password"
@@ -21,6 +35,7 @@
         </template>
       </q-input>
       <q-input
+        hint="Password should have at least 8 characters"
         rounded
         outlined
         v-model="passwordConfirm"
@@ -63,7 +78,8 @@
 import { useUserStore } from "../stores/UserStore";
 import { useDashHeaderStore } from "src/stores/dash-header";
 import EmptyState from "src/components/customer/EmptyState.vue";
-import { useQuasar } from "quasar";
+import useQuasar from "quasar/src/composables/use-quasar.js";
+
 export default {
   name: "ProfilePage",
   components: {
@@ -76,11 +92,15 @@ export default {
       message: "Log in to view your profile",
       name: "",
       email: "",
+      passwordCurrent: "",
       password: "",
       passwordConfirm: "",
       isPwd: true,
       isPwdConfirm: true,
       darkMode: null,
+      $q: useQuasar(),
+      dashHeader: useDashHeaderStore(),
+      userStore: useUserStore(),
     };
   },
   async mounted() {
@@ -95,24 +115,38 @@ export default {
       this.email = this.userStore.authUser.email;
     }
   },
-  setup() {
-    const userStore = useUserStore();
-    const $q = useQuasar();
-    const dashHeader = useDashHeaderStore();
-    const toggleDarkMode = (e) => {
-      $q.dark.set(e);
-      dashHeader.$patch({
+  methods: {
+    toggleDarkMode(e) {
+      this.$q.dark.set(e);
+      this.dashHeader.$patch({
         darkMode: e,
       });
-    };
-    return {
-      userStore,
-      toggleDarkMode,
-    };
-  },
-  methods: {
-    onSaveChanges() {
-      console.log("Saved Changes");
+    },
+    async onSaveChanges() {
+      try {
+        const data = {
+          name: this.name,
+          passwordCurrent: this.passwordCurrent,
+          password: this.password,
+          passwordConfirm: this.passwordConfirm,
+        };
+        const res = await this.$api.patch("/users/updateMyPassword", data);
+        if (res.data.status === "success") {
+          console.log("succes");
+          this.$q.notify({
+            type: "positive",
+            position: "top",
+            message: "Changes saved successfully",
+            color: "positive",
+            timeout: "2500",
+          });
+          this.passwordCurrent = "";
+          this.password = "";
+          this.passwordConfirm = "";
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };
@@ -126,9 +160,7 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
-  margin-top: 1 0px;
 }
 .q-input {
   width: 100%;

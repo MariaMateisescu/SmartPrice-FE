@@ -2,7 +2,7 @@
   <div class="illustration">
     <img
       class="illustration_img"
-      src="src/assets/illustrations/SignUp.svg"
+      src="~assets/illustrations/SignUp.svg"
       alt="Signup Illustration"
     />
   </div>
@@ -55,6 +55,8 @@
 
 <script>
 import { useUserStore } from "../../stores/UserStore";
+import useQuasar from "quasar/src/composables/use-quasar.js";
+
 export default {
   name: "SignupPage",
   data() {
@@ -66,6 +68,7 @@ export default {
       isPwd: true,
       isPwdConfirm: true,
       useUser: useUserStore(),
+      $q: useQuasar(),
     };
   },
   emits: ["emitLogin"],
@@ -80,6 +83,13 @@ export default {
         };
         const res = await this.$api.post("/users/signup", data);
         if (res.data.status === "success") {
+          this.$q.notify({
+            type: "positive",
+            position: "top",
+            message: "Account created successfully",
+            color: "positive",
+            timeout: "2500",
+          });
           localStorage.setItem("token", res.data.token);
           this.$api.defaults.headers.common[
             "Authorization"

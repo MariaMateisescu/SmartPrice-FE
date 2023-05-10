@@ -62,4 +62,7 @@ export default {
 #chart {
   margin-bottom: 20px;
 }
+* >>> span.apexcharts-legend-text {
+  color: #26a69a !important;
+}
 </style>

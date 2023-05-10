@@ -16,19 +16,22 @@
         :breakpoint="500"
       >
         <q-scroll-area class="fit">
-          <div class="q-pa-sm">
+          <div class="q-pa-md" style="font-size: 16px">
             <div v-if="!selectedProducts.length">Shopping cart is empty.</div>
             <div v-for="product in selectedProducts" :key="product">
               {{ product }}
+              <q-separator></q-separator>
             </div>
           </div>
-          <q-btn
-            @click="createShoppingList"
-            fab
-            label="Create List"
-            color="cyan-9"
-            :disable="isDisabled"
-          />
+          <div class="q-pa-md flex justify-end">
+            <q-btn
+              @click="createShoppingList"
+              label="Create List"
+              color="cyan-9"
+              rounded
+              :disable="isDisabled"
+            />
+          </div>
         </q-scroll-area>
       </q-drawer>
       <q-dialog
@@ -238,7 +241,13 @@ export default {
         });
         if (res.data.status === "success") {
           this.$q.loading.hide();
-
+          this.$q.notify({
+            type: "positive",
+            position: "top",
+            message: "Shopping list created successfully",
+            color: "cyan-9",
+            timeout: "2500",
+          });
           await this.fetchShoppingLists();
           this.drawerRight = false;
           this.showNewListDialog = false;

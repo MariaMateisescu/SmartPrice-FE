@@ -1,16 +1,16 @@
 <template>
-  <div class="asd">
-    <!-- <div>{{ calculatedTimeSpent }}</div>
+  <!-- <div> -->
+  <!-- <div>{{ calculatedTimeSpent }}</div>
     <div>{{ calculatedDates }}</div> -->
-    <apexchart
-      type="bar"
-      class="apex-chart-time"
-      height="300"
-      width="90%"
-      :options="chartOptions"
-      :series="series"
-    ></apexchart>
-  </div>
+  <apexchart
+    type="bar"
+    class="apex-chart-time"
+    height="300"
+    width="90%"
+    :options="chartOptions"
+    :series="series"
+  ></apexchart>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -54,10 +54,12 @@ export default {
         chart: {
           height: 350,
           type: "bar",
-          //   toolbar: {
-          //     show: false,
-          //   },
+          // toolbar: {
+          //   show: false,
+          // },
         },
+        colors: ["#26a69a"],
+        events: ["mousemove", "mouseout", "click"],
         plotOptions: {
           bar: {
             borderRadius: 2,
@@ -76,12 +78,12 @@ export default {
           offsetY: -20,
           style: {
             fontSize: "12px",
-            colors: ["#304758"],
+            colors: ["#26a69a"],
           },
         },
 
         xaxis: {
-          range: 9,
+          range: 8,
           categories: this.calculatedDates,
           position: "bottom",
           axisBorder: {
@@ -143,5 +145,8 @@ export default {
 .apex-chart-time {
   display: flex;
   justify-content: center;
+}
+* >>> tspan {
+  fill: #26a69a;
 }
 </style>

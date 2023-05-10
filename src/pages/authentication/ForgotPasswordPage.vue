@@ -2,7 +2,7 @@
   <div class="illustration">
     <img
       class="illustration_img"
-      src="src/assets/illustrations/ForgotPassword.svg"
+      src="~assets/illustrations/ForgotPassword.svg"
       alt="Forogt Password Illustration"
     />
   </div>

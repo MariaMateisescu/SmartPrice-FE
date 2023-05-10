@@ -2,7 +2,7 @@
   <div class="illustration">
     <img
       class="illustration_img"
-      src="src/assets/illustrations/SignUp.svg"
+      src="~assets/illustrations/SignUp.svg"
       alt="Signup Illustration"
     />
   </div>

@@ -2,7 +2,7 @@
   <div class="illustration">
     <img
       class="illustration_img"
-      src="src/assets/illustrations/Login.svg"
+      src="~assets/illustrations/Login.svg"
       alt="Login Illustration"
     />
   </div>

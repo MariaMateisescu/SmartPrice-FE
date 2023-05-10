@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!mockedRecipes" class="q-gutter-md row justify-center">
+  <div v-if="!recipes" class="q-gutter-md row justify-center">
     <q-spinner-oval color="cyan-9" size="5em" />
   </div>
   <div v-else>
@@ -24,7 +24,7 @@
           <q-tab-panel name="allRecipes">
             <div class="text-h6">Browse for recipes</div>
             <RecipeCard
-              v-for="recipe in mockedRecipes.recipes"
+              v-for="recipe in recipes"
               :key="recipe.id"
               :recipeInfo="recipe"
               :isSaved="check(recipe.id)"
@@ -113,11 +113,6 @@
                 {{ ingredient.amount }} {{ ingredient.unit }}
                 {{ ingredient.nameClean }}
               </li>
-              <!-- <q-btn
-                style="color: #267378"
-                @click="createShoppingListFromRecipe"
-                >Make a shopping list</q-btn
-              > -->
             </div>
           </q-card-section>
           <q-card-section style="font-size: 16px">
@@ -135,7 +130,8 @@ import { useUserStore } from "../stores/UserStore";
 import { useDashHeaderStore } from "src/stores/dash-header";
 import EmptyState from "src/components/customer/EmptyState.vue";
 import RecipeCard from "src/components/customer/RecipeCard.vue";
-import RecipeMock from "src/assets/recipeMock.json";
+// import RecipeMock from "src/assets/recipeMock.json";
+import { useQuasar } from "quasar";
 export default {
   name: "InspirationPage",
   components: {
@@ -148,10 +144,10 @@ export default {
       title: "Inspiration",
       showBackIcon: false,
     });
-    // if (this.userStore.authUser) {
-    //   await this.fetchSavedRecipes();
-    // }
-    // await this.fetchRandomRecipes();
+    await this.fetchRandomRecipes();
+    if (this.userStore.authUser) {
+      await this.fetchSavedRecipes();
+    }
   },
   data() {
     return {
@@ -164,25 +160,44 @@ export default {
       savedRecipesIds: [],
       showDetailedRecipe: false,
       detailedRecipeToShow: null,
-      mockedRecipes: RecipeMock,
+      // mockedRecipes: RecipeMock,
+      $q: useQuasar(),
     };
   },
   methods: {
     async fetchRandomRecipes() {
-      const res = await this.$api.get(
-        "https://api.spoonacular.com/recipes/random?apiKey=9f0ab28e89cd42ae85e66402ba83f236&number=10"
-      );
+      const options = {
+        method: "GET",
+        url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random",
+        params: {
+          number: "20",
+        },
+        headers: {
+          "X-RapidAPI-Key":
+            "0fc5af0280msh141e955acfcad7ap11acf9jsn9278811ede13",
+          "X-RapidAPI-Host":
+            "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+        },
+      };
+      const res = await this.$api.request(options);
       this.recipes = res.data.recipes;
     },
     async fetchSavedRecipes() {
       const res = await this.$api.get("/recipes/savedRecipes");
       this.savedRecipesIds = res.data.savedRecipes;
 
-      const resRecipe = await this.$api.get(
-        `https://api.spoonacular.com/recipes/informationBulk?apiKey=9f0ab28e89cd42ae85e66402ba83f236&ids=${res.data.savedRecipes.join(
-          ","
-        )}`
-      );
+      const options = {
+        method: "GET",
+        url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/informationBulk",
+        params: { ids: res.data.savedRecipes.join(",") },
+        headers: {
+          "X-RapidAPI-Key":
+            "0fc5af0280msh141e955acfcad7ap11acf9jsn9278811ede13",
+          "X-RapidAPI-Host":
+            "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+        },
+      };
+      const resRecipe = await this.$api.request(options);
       this.savedRecipes = [...this.savedRecipes, ...resRecipe.data];
     },
     addRecipeToSavedRecipes(recipeInfo) {
@@ -200,7 +215,6 @@ export default {
       }
     },
     async createShoppingListFromRecipe() {
-      console.log("click");
       const listItemsFromRecipe = [];
       this.detailedRecipeToShow.extendedIngredients.map((ing) => {
         const ingredient = ing.amount + " " + ing.unit + " " + ing.nameClean;
@@ -216,7 +230,16 @@ export default {
         "/shopping-lists/create-shopping-list",
         data
       );
-      console.log(res);
+      if (res.status === 200) {
+        this.$q.notify({
+          type: "positive",
+          position: "top",
+          message: "Shopping list created successfully",
+          color: "cyan-9",
+          timeout: "2500",
+        });
+      }
+      console.log(res.status);
     },
     showDetailedRecipeDialog(recipeInfo) {
       this.showDetailedRecipe = true;
