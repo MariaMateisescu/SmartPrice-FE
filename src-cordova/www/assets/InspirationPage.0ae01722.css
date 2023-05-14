@@ -1,0 +1,108 @@
+@charset "UTF-8";@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&family=Roboto&display=swap");
+.recipe-card[data-v-780e2faa] {
+  border-radius: 15px;
+  margin: 0 5px 20px;
+}
+.recipe-card__image[data-v-780e2faa] {
+  height: 150px;
+  border-radius: 15px;
+}
+.asd[data-v-780e2faa] {
+  position: relative;
+}
+.asd[data-v-780e2faa] ::after {
+  position: absolute;
+  content: "";
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  background: rgb(54, 62, 75);
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0) 75%,
+    rgba(34, 31, 31, 0.456) 120%
+  );
+}
+.recipe-card__title[data-v-780e2faa] {
+  font-size: 16px;
+  margin: 0px 5px 0px;
+}
+.recipe-card__heart[data-v-780e2faa] {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 999;
+  font-size: 28px;
+  color: #fff;
+}
+
+
+.inspiration-page[data-v-48ae6060] {
+  height: 100%;
+}
+.recipe-info-upper-section[data-v-48ae6060] {
+  position: relative;
+  width: 100%;
+  padding: 0;
+}
+.asd[data-v-48ae6060] {
+  position: relative;
+}
+.asd[data-v-48ae6060] ::after {
+  position: absolute;
+  content: "";
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.07) 15%, rgba(0, 0, 0, 0.015) 30%, rgba(0, 0, 0, 0) 100%);
+}
+.recipe-info-close-btn[data-v-48ae6060] {
+  position: absolute !important;
+  top: 10px;
+  right: 15px;
+  z-index: 999;
+  width: -moz-fit-content;
+  width: fit-content;
+  color: white;
+}
+.recipe-info-image[data-v-48ae6060] {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+}
+.detailed-recipe-title[data-v-48ae6060] {
+  text-align: center;
+  font-size: 24px;
+}
+.recipe-ingredients[data-v-48ae6060] {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: 1px solid rgba(10, 25, 41, 0.5);
+  border-radius: 10px;
+  padding: 10px 16px 16px;
+}
+li[data-v-48ae6060] {
+  list-style: none;
+}
+li[data-v-48ae6060]::before {
+  content: "•";
+  color: #00838f;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+}
+.ready-in[data-v-48ae6060] {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.you-will-need[data-v-48ae6060] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
