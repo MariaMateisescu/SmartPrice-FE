@@ -3,16 +3,23 @@
     <div v-if="userStore.authUser">
       <div class="insights-page-title">
         <div class="text-h6">See your shopping behaviour</div>
-        <div>
+        <div v-if="completedLists.length">
           Average time spent shopping:
           <strong>{{ averageTime }}</strong>
         </div>
       </div>
-      <BarChart :completedLists="completedLists" />
-      <PieChart />
+      <BarChart v-if="completedLists.length" :completedLists="completedLists" />
+      <PieChart v-if="completedLists.length" />
     </div>
+
     <EmptyState v-else :image="image" :title="title" :message="message">
     </EmptyState>
+    <EmptyData
+      v-if="userStore.authUser && !completedLists.length"
+      :image="imageEmptyData"
+      :title="titleEmptyData"
+      :message="messageEmptyData"
+    ></EmptyData>
   </div>
 </template>
 
@@ -22,15 +29,19 @@ import { useDashHeaderStore } from "src/stores/dash-header";
 import PieChart from "src/components/customer/PieChart.vue";
 import BarChart from "src/components/customer/BarChart.vue";
 import EmptyState from "src/components/customer/EmptyState.vue";
+import EmptyData from "src/components/customer/EmptyData.vue";
 
 export default {
   name: "InsightsPage",
-  components: { PieChart, BarChart, EmptyState },
+  components: { PieChart, BarChart, EmptyState, EmptyData },
   data() {
     return {
       image: "EmptyState.svg",
       title: "Ooops! You are not logged in!",
       message: "Log in to view your insights",
+      imageEmptyData: "Void.svg",
+      titleEmptyData: "Ooops! Nothing to show",
+      messageEmptyData: "Complete lists view your insights",
       lists: [],
       completedLists: [],
       timeSpentArray: [],
@@ -90,8 +101,8 @@ export default {
 
 <style scoped>
 .insights-page {
-  height: 100%;
-  overflow-y: scroll;
+  /* height: 100%; */
+  /* overflow-y: scroll; */
 }
 .insights-page-title {
   margin: 8px 20px;

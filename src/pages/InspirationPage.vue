@@ -20,36 +20,50 @@
 
         <q-separator />
 
-        <q-tab-panels v-model="tab" animated>
-          <q-tab-panel name="allRecipes">
-            <div class="text-h6">Browse for recipes</div>
-            <RecipeCard
-              v-for="recipe in recipes"
-              :key="recipe.id"
-              :recipeInfo="recipe"
-              :isSaved="check(recipe.id)"
-              @recipeSaved="addRecipeToSavedRecipes"
-              @recipeUnsaved="removeRecipeFromSavedRecipes"
-              @detailedRecipe="showDetailedRecipeDialog"
-            />
-          </q-tab-panel>
+        <q-pull-to-refresh @refresh="refresh" color="cyan-9">
+          <q-tab-panels v-model="tab" animated>
+            <q-tab-panel name="allRecipes">
+              <div class="text-h6">Browse for recipes</div>
+              <RecipeCard
+                v-for="recipe in recipes"
+                :key="recipe.id"
+                :recipeInfo="recipe"
+                :isSaved="check(recipe.id)"
+                @recipeSaved="addRecipeToSavedRecipes"
+                @recipeUnsaved="removeRecipeFromSavedRecipes"
+                @detailedRecipe="showDetailedRecipeDialog"
+              />
+              <EmptyData
+                v-if="!recipes.length"
+                image="Void.svg"
+                title="Nothing to show"
+                message=""
+              ></EmptyData>
+            </q-tab-panel>
 
-          <q-tab-panel name="myRecipes" v-if="userStore.authUser">
-            <div class="text-h6">Saved recipes</div>
-            <RecipeCard
-              v-for="recipe in savedRecipes"
-              :key="recipe.id"
-              :recipeInfo="recipe"
-              :isSaved="check(recipe.id)"
-              @recipeUnsaved="removeRecipeFromSavedRecipes"
-              @detailedRecipe="showDetailedRecipeDialog"
-            />
-          </q-tab-panel>
-          <q-tab-panel name="myRecipes" v-else>
-            <EmptyState :image="image" :title="title" :message="message">
-            </EmptyState>
-          </q-tab-panel>
-        </q-tab-panels>
+            <q-tab-panel name="myRecipes" v-if="userStore.authUser">
+              <div class="text-h6">Saved recipes</div>
+              <RecipeCard
+                v-for="recipe in savedRecipes"
+                :key="recipe.id"
+                :recipeInfo="recipe"
+                :isSaved="check(recipe.id)"
+                @recipeUnsaved="removeRecipeFromSavedRecipes"
+                @detailedRecipe="showDetailedRecipeDialog"
+              />
+              <EmptyData
+                v-if="!savedRecipes.length"
+                image="Void.svg"
+                title="Nothing to show"
+                message="Save a recipe"
+              ></EmptyData>
+            </q-tab-panel>
+            <q-tab-panel name="myRecipes" v-else>
+              <EmptyState :image="image" :title="title" :message="message">
+              </EmptyState>
+            </q-tab-panel>
+          </q-tab-panels>
+        </q-pull-to-refresh>
       </div>
       <q-dialog seamless maximized v-model="showDetailedRecipe">
         <q-card>
@@ -129,13 +143,15 @@
 import { useUserStore } from "../stores/UserStore";
 import { useDashHeaderStore } from "src/stores/dash-header";
 import EmptyState from "src/components/customer/EmptyState.vue";
+import EmptyData from "src/components/customer/EmptyData.vue";
 import RecipeCard from "src/components/customer/RecipeCard.vue";
-// import RecipeMock from "src/assets/recipeMock.json";
+
 import { useQuasar } from "quasar";
 export default {
   name: "InspirationPage",
   components: {
     EmptyState,
+    EmptyData,
     RecipeCard,
   },
   async mounted() {
@@ -244,11 +260,14 @@ export default {
     showDetailedRecipeDialog(recipeInfo) {
       this.showDetailedRecipe = true;
       this.detailedRecipeToShow = recipeInfo;
-      console.log(this.detailedRecipeToShow);
     },
     check(recId) {
       if (this.savedRecipesIds.includes(recId)) return true;
       else return false;
+    },
+    async refresh(done) {
+      await this.fetchRandomRecipes();
+      done();
     },
   },
   setup() {
@@ -262,7 +281,7 @@ export default {
 
 <style scoped lang="scss">
 .inspiration-page {
-  height: 100%;
+  // height: 100%;
 }
 
 .recipe-info-upper-section {

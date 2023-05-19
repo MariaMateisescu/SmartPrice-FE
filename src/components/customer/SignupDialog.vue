@@ -98,7 +98,13 @@ export default {
           this.useUser.setUser(res.data.data.user);
         }
       } catch (error) {
-        console.log(error);
+        this.$q.notify({
+          type: "negative",
+          position: "top",
+          message: "Something went wrong!",
+          color: "negative",
+          timeout: "2500",
+        });
       }
     },
   },

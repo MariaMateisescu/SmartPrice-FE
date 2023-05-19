@@ -40,11 +40,6 @@ const routes = [
     children: [{ path: "", component: () => import("pages/ProfilePage.vue") }],
   },
   {
-    path: "/cards",
-    component: () => import("layouts/MainLayout.vue"),
-    children: [{ path: "", component: () => import("pages/Barcode.vue") }],
-  },
-  {
     path: "/inspiration",
     component: () => import("layouts/MainLayout.vue"),
     children: [

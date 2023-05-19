@@ -13,11 +13,13 @@
       <q-tab name="list" label="List" />
       <q-tab name="locations" label="Locations" />
     </q-tabs>
+    <q-separator></q-separator>
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="list">
         <div class="list-header">
           <div class="list-header__count">
-            {{ list.listItems.length }} items
+            {{ list.listItems.length }}
+            {{ list.listItems.length < 2 ? "item" : "items" }}
           </div>
           <div v-if="timeSpentShopping">{{ timeSpentShopping }}</div>
           <div class="list-header__status">{{ list.status }}</div>
@@ -109,26 +111,39 @@
             @change="sliderChanged"
           />
         </div>
-        <div>Locations List:</div>
-        <div
-          v-for="location in calculatedLocations"
-          :key="location.coordinates"
-        >
-          <q-card flat bordered v-if="location.count !== 0">
-            <q-card-section>
-              <div>{{ location.name }}</div>
-              <div>
-                {{ location.count }}/{{ list.listItems.length }} items available
-              </div>
-              <q-separator></q-separator>
-              <div v-for="avItem in location.availableItems" :key="avItem._id">
-                {{ avItem.name }} | {{ avItem.price }} lei
-              </div>
-              <q-separator></q-separator>
-              <div>Total: {{ location.total.toFixed(2) }} lei</div>
-            </q-card-section>
-          </q-card>
+        <div v-if="filteredLocationsInRadius.length">
+          <div>Locations List</div>
+          <div
+            v-for="location in filteredLocationsInRadius"
+            :key="location.coordinates"
+          >
+            <q-card flat bordered v-if="location.count !== 0">
+              <q-card-section>
+                <div>{{ location.name }}</div>
+                <div>
+                  {{ location.count }}/{{ list.listItems.length }} items
+                  available
+                </div>
+                <q-separator></q-separator>
+                <div
+                  v-for="avItem in location.availableItems"
+                  :key="avItem._id"
+                >
+                  {{ avItem.name }} | {{ avItem.price }} lei
+                </div>
+                <q-separator></q-separator>
+                <div>Total: {{ location.total.toFixed(2) }} lei</div>
+              </q-card-section>
+            </q-card>
+          </div>
         </div>
+
+        <EmptyData
+          v-else
+          :image="image"
+          :title="title"
+          :message="message"
+        ></EmptyData>
       </q-tab-panel>
     </q-tab-panels>
   </div>
@@ -137,11 +152,14 @@
 <script>
 import { useDashHeaderStore } from "src/stores/dash-header";
 import { useGeolocationInfoStore } from "src/stores/geolocation-info";
+import EmptyData from "src/components/customer/EmptyData.vue";
 import useQuasar from "quasar/src/composables/use-quasar.js";
 
 export default {
   name: "ManageShoppingListPage",
-
+  components: {
+    EmptyData,
+  },
   data() {
     return {
       boughtItems: [],
@@ -154,6 +172,9 @@ export default {
         lng: 0,
       },
       geolocationInfo: null,
+      image: "Void.svg",
+      title: "No location found in this radius",
+      message: "Try to increase the radius",
     };
   },
   computed: {
@@ -163,6 +184,9 @@ export default {
         const formattedTime = new Date(time).toISOString().slice(11, 19);
         return formattedTime;
       } else return null;
+    },
+    filteredLocationsInRadius() {
+      return this.calculatedLocations.filter((location) => location.count != 0);
     },
   },
   async mounted() {

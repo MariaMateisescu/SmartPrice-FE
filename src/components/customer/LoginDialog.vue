@@ -86,7 +86,13 @@ export default {
           }
         }
       } catch (error) {
-        console.log(error);
+        this.$q.notify({
+          type: "negative",
+          position: "top",
+          message: "Invalid email or password!",
+          color: "negative",
+          timeout: "2500",
+        });
       }
     },
   },

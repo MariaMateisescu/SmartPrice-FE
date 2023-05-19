@@ -37,6 +37,9 @@
         </div>
       </q-toolbar>
     </q-header>
+    <q-page-container class="q-page-container__style">
+      <router-view />
+    </q-page-container>
     <q-footer bordered class="bg-white text-primary">
       <q-tabs
         no-caps
@@ -82,9 +85,6 @@
         />
       </q-tabs>
     </q-footer>
-    <q-page-container class="q-page-container__style">
-      <router-view />
-    </q-page-container>
   </q-layout>
 </template>
 
@@ -118,7 +118,8 @@ export default defineComponent({
   gap: 20px;
 }
 .q-page-container__style {
-  height: 100vh;
+  padding-top: 50px;
+  height: calc(100vh - 99px);
 }
 .header {
   background: $brand-color;

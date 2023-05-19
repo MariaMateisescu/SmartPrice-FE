@@ -12,7 +12,9 @@
       expand-separator
       icon="receipt_long"
       :label="shoppingListInfo.name"
-      :caption="`${shoppingListInfo.listItems.length} items | ${shoppingListInfo.status}`"
+      :caption="`${shoppingListInfo.listItems.length} ${
+        shoppingListInfo.listItems.length < 2 ? 'item' : 'items'
+      }  | ${shoppingListInfo.status}`"
       :to="`/shopping/${this.shoppingListInfo._id}`"
     >
       <q-card

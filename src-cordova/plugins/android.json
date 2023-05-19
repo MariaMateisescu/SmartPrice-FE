@@ -13,6 +13,13 @@
     },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.smartprice.app"
+    },
+    "cordova-plugin-camera": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "com.smartprice.app"
+    },
+    "cordova-plugin-android-permissions": {
+      "PACKAGE_NAME": "com.smartprice.app"
     }
   },
   "dependent_plugins": {}

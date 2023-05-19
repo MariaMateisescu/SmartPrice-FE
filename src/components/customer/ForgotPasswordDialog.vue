@@ -39,7 +39,13 @@ export default {
           email: this.email,
         };
       } catch (error) {
-        console.log(error);
+        this.$q.notify({
+          type: "negative",
+          position: "top",
+          message: "Something went wrong!",
+          color: "negative",
+          timeout: "2500",
+        });
       }
     },
   },

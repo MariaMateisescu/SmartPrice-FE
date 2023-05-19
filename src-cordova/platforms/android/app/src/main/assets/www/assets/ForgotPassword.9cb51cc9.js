@@ -1,3 +1,0 @@
-var _imports_0 = "assets/ForgotPassword.d47fe0df.svg";
-export { _imports_0 as _ };
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiRm9yZ290UGFzc3dvcmQuOWNiNTFjYzkuanMiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9hc3NldHMvaWxsdXN0cmF0aW9ucy9Gb3Jnb3RQYXNzd29yZC5zdmciXSwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGRlZmF1bHQgXCJfX1ZJVEVfQVNTRVRfX2Q0N2ZlMGRmX19cIiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxJQUFlLGFBQUE7OyJ9

@@ -122,6 +122,7 @@
 
       <div v-if="userStore.authUser">
         <q-btn
+          v-if="shoppingLists.length > 0"
           class="newlist-btn"
           @click="showNewListDialog = true"
           label="New List"
@@ -136,6 +137,20 @@
       </div>
     </div>
   </div>
+  <EmptyData
+    v-if="shoppingLists && shoppingLists.length == 0 && userStore.authUser"
+    :image="imageEmptyList"
+    :title="titleEmptyList"
+    :message="messageEmptyList"
+  >
+    <template v-slot:button>
+      <q-btn
+        class="newlist-btn"
+        label="New List"
+        @click="showNewListDialog = true"
+      />
+    </template>
+  </EmptyData>
   <EmptyState
     v-if="!userStore.authUser"
     :image="image"
@@ -149,6 +164,7 @@
 import { useUserStore } from "../stores/UserStore";
 import { useDashHeaderStore } from "src/stores/dash-header";
 import EmptyState from "src/components/customer/EmptyState.vue";
+import EmptyData from "src/components/customer/EmptyData.vue";
 import ShoppingList from "src/components/customer/ShoppingList.vue";
 import CategoryUniqueProducts from "src/components/customer/CategoryUniqueProducts.vue";
 import useQuasar from "quasar/src/composables/use-quasar.js";
@@ -157,6 +173,7 @@ export default {
   name: "ShoppingPage",
   components: {
     EmptyState,
+    EmptyData,
     ShoppingList,
     CategoryUniqueProducts,
   },
@@ -165,6 +182,9 @@ export default {
       image: "EmptyState.svg",
       title: "Ooops! You are not logged in!",
       message: "Log in to continue shopping",
+      imageEmptyList: "Void.svg",
+      titleEmptyList: "No shopping list to show",
+      messageEmptyList: "Create your first shopping list",
       shoppingLists: null,
       showNewListDialog: false,
       drawerRight: false,
@@ -260,7 +280,6 @@ export default {
       this.categoryUniqueProductsInfo = category;
     },
     openDrawer() {
-      console.log("IN ");
       this.drawerRight = true;
     },
     filterFn(val, update, abort) {
@@ -297,7 +316,7 @@ export default {
 
 <style lang="scss" scoped>
 .shopping-page {
-  height: 100%;
+  // height: 100%;
 }
 
 .newlist-btn {
