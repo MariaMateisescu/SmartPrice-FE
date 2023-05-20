@@ -26,6 +26,7 @@
 <script>
 import { useUserStore } from "../stores/UserStore";
 import { useDashHeaderStore } from "src/stores/dash-header";
+import useQuasar from "quasar/src/composables/use-quasar.js";
 import PieChart from "src/components/customer/PieChart.vue";
 import BarChart from "src/components/customer/BarChart.vue";
 import EmptyState from "src/components/customer/EmptyState.vue";
@@ -46,6 +47,7 @@ export default {
       completedLists: [],
       timeSpentArray: [],
       averageTime: null,
+      $q: useQuasar(),
     };
   },
   async mounted() {
@@ -54,8 +56,18 @@ export default {
       title: "Insights",
       showBackIcon: false,
     });
-    if (this.userStore.authUser) {
-      await this.fetchShoppingLists();
+    try {
+      if (this.userStore.authUser) {
+        await this.fetchShoppingLists();
+      }
+    } catch (err) {
+      this.$q.notify({
+        type: "negative",
+        position: "top",
+        message: "Something went wrong!",
+        color: "negative",
+        timeout: "2500",
+      });
     }
   },
   setup() {
@@ -83,7 +95,6 @@ export default {
       let seconds = new Date(avgTime).getUTCSeconds();
       if (seconds > 30) minutes++;
       this.averageTime = hours ? hours + " hours " : "" + minutes + " minutes";
-      console.log(this.averageTime);
     },
     calculateTimeSpentShopping(list) {
       if (list.status === "completed") {

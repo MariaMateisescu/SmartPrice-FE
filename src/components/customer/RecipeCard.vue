@@ -21,25 +21,52 @@
 
 <script>
 import { matFavoriteBorder } from "@quasar/extras/material-icons";
+import useQuasar from "quasar/src/composables/use-quasar.js";
 
 export default {
   name: "RecipeCard",
   props: ["recipeInfo", "isSaved"],
-
+  data() {
+    return {
+      $q: useQuasar(),
+    };
+  },
   created() {
     this.matFavoriteBorder = matFavoriteBorder;
   },
   emits: ["recipeSaved", "recipeUnsaved", "detailedRecipe"],
   methods: {
     async onAddToFavourites() {
-      const res = await this.$api.patch(`/recipes/save/${this.recipeInfo.id}`);
-      this.$emit("recipeSaved", this.recipeInfo);
+      try {
+        const res = await this.$api.patch(
+          `/recipes/save/${this.recipeInfo.id}`
+        );
+        this.$emit("recipeSaved", this.recipeInfo);
+      } catch (err) {
+        this.$q.notify({
+          type: "negative",
+          position: "top",
+          message: "Something went wrong!",
+          color: "negative",
+          timeout: "2500",
+        });
+      }
     },
     async onRemoveFromFavourites() {
-      const res = await this.$api.patch(
-        `/recipes/unsave/${this.recipeInfo.id}`
-      );
-      this.$emit("recipeUnsaved", this.recipeInfo);
+      try {
+        const res = await this.$api.patch(
+          `/recipes/unsave/${this.recipeInfo.id}`
+        );
+        this.$emit("recipeUnsaved", this.recipeInfo);
+      } catch (err) {
+        this.$q.notify({
+          type: "negative",
+          position: "top",
+          message: "Something went wrong!",
+          color: "negative",
+          timeout: "2500",
+        });
+      }
     },
   },
 };

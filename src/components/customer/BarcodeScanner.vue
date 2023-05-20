@@ -64,7 +64,13 @@ export default {
           this.qrCodeScanner.stop(true);
         }
       } catch (err) {
-        console.log(err);
+        this.$q.notify({
+          type: "negative",
+          position: "top",
+          message: "Something went wrong!",
+          color: "negative",
+          timeout: "2500",
+        });
       }
     },
     onScanSuccess(decodedText, decodedResult) {

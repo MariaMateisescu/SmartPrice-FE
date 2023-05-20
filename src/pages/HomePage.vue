@@ -12,6 +12,7 @@
 import { useDashHeaderStore } from "src/stores/dash-header";
 import { useGeolocationInfoStore } from "src/stores/geolocation-info";
 import MainMapGoogle from "src/components/customer/MainMapGoogle.vue";
+import useQuasar from "quasar/src/composables/use-quasar.js";
 
 export default {
   name: "HomePage",
@@ -27,6 +28,7 @@ export default {
         lng: 0,
       },
       geolocationInfo: null,
+      $q: useQuasar(),
     };
   },
   async mounted() {
@@ -43,7 +45,13 @@ export default {
       this.latlng = this.myCoordinates.lat + "," + this.myCoordinates.lng;
       this.fetchLocationsWithin();
     } catch (err) {
-      console.log(err);
+      this.$q.notify({
+        type: "negative",
+        position: "top",
+        message: "Something went wrong while fetching locations!",
+        color: "negative",
+        timeout: "2500",
+      });
     }
   },
   methods: {
@@ -53,16 +61,24 @@ export default {
       });
     },
     async fetchLocationsWithin(newRadius) {
-      if (newRadius)
-        this.geolocationInfo.$patch({
-          radius: newRadius,
+      try {
+        if (newRadius)
+          this.geolocationInfo.$patch({
+            radius: newRadius,
+          });
+        const resWithin = await this.$api.get(
+          `/locations/locations-within/${this.geolocationInfo.$state.radius}/center/${this.latlng}`
+        );
+        this.marketsList = resWithin.data.marketsWithin;
+      } catch (err) {
+        this.$q.notify({
+          type: "negative",
+          position: "top",
+          message: "Something went wrong while fetching locations!",
+          color: "negative",
+          timeout: "2500",
         });
-      //this.radius = newRadius;
-      console.log(this.geolocationInfo.$state.radius);
-      const resWithin = await this.$api.get(
-        `/locations/locations-within/${this.geolocationInfo.$state.radius}/center/${this.latlng}`
-      );
-      this.marketsList = resWithin.data.marketsWithin;
+      }
     },
   },
   computed: {
@@ -76,7 +92,6 @@ export default {
           });
         });
       });
-      console.log(locations);
       return locations;
     },
   },

@@ -24,6 +24,20 @@
               <q-item clickable v-close-popup>
                 <q-item-section>
                   <q-btn
+                    icon="person"
+                    style="color: #267378"
+                    flat
+                    padding="none"
+                    @click="$router.push('/profile')"
+                    >Account</q-btn
+                  ></q-item-section
+                >
+              </q-item>
+              <q-separator />
+              <q-item clickable v-close-popup>
+                <q-item-section>
+                  <q-btn
+                    icon="logout"
                     style="color: #267378"
                     flat
                     padding="none"
@@ -79,7 +93,7 @@
         <q-route-tab
           style="background-color: #267378; color: #fff"
           name="account"
-          icon="person"
+          icon="style"
           to="/profile"
           exact
         />

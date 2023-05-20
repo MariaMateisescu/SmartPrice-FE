@@ -224,9 +224,19 @@ export default {
       title: "Shopping Lists",
       showBackIcon: false,
     });
-    if (this.userStore.authUser) {
-      this.fetchShoppingLists();
-      await Promise.all([this.fetchCategories(), this.fetchProducts()]);
+    try {
+      if (this.userStore.authUser) {
+        this.fetchShoppingLists();
+        await Promise.all([this.fetchCategories(), this.fetchProducts()]);
+      }
+    } catch (err) {
+      this.$q.notify({
+        type: "negative",
+        position: "top",
+        message: "Something went wrong!",
+        color: "negative",
+        timeout: "2500",
+      });
     }
   },
 
@@ -265,7 +275,7 @@ export default {
             type: "positive",
             position: "top",
             message: "Shopping list created successfully",
-            color: "cyan-9",
+            color: "positive",
             timeout: "2500",
           });
           await this.fetchShoppingLists();
@@ -273,7 +283,13 @@ export default {
           this.showNewListDialog = false;
         }
       } catch (err) {
-        console.log(err);
+        this.$q.notify({
+          type: "negative",
+          position: "top",
+          message: "Something went wrong!",
+          color: "negative",
+          timeout: "2500",
+        });
       }
     },
     viewProductsInCategory(category) {

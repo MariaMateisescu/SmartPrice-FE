@@ -154,17 +154,7 @@ export default {
     EmptyData,
     RecipeCard,
   },
-  async mounted() {
-    const dashHeader = useDashHeaderStore();
-    dashHeader.$patch({
-      title: "Inspiration",
-      showBackIcon: false,
-    });
-    await this.fetchRandomRecipes();
-    if (this.userStore.authUser) {
-      await this.fetchSavedRecipes();
-    }
-  },
+
   data() {
     return {
       image: "EmptyState.svg",
@@ -176,9 +166,29 @@ export default {
       savedRecipesIds: [],
       showDetailedRecipe: false,
       detailedRecipeToShow: null,
-      // mockedRecipes: RecipeMock,
       $q: useQuasar(),
     };
+  },
+  async mounted() {
+    const dashHeader = useDashHeaderStore();
+    dashHeader.$patch({
+      title: "Inspiration",
+      showBackIcon: false,
+    });
+    try {
+      await this.fetchRandomRecipes();
+      if (this.userStore.authUser) {
+        await this.fetchSavedRecipes();
+      }
+    } catch (err) {
+      this.$q.notify({
+        type: "negative",
+        position: "top",
+        message: "Something went wrong!",
+        color: "negative",
+        timeout: "2500",
+      });
+    }
   },
   methods: {
     async fetchRandomRecipes() {
@@ -236,7 +246,7 @@ export default {
         const ingredient = ing.amount + " " + ing.unit + " " + ing.nameClean;
         listItemsFromRecipe.push(ingredient);
       });
-      console.log(listItemsFromRecipe);
+
       const data = {
         name: this.detailedRecipeToShow.title,
         selectedProducts: listItemsFromRecipe,
@@ -255,7 +265,6 @@ export default {
           timeout: "2500",
         });
       }
-      console.log(res.status);
     },
     showDetailedRecipeDialog(recipeInfo) {
       this.showDetailedRecipe = true;
