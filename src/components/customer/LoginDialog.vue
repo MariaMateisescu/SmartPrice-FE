@@ -7,7 +7,17 @@
     />
   </div>
   <div class="login">
-    <q-input rounded outlined v-model="email" type="email" label="Email" />
+    <q-input
+      rounded
+      no-error-icon
+      lazy-rules="ondemand"
+      outlined
+      v-model="email"
+      type="email"
+      label="Email"
+      :rules="emailRules"
+      ref="emailRef"
+    />
     <q-input
       rounded
       outlined
@@ -55,44 +65,53 @@ export default {
       isPwd: true,
       useUser: useUserStore(),
       $q: useQuasar(),
+      emailRules: [
+        (val) =>
+          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+            val
+          ) || "Please enter a valid email",
+      ],
     };
   },
   emits: ["emitForgotPassword", "emitSignup"],
   methods: {
     async login() {
-      try {
-        const data = {
-          email: this.email,
-          password: this.password,
-        };
-        const res = await this.$api.post("/users/login", data);
-        if (res.data.status === "success") {
+      this.$refs.emailRef.validate();
+      if (!this.$refs.emailRef.hasError) {
+        try {
+          const data = {
+            email: this.email,
+            password: this.password,
+          };
+          const res = await this.$api.post("/users/login", data);
+          if (res.data.status === "success") {
+            this.$q.notify({
+              type: "positive",
+              position: "top",
+              message: "Logged in successfully",
+              color: "positive",
+              timeout: "2500",
+            });
+            localStorage.setItem("token", res.data.token);
+            this.useUser.setUser(res.data.data.user);
+            this.$api.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${localStorage.getItem("token")}`;
+            if (res.data.data.user.role === "admin") {
+              this.$router.push("/administration");
+            } else {
+              this.$router.push("/");
+            }
+          }
+        } catch (error) {
           this.$q.notify({
-            type: "positive",
+            type: "negative",
             position: "top",
-            message: "Logged in successfully",
-            color: "positive",
+            message: "Invalid email or password!",
+            color: "negative",
             timeout: "2500",
           });
-          localStorage.setItem("token", res.data.token);
-          this.useUser.setUser(res.data.data.user);
-          this.$api.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${localStorage.getItem("token")}`;
-          if (res.data.data.user.role === "admin") {
-            this.$router.push("/administration");
-          } else {
-            this.$router.push("/");
-          }
         }
-      } catch (error) {
-        this.$q.notify({
-          type: "negative",
-          position: "top",
-          message: "Invalid email or password!",
-          color: "negative",
-          timeout: "2500",
-        });
       }
     },
   },
@@ -113,7 +132,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 5px;
   height: 100%;
 }
 .login__header {

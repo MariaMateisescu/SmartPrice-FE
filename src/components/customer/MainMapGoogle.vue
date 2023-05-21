@@ -25,7 +25,12 @@
           :opened="openedMarkerID === location.location._id"
         >
           <div>{{ location.location.address }}</div>
-          <a href="#" @click="showLocationDetailsDialog(location)">Details</a>
+          <button
+            @click="showLocationDetailsDialog(location)"
+            class="location-details-button"
+          >
+            Details
+          </button>
         </GMapInfoWindow></GMapMarker
       >
       <GMapMarker
@@ -179,14 +184,6 @@ export default {
   align-items: center;
   justify-content: space-between;
 }
-.slider {
-  /* position: absolute;
-  top: 100px;
-  width: 80%;
-  left: 0;
-  right: 0;
-  margin: 0 auto; */
-}
 .without-footer-map-height {
   /* width: 100%; */
   height: calc(100vh - 50px);
@@ -214,5 +211,13 @@ export default {
   /* justify-content: center; */
   margin-bottom: 10px;
   gap: 15px;
+}
+.location-details-button {
+  background: none;
+  border: none;
+  text-decoration: underline;
+  padding: 0px;
+  margin-top: 5px;
+  color: blue;
 }
 </style>

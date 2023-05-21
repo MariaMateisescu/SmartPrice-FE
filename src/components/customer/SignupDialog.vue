@@ -7,14 +7,37 @@
     />
   </div>
   <div class="signup">
-    <q-input rounded outlined v-model="name" label="Name" />
-    <q-input rounded outlined v-model="email" type="email" label="Email" />
     <q-input
       rounded
+      no-error-icon
+      lazy-rules="ondemand"
+      outlined
+      v-model="name"
+      label="Name"
+      :rules="nameRules"
+      ref="nameRef"
+    />
+    <q-input
+      rounded
+      no-error-icon
+      lazy-rules="ondemand"
+      outlined
+      v-model="email"
+      type="email"
+      label="Email"
+      :rules="emailRules"
+      ref="emailRef"
+    />
+    <q-input
+      rounded
+      no-error-icon
+      lazy-rules="ondemand"
       outlined
       v-model="password"
       :type="isPwd ? 'password' : 'text'"
       label="Password"
+      :rules="passwordRules"
+      ref="passwordRef"
     >
       <template v-slot:append>
         <q-icon
@@ -27,10 +50,14 @@
 
     <q-input
       rounded
+      no-error-icon
+      lazy-rules="ondemand"
       outlined
       v-model="passwordConfirm"
       :type="isPwdConfirm ? 'password' : 'text'"
       label="Confirm Password"
+      :rules="passwordConfirmRules"
+      ref="passwordConfirmRef"
     >
       <template v-slot:append>
         <q-icon
@@ -69,43 +96,76 @@ export default {
       isPwdConfirm: true,
       useUser: useUserStore(),
       $q: useQuasar(),
+      nameRules: [
+        (val) => (val !== null && val !== "") || "Please type your name",
+      ],
+      emailRules: [
+        (val) =>
+          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+            val
+          ) || "Please enter a valid email",
+      ],
+      passwordRules: [
+        (val) =>
+          val.length >= 6 || "Password should have at least 6 characters",
+      ],
     };
   },
   emits: ["emitLogin"],
   methods: {
     async onSignup() {
-      try {
-        const data = {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          passwordConfirm: this.passwordConfirm,
-        };
-        const res = await this.$api.post("/users/signup", data);
-        if (res.data.status === "success") {
+      this.$refs.nameRef.validate();
+      this.$refs.emailRef.validate();
+      this.$refs.passwordRef.validate();
+      this.$refs.passwordConfirmRef.validate();
+      if (
+        !this.$refs.nameRef.hasError &&
+        !this.$refs.emailRef.hasError &&
+        !this.$refs.passwordRef.hasError &&
+        !this.$refs.passwordConfirmRef.hasError
+      ) {
+        try {
+          const data = {
+            name: this.name,
+            email: this.email,
+            password: this.password,
+            passwordConfirm: this.passwordConfirm,
+          };
+          const res = await this.$api.post("/users/signup", data);
+          if (res.data.status === "success") {
+            this.$q.notify({
+              type: "positive",
+              position: "top",
+              message: "Account created successfully",
+              color: "positive",
+              timeout: "2500",
+            });
+            localStorage.setItem("token", res.data.token);
+            this.$api.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${localStorage.getItem("token")}`;
+            this.$router.push("/");
+            this.useUser.setUser(res.data.data.user);
+          }
+        } catch (error) {
           this.$q.notify({
-            type: "positive",
+            type: "negative",
             position: "top",
-            message: "Account created successfully",
-            color: "positive",
+            message: "Something went wrong!",
+            color: "negative",
             timeout: "2500",
           });
-          localStorage.setItem("token", res.data.token);
-          this.$api.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${localStorage.getItem("token")}`;
-          this.$router.push("/");
-          this.useUser.setUser(res.data.data.user);
         }
-      } catch (error) {
-        this.$q.notify({
-          type: "negative",
-          position: "top",
-          message: "Something went wrong!",
-          color: "negative",
-          timeout: "2500",
-        });
       }
+    },
+  },
+  computed: {
+    passwordConfirmRules() {
+      return [
+        (val) =>
+          val.length >= 6 || "Password should have at least 6 characters",
+        (val) => val === this.password || "Passwords do not match",
+      ];
     },
   },
 };
@@ -125,7 +185,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 5px;
 }
 .q-input {
   width: 100%;

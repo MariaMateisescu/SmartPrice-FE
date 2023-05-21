@@ -7,12 +7,12 @@
     <q-btn class="add-location__btn" @click="showAddLocation = true"
       >Add Location</q-btn
     >
+    <q-input v-model="search" filled type="search" hint="Search">
+      <template v-slot:append>
+        <q-icon name="search" />
+      </template>
+    </q-input>
     <div v-if="filteredLocations.length">
-      <q-input v-model="search" filled type="search" hint="Search">
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
       <div class="location-card__list">
         <LocationCard
           v-for="location in filteredLocations"

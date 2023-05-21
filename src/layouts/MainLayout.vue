@@ -94,7 +94,7 @@
           style="background-color: #267378; color: #fff"
           name="account"
           icon="style"
-          to="/profile"
+          to="/fidelity"
           exact
         />
       </q-tabs>

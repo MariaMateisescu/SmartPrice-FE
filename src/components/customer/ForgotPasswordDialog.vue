@@ -9,7 +9,17 @@
   <div class="forgot-password">
     <h3 class="forgot-password__header">Forgot Password?</h3>
     <p>Enter your email address to retrieve your password</p>
-    <q-input rounded outlined v-model="email" type="email" label="Email" />
+    <q-input
+      rounded
+      no-error-icon
+      lazy-rules="ondemand"
+      outlined
+      v-model="email"
+      type="email"
+      label="Email"
+      :rules="emailRules"
+      ref="emailRef"
+    />
     <q-btn class="forgot-password-btn" @click="onSendCode" label="Send Code" />
     <div class="inline-style">
       <p>Go back to</p>
@@ -24,28 +34,50 @@
 </template>
 
 <script>
+import useQuasar from "quasar/src/composables/use-quasar.js";
+
 export default {
   name: "ForgotPasswordPage",
   data() {
     return {
       email: "",
+      $q: useQuasar(),
+      emailRules: [
+        (val) =>
+          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+            val
+          ) || "Please enter a valid email",
+      ],
     };
   },
   emits: ["emitLogin"],
   methods: {
-    onSendCode() {
-      try {
-        const data = {
-          email: this.email,
-        };
-      } catch (error) {
-        this.$q.notify({
-          type: "negative",
-          position: "top",
-          message: "Something went wrong!",
-          color: "negative",
-          timeout: "2500",
-        });
+    async onSendCode() {
+      this.$refs.emailRef.validate();
+      if (!this.$refs.emailRef.hasError) {
+        try {
+          const data = {
+            email: this.email,
+          };
+          const res = await this.$api.post("users/forgotPassword", data);
+          if (res.data.status === "success") {
+            this.$q.notify({
+              type: "positive",
+              position: "top",
+              message: "Code sent to the provided email.",
+              color: "positive",
+              timeout: "2500",
+            });
+          }
+        } catch (error) {
+          this.$q.notify({
+            type: "negative",
+            position: "top",
+            message: "Something went wrong!",
+            color: "negative",
+            timeout: "2500",
+          });
+        }
       }
     },
   },
