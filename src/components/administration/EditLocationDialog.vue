@@ -81,7 +81,7 @@ export default {
             lat +
             "," +
             long +
-            "&key=AIzaSyCaLqRmzlYh0hkEI_FtBx8nPhIS0jJH9V0"
+            `&key=${process.env.GOOGLE_MAPS_API_KEY}`
         );
         if (data.error_message) {
           console.log(data.error_message);

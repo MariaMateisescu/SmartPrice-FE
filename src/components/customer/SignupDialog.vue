@@ -148,6 +148,7 @@ export default {
             this.useUser.setUser(res.data.data.user);
           }
         } catch (error) {
+          // negative notify
           this.$q.notify({
             type: "negative",
             position: "top",

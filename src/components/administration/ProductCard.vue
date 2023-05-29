@@ -129,4 +129,8 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+.q-item {
+  padding: 0px 16px;
+  min-height: 40px;
+}
 </style>

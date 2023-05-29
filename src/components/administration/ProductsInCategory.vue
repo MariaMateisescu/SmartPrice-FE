@@ -1,6 +1,6 @@
 <template>
   <q-separator></q-separator>
-  <div>
+  <div class="category-name">
     <q-icon name="arrow_back_ios" @click="$emit('goBackToCategories')"></q-icon>
     <strong>{{ categoryInfo.name }}</strong>
   </div>
@@ -47,4 +47,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.category-name {
+  font-size: 18px;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+}
+</style>

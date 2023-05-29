@@ -18,13 +18,16 @@
         </q-icon>
       </template>
     </q-input>
-    <q-btn class="save-btn" @click="addCard" label="Save" />
+    <div class="save-card__container">
+      <q-btn class="save-btn" @click="addCard" label="Save card" />
+    </div>
   </div>
 </template>
 
 <script>
 import { useQuasar } from "quasar";
 import { Html5Qrcode } from "html5-qrcode";
+import { Html5QrcodeScanner } from "html5-qrcode";
 export default {
   emits: ["cardSavedSuccessfully"],
   props: ["stopCamera"],
@@ -42,12 +45,18 @@ export default {
     // TODO: check permissions according to platform
     // let permissions = cordova.plugins.permissions;
     // permissions.requestPermission(permissions.CAMERA, this.success, this.error);
-    this.qrCodeScanner = new Html5Qrcode("qr-code-reader");
-    this.qrCodeScanner.start(
-      { facingMode: "environment" },
-      { qrbox: 250 },
-      this.onScanSuccess
+    // this.qrCodeScanner = new Html5QrcodeScanner("qr-code-reader");
+    // this.qrCodeScanner.start(
+    //   { facingMode: "environment" },
+    //   { qrbox: 250 },
+    //   this.onScanSuccess
+    // );
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+      "qr-code-reader",
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      /* verbose= */ false
     );
+    html5QrcodeScanner.render(this.onScanSuccess, this.onScanFailure);
   },
   methods: {
     async addCard() {
@@ -76,7 +85,7 @@ export default {
     onScanSuccess(decodedText, decodedResult) {
       this.qrCodeText = decodedText;
       this.codeFormat = decodedResult.result.format.formatName;
-      this.qrCodeScanner.pause(true);
+      // this.qrCodeScanner.pause(true);
     },
     onScanFailure(error) {
       // handle scan failure, usually better to ignore and keep scanning.
@@ -104,5 +113,10 @@ export default {
   background-color: $cyan-9;
   color: white;
   margin: 10px;
+}
+.save-card__container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 </style>

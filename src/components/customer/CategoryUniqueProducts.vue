@@ -60,7 +60,6 @@ export default {
 .q-card {
   margin-top: 10px;
 }
-
 .one-category {
   padding-left: 10px;
   font-size: 16px;

@@ -1,15 +1,12 @@
 <template>
   <div v-if="location">
-    <h5 v-if="location">{{ location.name }}</h5>
+    <div class="location-details__title" v-if="location">
+      {{ location.name }}
+    </div>
     <q-btn class="add-product__btn" @click="showAddProduct = true"
       >Add Product</q-btn
     >
     <div v-if="!categoryInfo">
-      <!-- <CategoryCardAdmin
-        v-for="category in categoryOptions"
-        :key="category.value"
-        :categoryInfo="category"
-      /> -->
       <q-item
         clickable
         v-ripple
@@ -195,5 +192,16 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 30px;
+}
+.location-details__title {
+  font-size: 24px;
+  padding: 10px;
+}
+.q-item {
+  padding: 0px 16px;
+  min-height: 40px;
+}
+.q-item__section--side {
+  color: #267378;
 }
 </style>

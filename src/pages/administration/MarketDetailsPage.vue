@@ -43,11 +43,13 @@
           <q-input v-model="lat" type="text" label="Latitude" />
           <q-input v-model="lng" type="text" label="Longitude" />
           <q-input v-model="openingHours" type="text" label="Opening Hours" />
-          <q-btn
-            style="margin: 20px; background-color: #267378; color: #fff"
-            @click="saveLocation"
-            label="Save Location"
-          />
+          <div class="save-location__container">
+            <q-btn
+              style="background-color: #267378; color: #fff"
+              @click="saveLocation"
+              label="Save Location"
+            />
+          </div>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -162,17 +164,17 @@ export default {
     },
     async getStreetAddressFrom(lat, long) {
       try {
-        var { data } = await this.$axios.get(
+        let res = await this.$axios.get(
           "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
             lat +
             "," +
             long +
-            "&key=AIzaSyCaLqRmzlYh0hkEI_FtBx8nPhIS0jJH9V0"
+            `&key=${process.env.GOOGLE_MAPS_API_KEY}`
         );
-        if (data.error_message) {
-          console.log(data.error_message);
+        if (res.data.error_message) {
+          console.log(res.data.error_message);
         } else {
-          this.address = data.results[0].formatted_address;
+          this.address = res.data.results[0].formatted_address;
         }
       } catch (error) {
         console.log(error.message);
@@ -202,18 +204,23 @@ export default {
 }
 
 .text-h6 {
-  color: #267378;
+  /* color: #267378; */
 }
 
 .location-card__list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
 .add-location__btn {
   background-color: #267378;
   color: white;
   margin: 10px;
+}
+.save-location__container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
 }
 </style>

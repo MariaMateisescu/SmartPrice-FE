@@ -1,5 +1,8 @@
 <template>
-  <div class="empty-state">
+  <div
+    class="empty-state"
+    :class="{ 'with-tabs-height': hasTabs, 'without-tabs-height': !hasTabs }"
+  >
     <img :src="`src/assets/illustrations/${image}`" alt="" />
     <div class="empty-state__title">{{ title }}</div>
     <div class="message">
@@ -56,7 +59,7 @@ import ForgotPasswordDialog from "./ForgotPasswordDialog.vue";
 
 export default {
   name: "EmptyState",
-  props: ["image", "title", "message"],
+  props: ["image", "title", "message", "hasTabs"],
   data() {
     return {
       showAuthDialog: false,
@@ -91,9 +94,15 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
   padding: 0 50px;
   text-align: center;
+}
+.with-tabs-height {
+  height: calc(100vh - 99px);
+  margin-top: -36px;
+}
+.without-tabs-height {
+  height: calc(100vh - 99px);
 }
 .empty-state__title {
   font-size: 30px;

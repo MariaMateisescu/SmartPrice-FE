@@ -134,12 +134,12 @@
   </q-dialog>
 
   <q-dialog v-model="showEditCard" persistent>
-    <q-card>
-      <q-card-section class="row items-center">
+    <q-card class="edit-card__q-card">
+      <q-card-section class="row items-center edit-card__q-card__section-1">
         <span class="q-ml-sm">Edit {{ selectedCardInfo.name }} card</span>
       </q-card-section>
 
-      <q-card-section>
+      <q-card-section class="edit-card__q-card__section-2">
         <q-input v-model="cardName" type="text" label="Card name" />
         <q-input
           filled
@@ -378,5 +378,16 @@ export default {
   padding: 25px;
   text-align: center;
   mix-blend-mode: difference;
+}
+.edit-card__q-card {
+  .q-input {
+    margin-top: 8px;
+  }
+}
+.edit-card__q-card__section-1 {
+  padding-bottom: 0px;
+}
+.edit-card__q-card__section-2 {
+  padding-top: 0px;
 }
 </style>

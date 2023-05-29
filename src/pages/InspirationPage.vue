@@ -32,6 +32,7 @@
                 @recipeSaved="addRecipeToSavedRecipes"
                 @recipeUnsaved="removeRecipeFromSavedRecipes"
                 @detailedRecipe="showDetailedRecipeDialog"
+                @addToFavNoUser="tab = 'myRecipes'"
               />
               <EmptyData
                 v-if="!recipes.length"
@@ -58,8 +59,13 @@
                 message="Save a recipe"
               ></EmptyData>
             </q-tab-panel>
-            <q-tab-panel name="myRecipes" v-else>
-              <EmptyState :image="image" :title="title" :message="message">
+            <q-tab-panel name="myRecipes" v-else style="padding: 0px">
+              <EmptyState
+                :image="image"
+                :title="title"
+                :message="message"
+                :hasTabs="true"
+              >
               </EmptyState>
             </q-tab-panel>
           </q-tab-panels>

@@ -39,8 +39,12 @@
               <q-icon name="cloud_upload" />
             </template>
           </q-file>
+          <div class="add-market__container">
+            <q-btn class="add-market__btn q-mt-lg" @click="addMarket"
+              >Add market</q-btn
+            >
+          </div>
         </q-card-section>
-        <q-btn class="btn" @click="addMarket">Add market</q-btn>
       </q-card>
     </q-dialog>
   </q-page>
@@ -106,16 +110,17 @@ export default {
   margin-top: 20px;
 }
 .page-style {
-  padding-top: 30px;
+  padding-top: 10px;
 }
 .add-market__btn {
   background-color: $brand-color;
   color: white;
   margin: 10px;
 }
-.text-h6,
-.btn {
-  color: $brand-color;
+.add-market__container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 .add-market-modal {
   background-color: #eee;
