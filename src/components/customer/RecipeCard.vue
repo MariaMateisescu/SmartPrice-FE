@@ -2,7 +2,17 @@
   <div class="recipe-card__title">{{ recipeInfo.title }}</div>
   <q-card class="recipe-card">
     <div class="asd" @click="$emit('detailedRecipe', recipeInfo)">
-      <q-img class="recipe-card__image" :src="recipeInfo.image"> </q-img>
+      <q-img
+        v-if="recipeInfo.image"
+        class="recipe-card__image"
+        :src="recipeInfo.image"
+      ></q-img>
+      <q-img
+        v-if="!recipeInfo.image"
+        class="recipe-card__image"
+        src="src/assets/recipe-placeholder.jpg"
+      >
+      </q-img>
     </div>
     <q-icon
       v-if="!isSaved"

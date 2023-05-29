@@ -1,0 +1,9 @@
+import { c7 as defineStore } from "./index.0ce84b9b.js";
+const useGeolocationInfoStore = defineStore("geolocationInfo", {
+  state: () => ({
+    radius: 4
+  }),
+  persist: true
+});
+export { useGeolocationInfoStore as u };
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ2VvbG9jYXRpb24taW5mby5kZGNhMWMzNy5qcyIsInNvdXJjZXMiOlsiLi4vLi4vLi4vc3JjL3N0b3Jlcy9nZW9sb2NhdGlvbi1pbmZvLmpzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGRlZmluZVN0b3JlIH0gZnJvbSBcInBpbmlhXCI7XHJcblxyXG5leHBvcnQgY29uc3QgdXNlR2VvbG9jYXRpb25JbmZvU3RvcmUgPSBkZWZpbmVTdG9yZShcImdlb2xvY2F0aW9uSW5mb1wiLCB7XHJcbiAgc3RhdGU6ICgpID0+ICh7XHJcbiAgICByYWRpdXM6IDQsXHJcbiAgfSksXHJcbiAgcGVyc2lzdDogdHJ1ZSxcclxufSk7XHJcbiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBRVksTUFBQywwQkFBMEIsWUFBWSxtQkFBbUI7QUFBQSxFQUNwRSxPQUFPLE9BQU87QUFBQSxJQUNaLFFBQVE7QUFBQSxFQUNaO0FBQUEsRUFDRSxTQUFTO0FBQ1gsQ0FBQzs7In0=

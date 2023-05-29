@@ -80,10 +80,17 @@
 
             <div class="asd">
               <q-img
+                v-if="detailedRecipeToShow.image"
                 :src="detailedRecipeToShow.image"
                 alt="Recipe image"
                 class="recipe-info-image"
               />
+              <q-img
+                v-if="!detailedRecipeToShow.image"
+                class="recipe-card__image"
+                src="src/assets/recipe-placeholder.jpg"
+              >
+              </q-img>
             </div>
           </q-card-section>
           <q-card-section

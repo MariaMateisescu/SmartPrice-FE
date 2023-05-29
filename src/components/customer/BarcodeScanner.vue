@@ -41,22 +41,20 @@ export default {
       color: "",
     };
   },
-  mounted() {
+  async mounted() {
     // TODO: check permissions according to platform
-    // let permissions = cordova.plugins.permissions;
-    // permissions.requestPermission(permissions.CAMERA, this.success, this.error);
-    // this.qrCodeScanner = new Html5QrcodeScanner("qr-code-reader");
-    // this.qrCodeScanner.start(
-    //   { facingMode: "environment" },
-    //   { qrbox: 250 },
-    //   this.onScanSuccess
-    // );
-    let html5QrcodeScanner = new Html5QrcodeScanner(
-      "qr-code-reader",
-      { fps: 10, qrbox: { width: 250, height: 250 } },
-      /* verbose= */ false
+    let permissions = cordova.plugins.permissions;
+    await permissions.requestPermission(
+      permissions.CAMERA,
+      this.success,
+      this.error
     );
-    html5QrcodeScanner.render(this.onScanSuccess, this.onScanFailure);
+    // let html5QrcodeScanner = new Html5QrcodeScanner(
+    //   "qr-code-reader",
+    //   { fps: 30, qrbox: { width: 200, height: 200 } },
+    //   /* verbose= */ false
+    // );
+    // html5QrcodeScanner.render(this.onScanSuccess, this.onScanFailure);
   },
   methods: {
     async addCard() {
@@ -85,7 +83,7 @@ export default {
     onScanSuccess(decodedText, decodedResult) {
       this.qrCodeText = decodedText;
       this.codeFormat = decodedResult.result.format.formatName;
-      // this.qrCodeScanner.pause(true);
+      this.qrCodeScanner.pause(true);
     },
     onScanFailure(error) {
       // handle scan failure, usually better to ignore and keep scanning.
@@ -97,6 +95,12 @@ export default {
     },
     success(status) {
       if (!status.hasPermission) error();
+      this.qrCodeScanner = new Html5Qrcode("qr-code-reader");
+      this.qrCodeScanner.start(
+        { facingMode: "environment" },
+        { qrbox: 250 },
+        this.onScanSuccess
+      );
     },
   },
   watch: {
@@ -118,5 +122,9 @@ export default {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+}
+#qr-code-reader {
+  // width: 300px;
+  // height: 300px;
 }
 </style>

@@ -3,14 +3,18 @@
     <div v-if="userStore.authUser" class="profile-page-info">
       <div style="width: 100%">
         <div class="inputs-style">
-          <q-input rounded outlined v-model="name" label="Name" />
           <q-input
+            readonly
+            disable
+            filled
             rounded
             outlined
             v-model="email"
             type="email"
             label="Email"
+            class="email_input"
           />
+          <q-input rounded outlined v-model="name" label="Name" />
           <q-input
             rounded
             outlined
@@ -200,6 +204,7 @@ export default {
   font-size: 16px;
   gap: 60px;
   margin-top: 20px;
+  justify-content: center;
 }
 .illustration {
   height: 40vh;
@@ -214,5 +219,9 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 20px;
+}
+:deep(.q-field--filled.q-field--rounded .q-field__control) {
+  border-radius: 28px;
 }
 </style>

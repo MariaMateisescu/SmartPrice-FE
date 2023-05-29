@@ -3,7 +3,7 @@
     class="empty-state"
     :class="{ 'with-tabs-height': hasTabs, 'without-tabs-height': !hasTabs }"
   >
-    <img :src="`src/assets/illustrations/${image}`" alt="" />
+    <img :src="`${image}`" alt="" />
     <div class="empty-state__title">{{ title }}</div>
     <div class="message">
       {{ message }}

@@ -1,6 +1,6 @@
 <template>
   <div class="empty-data">
-    <img :src="`src/assets/illustrations/${image}`" alt="" />
+    <img :src="`${image}`" alt="" />
     <div class="empty-data__title">{{ title }}</div>
     <div class="message">
       {{ message }}

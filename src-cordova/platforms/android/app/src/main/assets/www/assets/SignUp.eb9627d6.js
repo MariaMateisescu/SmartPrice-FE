@@ -1,3 +1,0 @@
-var _imports_0 = "assets/SignUp.3be8b8c4.svg";
-export { _imports_0 as _ };
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiU2lnblVwLmViOTYyN2Q2LmpzIiwic291cmNlcyI6WyIuLi8uLi8uLi9zcmMvYXNzZXRzL2lsbHVzdHJhdGlvbnMvU2lnblVwLnN2ZyJdLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgZGVmYXVsdCBcIl9fVklURV9BU1NFVF9fM2JlOGI4YzRfX1wiIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLElBQWUsYUFBQTs7In0=

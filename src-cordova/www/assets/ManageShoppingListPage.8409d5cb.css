@@ -1,0 +1,32 @@
+
+.list-header[data-v-7f5e6fab] {
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+}
+.list-header__count[data-v-7f5e6fab] {
+  font-size: 16px;
+  text-transform: uppercase;
+}
+.list-header__status[data-v-7f5e6fab] {
+  font-size: 16px;
+  text-transform: uppercase;
+}
+.list[data-v-7f5e6fab] {
+  padding-left: 10px;
+  font-size: 16px;
+}
+.shopping-page-sticky-btn[data-v-7f5e6fab] {
+  margin-right: 20px;
+  margin-bottom: 30px;
+}
+.slider-box[data-v-7f5e6fab] {
+  position: top;
+  top: 80px;
+  width: 80%;
+  left: -45px;
+  right: 0;
+  margin: 0 auto;
+  padding: 0 15px;
+  /* background: radial-gradient(#e5e5e5, #e5e5e562); */
+}
