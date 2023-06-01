@@ -49,7 +49,12 @@ export default {
       this.success,
       this.error
     );
-
+    this.qrCodeScanner = new Html5Qrcode("qr-code-reader");
+    this.qrCodeScanner.start(
+      { facingMode: "environment" },
+      { qrbox: 250 },
+      this.onScanSuccess
+    );
     // let html5QrcodeScanner = new Html5QrcodeScanner(
     //   "qr-code-reader",
     //   { fps: 30, qrbox: { width: 200, height: 200 } },
