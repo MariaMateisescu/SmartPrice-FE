@@ -1,8 +1,8 @@
 <template>
   <div>
-    <p>Scan barcode or QR code</p>
+    <!-- <p>Scan barcode or QR code</p> -->
     <div id="qr-code-reader"></div>
-    <p>Scanned code {{ qrCodeText }}</p>
+    <div>Scanned code {{ qrCodeText }}</div>
     <q-input type="text" placeholder="Card name" v-model="cardName"></q-input>
     <q-input
       filled
@@ -49,6 +49,7 @@ export default {
       this.success,
       this.error
     );
+
     // let html5QrcodeScanner = new Html5QrcodeScanner(
     //   "qr-code-reader",
     //   { fps: 30, qrbox: { width: 200, height: 200 } },
@@ -122,9 +123,5 @@ export default {
   display: flex;
   justify-content: center;
   margin-top: 20px;
-}
-#qr-code-reader {
-  // width: 300px;
-  // height: 300px;
 }
 </style>

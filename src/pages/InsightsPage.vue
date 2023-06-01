@@ -14,13 +14,14 @@
 
     <EmptyState v-else :image="image" :title="title" :message="message">
     </EmptyState>
-    <EmptyData
-      v-if="userStore.authUser && !completedLists.length"
-      :image="imageEmptyData"
-      :title="titleEmptyData"
-      :message="messageEmptyData"
-    ></EmptyData>
   </div>
+  <EmptyData
+    v-if="userStore.authUser && !completedLists.length"
+    :image="imageEmptyData"
+    :title="titleEmptyData"
+    :message="messageEmptyData"
+    style="margin-top: -72px"
+  ></EmptyData>
 </template>
 
 <script>

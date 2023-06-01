@@ -20,17 +20,19 @@
             userStore.authUser.name[0]
           }}</q-avatar>
           <q-menu :offset="[0, 10]">
-            <q-list style="min-width: 100px">
-              <q-item clickable v-close-popup>
-                <q-item-section>
-                  <q-btn
-                    icon="person"
-                    style="color: #267378"
-                    flat
-                    padding="none"
-                    @click="$router.push('/profile')"
-                    >Account</q-btn
-                  ></q-item-section
+            <q-list style="min-width: 120px">
+              <q-item clickable v-close-popup class="account__settings">
+                <q-icon
+                  name="person"
+                  style="color: #267378"
+                  size="24px"
+                ></q-icon>
+                <q-btn
+                  style="color: #267378"
+                  flat
+                  padding="none"
+                  @click="$router.push('/profile')"
+                  >Account</q-btn
                 >
               </q-item>
               <q-separator />
@@ -140,6 +142,14 @@ export default defineComponent({
   height: 50px;
   color: #fff;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+}
+.account__settings {
+  display: flex !important;
+  flex-direction: row !important;
+  // justify-content: center;
+  // justify-content: space-between;
+
+  align-items: center;
 }
 </style>
 

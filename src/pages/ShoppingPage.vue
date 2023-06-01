@@ -336,8 +336,9 @@ export default {
 }
 
 .newlist-btn {
-  // background-color: #267378;
-  background-color: $cyan-9;
+  background-color: #267378;
+  //#00838f cyan-9
+  // background-color: $cyan-9;
   color: white;
   margin: 10px;
 }

@@ -20,28 +20,37 @@
             />
           </div>
         </div>
-
-        <EmptyData
-          v-else
-          :image="imageCards"
-          :title="titleCards"
-          :message="messageCards"
-        >
-          <template v-slot:button>
-            <q-btn
-              class="btn"
-              style="background-color: #267378; color: #fff"
-              label="Add card"
-              @click="showNewCardDialog = true"
-            />
-          </template>
-        </EmptyData>
       </div>
     </div>
-    <EmptyState v-else :image="image" :title="title" :message="message">
+    <EmptyState
+      v-if="!userStore.authUser"
+      :image="image"
+      :title="title"
+      :message="message"
+    >
     </EmptyState>
   </div>
-
+  <EmptyData
+    v-if="!cards.length"
+    :image="imageCards"
+    :title="titleCards"
+    :message="messageCards"
+  >
+    <template v-slot:button>
+      <q-btn
+        style="background-color: #267378; color: #fff; margin: 10px"
+        label="Add card"
+        @click="showNewCardDialog = true"
+      />
+    </template>
+  </EmptyData>
+  <EmptyState
+    v-if="!userStore.authUser"
+    :image="image"
+    :title="title"
+    :message="message"
+  >
+  </EmptyState>
   <q-dialog maximized v-model="showDetailedCardDialog">
     <q-card>
       <q-card-section class="row items-center q-pb-none">
