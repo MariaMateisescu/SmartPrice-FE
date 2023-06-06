@@ -3,41 +3,17 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/HomePage.vue") }],
-  },
-  {
-    path: "/login",
-    component: () => import("layouts/AuthLayout.vue"),
-    children: [
-      {
-        path: "",
-        component: () => import("pages/authentication/LoginPage.vue"),
-      },
-    ],
-  },
-  {
-    path: "/signup",
-    component: () => import("layouts/AuthLayout.vue"),
-    children: [
-      {
-        path: "",
-        component: () => import("pages/authentication/SignupPage.vue"),
-      },
-    ],
-  },
-  {
-    path: "/forgotPassword",
-    component: () => import("layouts/AuthLayout.vue"),
-    children: [
-      {
-        path: "",
-        component: () => import("pages/authentication/ForgotPasswordPage.vue"),
-      },
-    ],
+    meta: {
+      needsNoAdmin: true,
+    },
   },
   {
     path: "/profile",
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/ProfilePage.vue") }],
+    meta: {
+      needsNoAdmin: true,
+    },
   },
   {
     path: "/inspiration",
@@ -45,21 +21,33 @@ const routes = [
     children: [
       { path: "", component: () => import("pages/InspirationPage.vue") },
     ],
+    meta: {
+      needsNoAdmin: true,
+    },
   },
   {
     path: "/shopping",
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/ShoppingPage.vue") }],
+    meta: {
+      needsNoAdmin: true,
+    },
   },
   {
     path: "/insights",
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/InsightsPage.vue") }],
+    meta: {
+      needsNoAdmin: true,
+    },
   },
   {
     path: "/fidelity",
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/FidelityPage.vue") }],
+    meta: {
+      needsNoAdmin: true,
+    },
   },
   {
     path: "/shopping/:shoppingListId",
@@ -67,6 +55,9 @@ const routes = [
     children: [
       { path: "", component: () => import("pages/ManageShoppingListPage.vue") },
     ],
+    meta: {
+      needsNoAdmin: true,
+    },
   },
   {
     path: "/shopping/:categoryId",
@@ -77,6 +68,9 @@ const routes = [
         component: () => import("pages/CategorisedProductsPage.vue"),
       },
     ],
+    meta: {
+      needsNoAdmin: true,
+    },
   },
   {
     path: "/administration",

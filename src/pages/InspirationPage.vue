@@ -212,8 +212,7 @@ export default {
           number: "20",
         },
         headers: {
-          "X-RapidAPI-Key":
-            "0fc5af0280msh141e955acfcad7ap11acf9jsn9278811ede13",
+          "X-RapidAPI-Key": process.env.SPOONACULAR_API_KEY,
           "X-RapidAPI-Host":
             "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
         },
@@ -230,8 +229,7 @@ export default {
         url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/informationBulk",
         params: { ids: res.data.savedRecipes.join(",") },
         headers: {
-          "X-RapidAPI-Key":
-            "0fc5af0280msh141e955acfcad7ap11acf9jsn9278811ede13",
+          "X-RapidAPI-Key": process.env.SPOONACULAR_API_KEY,
           "X-RapidAPI-Host":
             "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
         },

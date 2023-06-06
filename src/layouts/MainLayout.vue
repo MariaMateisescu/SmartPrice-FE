@@ -122,6 +122,7 @@ export default defineComponent({
   methods: {
     logout() {
       localStorage.clear();
+      this.userStore.authUser = null;
       this.$router.go();
     },
   },

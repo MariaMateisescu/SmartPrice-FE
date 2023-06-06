@@ -397,4 +397,7 @@ export default {
   width: 100vw !important;
   max-width: 100vw !important;
 }
+.q-drawer__backdrop {
+  z-index: 7000 !important;
+}
 </style>

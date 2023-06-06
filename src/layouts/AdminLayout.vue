@@ -20,7 +20,7 @@
                         userStore.authUser &&
                         userStore.authUser.role === 'admin'
                       "
-                      style="color: #00838f"
+                      style="color: #267378"
                       padding="none"
                       flat
                       @click="goToAdministration"
@@ -32,7 +32,7 @@
                 <q-item clickable v-close-popup>
                   <q-item-section>
                     <q-btn
-                      style="color: #00838f"
+                      style="color: #267378"
                       flat
                       padding="none"
                       @click="logout"
@@ -43,15 +43,6 @@
               </q-list>
             </q-menu>
           </q-btn>
-        </div>
-        <div class="auth-buttons" v-if="!userStore.authUser">
-          <q-btn color="white" text-color="black" label="Login" to="/login" />
-          <q-btn
-            color="white"
-            text-color="black"
-            label="Sign Up"
-            to="/signup"
-          />
         </div>
       </q-toolbar>
     </q-header>
@@ -80,7 +71,11 @@ export default defineComponent({
   methods: {
     logout() {
       localStorage.clear();
-      this.$router.go();
+      console.log(localStorage.getItem("token"));
+      this.userStore.authUser = null;
+      if (!localStorage.getItem("token")) {
+        this.$router.push("/");
+      }
     },
     goToAdministration() {
       this.$router.push("/administration/markets");
@@ -99,7 +94,7 @@ export default defineComponent({
 }
 
 .header {
-  background: #00838f;
+  background: #267378;
   height: 50px;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
 }
