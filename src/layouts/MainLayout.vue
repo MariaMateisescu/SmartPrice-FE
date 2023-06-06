@@ -24,11 +24,11 @@
               <q-item clickable v-close-popup class="account__settings">
                 <q-icon
                   name="person"
-                  style="color: #267378"
+                  style="color: #00838f"
                   size="24px"
                 ></q-icon>
                 <q-btn
-                  style="color: #267378"
+                  style="color: #00838f"
                   flat
                   padding="none"
                   @click="$router.push('/profile')"
@@ -40,7 +40,7 @@
                 <q-item-section>
                   <q-btn
                     icon="logout"
-                    style="color: #267378"
+                    style="color: #00838f"
                     flat
                     padding="none"
                     @click="logout"
@@ -61,39 +61,39 @@
         no-caps
         active-color="white"
         class="text-white shadow-2"
-        style="background-color: #267378"
+        style="background-color: #00838f"
         align="justify"
       >
         <q-route-tab
-          style="background-color: #267378; color: #fff"
+          style="background-color: #00838f; color: #fff"
           name="map"
           icon="map"
           to="/"
           exact
         />
         <q-route-tab
-          style="background-color: #267378; color: #fff"
+          style="background-color: #00838f; color: #fff"
           name="inspo"
           icon="menu_book"
           to="/inspiration"
           exact
         />
         <q-route-tab
-          style="background-color: #267378; color: #fff"
+          style="background-color: #00838f; color: #fff"
           name="cart"
           icon="shopping_basket"
           to="/shopping"
           exact
         />
         <q-route-tab
-          style="background-color: #267378; color: #fff"
+          style="background-color: #00838f; color: #fff"
           name="insights"
           icon="bar_chart"
           to="/insights"
           exact
         />
         <q-route-tab
-          style="background-color: #267378; color: #fff"
+          style="background-color: #00838f; color: #fff"
           name="account"
           icon="style"
           to="/fidelity"

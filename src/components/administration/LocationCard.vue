@@ -113,6 +113,6 @@ export default {
 
 <style scoped>
 .text-h6 {
-  color: #267378;
+  color: #00838f;
 }
 </style>

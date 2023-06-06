@@ -191,7 +191,7 @@ export default {
   margin-top: 20px;
 }
 .savechanges-btn {
-  background-color: #267378;
+  background-color: #00838f;
   color: white;
   margin: 10px;
   margin-top: 30px;

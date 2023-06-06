@@ -64,13 +64,13 @@
             ref="selectProduct"
             label="Search for product"
             filled
+            color="cyan-9"
             v-model="query"
             use-input
             hide-selected
             fill-input
             input-debounce="0"
             :options="search"
-            @update:model-value="addProductFromSearch"
             @filter="filterFn"
             hint="Minimum 2 characters to trigger filtering"
             style="width: 100%; padding-bottom: 32px"
@@ -83,6 +83,22 @@
             <template v-slot:prepend>
               <q-icon name="search" />
             </template>
+            <template v-slot:option="scope">
+              <q-item>
+                <q-item-section avatar>
+                  <q-checkbox
+                    class="product-checkbox"
+                    color="cyan-9"
+                    v-model="selectedProducts"
+                    :label="scope.opt"
+                    :val="scope.opt"
+                  ></q-checkbox>
+                </q-item-section>
+                <!-- <q-item-section>
+                  {{ scope.opt }}
+                </q-item-section> -->
+              </q-item>
+            </template>
           </q-select>
           <div v-if="!categoryUniqueProductsInfo" class="addToListDialog">
             <q-item
@@ -92,7 +108,7 @@
               :key="category._id"
             >
               <q-item-section thumbnail style="padding-left: 10px">
-                <q-icon :name="category.icon" />
+                <q-icon color="cyan-9" :name="category.icon" />
               </q-item-section>
               <q-item-section @click="viewProductsInCategory(category)">{{
                 category.name
@@ -311,11 +327,11 @@ export default {
         );
       });
     },
-    addProductFromSearch() {
-      this.selectedProducts.push(this.query);
-      this.query = "";
-      this.$refs.selectProduct.blur();
-    },
+    // addProductFromSearch() {
+    //   this.selectedProducts.push(this.query);
+    //   this.query = "";
+    //   this.$refs.selectProduct.blur();
+    // },
     removeListFromArray(shoppingListInfo) {
       const index = this.shoppingLists.indexOf(shoppingListInfo);
       if (index > -1) {
@@ -336,7 +352,7 @@ export default {
 }
 
 .newlist-btn {
-  background-color: #267378;
+  background-color: #00838f;
   //#00838f cyan-9
   // background-color: $cyan-9;
   color: white;
@@ -366,6 +382,9 @@ export default {
 .addToListDialog {
   position: relative;
 }
+// .q-item__section--side {
+//   color: $brand-color;
+// }
 </style>
 
 <style>
@@ -374,7 +393,7 @@ export default {
 }
 .q-select__dialog {
   position: absolute;
-  top: 100px;
+  top: 173px;
   width: 100vw !important;
   max-width: 100vw !important;
 }

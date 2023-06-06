@@ -45,7 +45,7 @@
           <q-input v-model="openingHours" type="text" label="Opening Hours" />
           <div class="save-location__container">
             <q-btn
-              style="background-color: #267378; color: #fff"
+              style="background-color: #00838f; color: #fff"
               @click="saveLocation"
               label="Save Location"
             />
@@ -204,7 +204,7 @@ export default {
 }
 
 .text-h6 {
-  /* color: #267378; */
+  /* color: #00838f; */
 }
 
 .location-card__list {
@@ -214,7 +214,7 @@ export default {
 }
 
 .add-location__btn {
-  background-color: #267378;
+  background-color: #00838f;
   color: white;
   margin: 10px;
 }

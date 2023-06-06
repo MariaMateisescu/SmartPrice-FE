@@ -38,7 +38,7 @@
   >
     <template v-slot:button>
       <q-btn
-        style="background-color: #267378; color: #fff; margin: 10px"
+        style="background-color: #00838f; color: #fff; margin: 10px"
         label="Add card"
         @click="showNewCardDialog = true"
       />
@@ -82,14 +82,14 @@
       <q-card-section class="row items-center q-pb-none">
         <q-btn
           class="btn"
-          style="background-color: #267378; color: #fff"
+          style="background-color: #00838f; color: #fff"
           label="Edit card"
           @click="showEditCard = true"
         />
         <q-space />
         <q-btn
           class="btn"
-          style="background-color: #267378; color: #fff"
+          style="background-color: #00838f; color: #fff"
           label="Remove card"
           @click="showDeleteCard = true"
         />

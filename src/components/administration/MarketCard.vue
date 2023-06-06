@@ -51,7 +51,7 @@
           </template>
         </q-file>
       </q-card-section>
-      <q-btn style="color: #267378" @click="editMarket">Edit market</q-btn>
+      <q-btn style="color: #00838f" @click="editMarket">Edit market</q-btn>
     </q-card>
   </q-dialog>
   <q-dialog v-model="showDeleteMarket" persistent>
@@ -160,6 +160,6 @@ img {
 }
 
 .text-h6 {
-  color: #267378;
+  color: #00838f;
 }
 </style>

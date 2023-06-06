@@ -205,7 +205,7 @@ export default {
   width: 100%;
   max-width: 300px;
   height: 56px;
-  background: #267378;
+  background: #00838f;
   color: rgba(255, 255, 255, 0.9);
   font-size: 20px;
   border-radius: 15px;

@@ -11,14 +11,14 @@
     <div>
       <q-btn
         class="btn"
-        style="background-color: #267378; color: #fff"
+        style="background-color: #00838f; color: #fff"
         label="Log In"
         @click="onLogin"
       />
 
       <q-btn
         class="btn"
-        style="background-color: #267378; color: #fff"
+        style="background-color: #00838f; color: #fff"
         label="Sign Up"
         @click="onSignup"
       />
@@ -117,7 +117,7 @@ export default {
 .btn {
   width: 100%;
   max-width: 300px;
-  background: #267378;
+  background: #00838f;
   color: rgb(255, 255, 255, 0.9);
   font-size: 20px;
   border-radius: 15px;

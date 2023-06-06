@@ -66,7 +66,7 @@ export default {
 .forgot-password-btn {
   width: 340px;
   height: 56px;
-  background: #267378;
+  background: #00838f;
   color: rgba(255, 255, 255, 0.9);
   font-size: 20px;
   border-radius: 15px;

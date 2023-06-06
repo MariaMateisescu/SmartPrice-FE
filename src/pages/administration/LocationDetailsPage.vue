@@ -57,7 +57,7 @@
             />
           </div>
           <q-btn
-            style="background-color: #267378; color: #fff"
+            style="background-color: #00838f; color: #fff"
             @click="addProduct"
             label="Add product"
           />
@@ -181,10 +181,10 @@ export default {
 
 <style scoped>
 .text-h6 {
-  color: #267378;
+  color: #00838f;
 }
 .add-product__btn {
-  background-color: #267378;
+  background-color: #00838f;
   color: white;
   margin: 10px;
 }
@@ -202,6 +202,6 @@ export default {
   min-height: 40px;
 }
 .q-item__section--side {
-  color: #267378;
+  color: #00838f;
 }
 </style>
