@@ -27,10 +27,10 @@
 <script>
 import { useQuasar } from "quasar";
 import { Html5Qrcode } from "html5-qrcode";
-import { Html5QrcodeScanner } from "html5-qrcode";
+// import { Html5QrcodeScanner } from "html5-qrcode";
 export default {
   emits: ["cardSavedSuccessfully"],
-  props: ["stopCamera"],
+  // props: ["stopCamera"],
   data() {
     return {
       qrCodeScanner: null,
@@ -43,24 +43,28 @@ export default {
   },
   async mounted() {
     // TODO: check permissions according to platform
-    let permissions = cordova.plugins.permissions;
-    await permissions.requestPermission(
-      permissions.CAMERA,
-      this.success,
-      this.error
-    );
-    this.qrCodeScanner = new Html5Qrcode("qr-code-reader");
-    this.qrCodeScanner.start(
-      { facingMode: "environment" },
-      { qrbox: 250 },
-      this.onScanSuccess
-    );
-    // let html5QrcodeScanner = new Html5QrcodeScanner(
-    //   "qr-code-reader",
-    //   { fps: 30, qrbox: { width: 200, height: 200 } },
-    //   /* verbose= */ false
+    // let permissions = cordova.plugins.permissions;
+    // await permissions.requestPermission(
+    //   permissions.CAMERA,
+    //   this.success,
+    //   this.error
     // );
-    // html5QrcodeScanner.render(this.onScanSuccess, this.onScanFailure);
+    if (this.$q.platform.is.mobile) {
+      console.log("mobbile");
+      let permissions = cordova.plugins.permissions;
+      await permissions.requestPermission(
+        permissions.CAMERA,
+        this.success,
+        this.error
+      );
+    } else {
+      this.qrCodeScanner = new Html5Qrcode("qr-code-reader");
+      this.qrCodeScanner.start(
+        { facingMode: "environment" },
+        { qrbox: 250 },
+        this.onScanSuccess
+      );
+    }
   },
   methods: {
     async addCard() {
@@ -107,12 +111,6 @@ export default {
         { qrbox: 250 },
         this.onScanSuccess
       );
-    },
-  },
-  watch: {
-    // whenever question changes, this function will run
-    stopCamera(after, before) {
-      if (after) this.qrCodeScanner.stop(true);
     },
   },
 };

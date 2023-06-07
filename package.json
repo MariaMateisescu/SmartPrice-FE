@@ -11,7 +11,8 @@
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "test:unit:ui": "vitest --ui",
     "test:unit": "vitest",
-    "test:unit:ci": "vitest run"
+    "test:unit:ci": "vitest run",
+    "start": "quasar dev"
   },
   "dependencies": {
     "@fawmi/vue-google-maps": "0.9.67",

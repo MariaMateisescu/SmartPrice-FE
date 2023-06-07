@@ -102,21 +102,11 @@
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">Card Scanner</div>
         <q-space />
-        <q-btn
-          icon="close"
-          flat
-          round
-          dense
-          v-close-popup
-          @click="stopCamera = true"
-        />
+        <q-btn icon="close" flat round dense v-close-popup />
       </q-card-section>
 
       <q-card-section>
-        <BarcodeScanner
-          @cardSavedSuccessfully="onCardSaved"
-          :stopCamera="stopCamera"
-        />
+        <BarcodeScanner @cardSavedSuccessfully="onCardSaved" />
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -219,7 +209,6 @@ export default {
       $q: useQuasar(),
       dashHeader: useDashHeaderStore(),
       userStore: useUserStore(),
-      stopCamera: false,
     };
   },
   async mounted() {
@@ -234,7 +223,6 @@ export default {
   },
   methods: {
     openAddNewCardDialog() {
-      this.stopCamera = false;
       this.showNewCardDialog = true;
     },
     openCardDetailsDialog(card) {
