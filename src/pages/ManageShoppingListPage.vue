@@ -34,7 +34,7 @@
           <q-item
             clickable
             v-ripple
-            v-for="item in list.listItems"
+            v-for="(item, index) in list.listItems"
             :key="item._id"
           >
             <q-item-section>
@@ -43,7 +43,7 @@
                 <q-icon v-if="item.status === 'bought'" name="done_outline" />
                 <q-icon v-if="item.status === 'not_bought'" name="close" />
               </div>
-              <q-separator />
+              <q-separator v-if="index !== list.listItems.length - 1" />
             </q-item-section>
           </q-item>
         </q-list>

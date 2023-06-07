@@ -123,7 +123,7 @@ export default defineComponent({
     logout() {
       localStorage.clear();
       this.userStore.authUser = null;
-      this.$router.go();
+      this.$router.push("/");
     },
   },
 });

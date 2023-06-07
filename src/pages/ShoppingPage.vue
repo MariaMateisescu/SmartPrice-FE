@@ -16,10 +16,20 @@
         :breakpoint="500"
       >
         <q-scroll-area class="fit">
-          <div class="q-pa-md" style="font-size: 16px">
+          <div class="drawer-products-list" style="font-size: 16px">
             <div v-if="!selectedProducts.length">Shopping cart is empty.</div>
             <div v-for="product in selectedProducts" :key="product">
-              {{ product }}
+              <div class="flex justify-between" style="padding: 5px">
+                <div>
+                  {{ product }}
+                </div>
+                <div>
+                  <q-icon
+                    name="close"
+                    @click="removeFromSelectedProducts(product)"
+                  ></q-icon>
+                </div>
+              </div>
               <q-separator></q-separator>
             </div>
           </div>
@@ -94,9 +104,6 @@
                     :val="scope.opt"
                   ></q-checkbox>
                 </q-item-section>
-                <!-- <q-item-section>
-                  {{ scope.opt }}
-                </q-item-section> -->
               </q-item>
             </template>
           </q-select>
@@ -110,9 +117,11 @@
               <q-item-section thumbnail style="padding-left: 10px">
                 <q-icon color="cyan-9" :name="category.icon" />
               </q-item-section>
-              <q-item-section @click="viewProductsInCategory(category)">{{
-                category.name
-              }}</q-item-section>
+              <q-item-section
+                @click="viewProductsInCategory(category)"
+                style="font-size: 16px"
+                >{{ category.name }}</q-item-section
+              >
             </q-item>
           </div>
           <CategoryUniqueProducts
@@ -327,11 +336,6 @@ export default {
         );
       });
     },
-    // addProductFromSearch() {
-    //   this.selectedProducts.push(this.query);
-    //   this.query = "";
-    //   this.$refs.selectProduct.blur();
-    // },
     removeListFromArray(shoppingListInfo) {
       const index = this.shoppingLists.indexOf(shoppingListInfo);
       if (index > -1) {
@@ -342,15 +346,15 @@ export default {
       const index = this.shoppingLists.indexOf(shoppingListInfo);
       this.shoppingLists[index]["name"] = newName;
     },
+    removeFromSelectedProducts(product) {
+      const index = this.selectedProducts.indexOf(product);
+      this.selectedProducts.splice(index, 1);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.shopping-page {
-  // height: 100%;
-}
-
 .newlist-btn {
   background-color: #00838f;
   //#00838f cyan-9
@@ -382,9 +386,12 @@ export default {
 .addToListDialog {
   position: relative;
 }
-// .q-item__section--side {
-//   color: $brand-color;
-// }
+.drawer-products-list {
+  padding: 30px 15px 15px;
+}
+.q-card__section--vert {
+  padding: 8px;
+}
 </style>
 
 <style>
