@@ -53,12 +53,21 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "cordova.plugins.permissions"
       ]
+    },
+    {
+      "id": "cordova-plugin-splashscreen.SplashScreen",
+      "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+      "pluginId": "cordova-plugin-splashscreen",
+      "clobbers": [
+        "navigator.splashscreen"
+      ]
     }
   ];
   module.exports.metadata = {
     "cordova-plugin-geolocation": "4.1.0",
     "cordova-plugin-whitelist": "1.3.4",
     "cordova-plugin-camera": "5.0.3",
-    "cordova-plugin-android-permissions": "1.1.5"
+    "cordova-plugin-android-permissions": "1.1.5",
+    "cordova-plugin-splashscreen": "6.0.2"
   };
 });
