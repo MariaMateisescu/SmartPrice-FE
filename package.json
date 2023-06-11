@@ -12,7 +12,7 @@
     "test:unit:ui": "vitest --ui",
     "test:unit": "vitest",
     "test:unit:ci": "vitest run",
-    "start": "quasar dev"
+    "start": "npm i && quasar dev"
   },
   "dependencies": {
     "@fawmi/vue-google-maps": "0.9.67",
@@ -29,8 +29,10 @@
     "vue3-apexcharts": "^1.4.1"
   },
   "devDependencies": {
+    "@pinia/testing": "^0.1.2",
     "@quasar/app-vite": "^1.0.0",
     "@quasar/quasar-app-extension-testing-unit-vitest": "^0.3.0",
+    "@vitest/ui": "^0.31.0",
     "@vue-leaflet/vue-leaflet": "^0.8.1",
     "@vue/devtools": "^6.5.0",
     "@vue/test-utils": "^2.0.0",
@@ -41,9 +43,8 @@
     "leaflet": "^1.9.3",
     "postcss": "^8.4.14",
     "prettier": "^2.5.1",
-    "vue-browser-geolocation": "^1.8.0",
     "vitest": "^0.31.0",
-    "@vitest/ui": "^0.31.0"
+    "vue-browser-geolocation": "^1.8.0"
   },
   "engines": {
     "node": "^18 || ^16 || ^14.19",

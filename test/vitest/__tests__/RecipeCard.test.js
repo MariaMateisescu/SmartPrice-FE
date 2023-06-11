@@ -1,99 +1,60 @@
 import { installQuasarPlugin } from "@quasar/quasar-app-extension-testing-unit-vitest";
 import { mount } from "@vue/test-utils";
 import { describe, expect, it } from "vitest";
-import ProductCard from "../../../src/components/administration/ProductCard.vue";
+import { createTestingPinia } from "@pinia/testing";
+import RecipeCard from "../../../src/components/customer/RecipeCard.vue";
 
 installQuasarPlugin();
 
-describe("Product Card", () => {
+describe("Recipe Card", () => {
   it("should mount component", () => {
-    const wrapper = mount(ProductCard, {
+    const wrapper = mount(RecipeCard, {
       props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
+        recipeInfo: {
+          title: "One Yummy recipe",
+          image: "src/assets/recipe-placeholder.jpg",
         },
+      },
+      global: {
+        plugins: [createTestingPinia()],
       },
     });
     expect(wrapper).toBeTruthy();
     console.log(wrapper.html());
   });
-
-  it("should show product name", () => {
-    const wrapper = mount(ProductCard, {
+  it("should show recipe title", () => {
+    const wrapper = mount(RecipeCard, {
       props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
+        recipeInfo: {
+          title: "One Yummy recipe",
+          image: "src/assets/recipe-placeholder.jpg",
         },
       },
     });
-    const name = wrapper.find(".product");
-    console.log(name);
-    expect(name.text()).toContain("Fussili");
+    const title = wrapper.find(".recipe-card__title");
+    expect(title.text()).toContain("One Yummy recipe");
   });
-
-  it("should show product brand", () => {
-    const wrapper = mount(ProductCard, {
+  it("should show recipe image", () => {
+    const wrapper = mount(RecipeCard, {
       props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
+        recipeInfo: {
+          title: "One Yummy recipe",
+          image: "someImage.png",
         },
       },
     });
-    const brand = wrapper.find(".product");
-    expect(brand.text()).toContain("Barilla");
+    const image = wrapper.find(".q-img__image");
+    expect(image.attributes().src).toBe("someImage.png");
   });
-
-  it("should show product weight", () => {
-    const wrapper = mount(ProductCard, {
+  it("should show recipe image placeholder", () => {
+    const wrapper = mount(RecipeCard, {
       props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
+        recipeInfo: {
+          title: "One Yummy recipe",
         },
       },
     });
-    const weight = wrapper.find(".product");
-    expect(weight.text()).toContain("500g");
-  });
-
-  it("should show product weight", () => {
-    const wrapper = mount(ProductCard, {
-      props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
-      },
-    });
-    const price = wrapper.find(".product");
-    expect(price.text()).toContain("10.49");
+    const image = wrapper.find(".q-img__image");
+    expect(image.attributes().src).toBe("src/assets/recipe-placeholder.jpg");
   });
 });

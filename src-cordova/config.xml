@@ -5,6 +5,7 @@
     <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
         Apache Cordova Team
     </author>
+    <preference name="android-targetSdkVersion" value="31" />
     <content src="index.html" />
     <allow-intent href="*" />
     <allow-intent href="http://*" />

@@ -53,6 +53,7 @@
     <splash density="land-xxxhdpi" src="res/screen/android/splash-land-xxxhdpi.png" />
     <splash density="port-xxxhdpi" src="res/screen/android/splash-port-xxxhdpi.png" />
     <preference name="loglevel" value="DEBUG" />
+    <preference name="android-targetSdkVersion" value="31" />
     <preference name="Scheme" value="https" />
     <preference name="SplashMaintainAspectRatio" value="true" />
 </widget>
