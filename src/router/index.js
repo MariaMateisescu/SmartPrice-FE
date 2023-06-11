@@ -36,15 +36,15 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   Router.beforeEach((to, from, next) => {
-    if (
-      to.meta.needsNoAdmin &&
-      userStore.authUser &&
-      userStore.authUser.role === "admin"
-    ) {
-      next("/administration");
-    } else {
-      next();
-    }
+    // if (
+    //   to.meta.needsNoAdmin &&
+    //   userStore.authUser &&
+    //   userStore.authUser.role === "admin"
+    // ) {
+    //   next("/administration");
+    // } else {
+    //   next();
+    // }
     if (to.meta.needsAdmin && !userStore.authUser) {
       next("/");
     } else if (
