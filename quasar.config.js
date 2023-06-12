@@ -70,9 +70,13 @@ module.exports = configure(function (ctx) {
       // distDir
 
       extendViteConf(viteConf) {
-        if (ctx.dev) {
-          viteConf.server.fs.allow = ["../../.."];
-        }
+        // if (ctx.dev) {
+        viteConf.server.fs.allow = ["../../.."];
+        viteConf.server = {
+          host: "0.0.0.0",
+          hmr: {},
+        };
+        // }
       },
       // viteVuePluginOptions: {},
 
