@@ -12,7 +12,6 @@
     "test:unit:ui": "vitest --ui",
     "test:unit": "vitest",
     "test:unit:ci": "vitest run",
-    "build": "npm install -g @quasar/cli && npm install",
     "start": "quasar dev"
   },
   "dependencies": {

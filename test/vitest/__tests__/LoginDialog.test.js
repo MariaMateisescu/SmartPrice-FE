@@ -1,99 +1,43 @@
 import { installQuasarPlugin } from "@quasar/quasar-app-extension-testing-unit-vitest";
 import { mount } from "@vue/test-utils";
 import { describe, expect, it } from "vitest";
-import ProductCard from "../../../src/components/administration/ProductCard.vue";
+import { createTestingPinia } from "@pinia/testing";
+import LoginDialog from "../../../src/components/customer/LoginDialog.vue";
 
 installQuasarPlugin();
 
-describe("Product Card", () => {
+describe("Login Dialog", () => {
   it("should mount component", () => {
-    const wrapper = mount(ProductCard, {
-      props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
+    const wrapper = mount(LoginDialog, {
+      global: {
+        plugins: [createTestingPinia()],
       },
     });
     expect(wrapper).toBeTruthy();
     console.log(wrapper.html());
   });
 
-  it("should show product name", () => {
-    const wrapper = mount(ProductCard, {
-      props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
-      },
-    });
-    const name = wrapper.find(".product");
-    console.log(name);
-    expect(name.text()).toContain("Fussili");
+  it("should show login illustration", () => {
+    const wrapper = mount(LoginDialog);
+    const illustration = wrapper.find(".illustration_img");
+    expect(illustration.attributes().src).toBe(
+      "/src/assets/illustrations/Login.svg"
+    );
   });
 
-  it("should show product brand", () => {
-    const wrapper = mount(ProductCard, {
-      props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
-      },
-    });
-    const brand = wrapper.find(".product");
-    expect(brand.text()).toContain("Barilla");
-  });
+  // it("should show email input", () => {
+  //   const wrapper = mount(LoginDialog);
+  //   const inputElements = wrapper.find(".login");
 
-  it("should show product weight", () => {
-    const wrapper = mount(ProductCard, {
-      props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
-      },
-    });
-    const weight = wrapper.find(".product");
-    expect(weight.text()).toContain("500g");
-  });
+  //   console.log(inputElements);
+  //   // expect(inputElements[0].element).toBe("email");
+  // });
 
-  it("should show product weight", () => {
-    const wrapper = mount(ProductCard, {
-      props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
-      },
-    });
-    const price = wrapper.find(".product");
-    expect(price.text()).toContain("10.49");
-  });
+  // it("should show password input", () => {
+  //   const wrapper = mount(LoginDialog);
+  //   const illustration = wrapper.find(".illustration_img");
+  //   expect(illustration.attributes().src).toBe(
+  //     "/src/assets/illustrations/Login.svg"
+  //   );
+  // });
 });

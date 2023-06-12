@@ -20,7 +20,7 @@
                         userStore.authUser &&
                         userStore.authUser.role === 'admin'
                       "
-                      style="color: #267378"
+                      style="color: #00838f"
                       padding="none"
                       flat
                       @click="goToAdministration"
@@ -32,7 +32,7 @@
                 <q-item clickable v-close-popup>
                   <q-item-section>
                     <q-btn
-                      style="color: #267378"
+                      style="color: #00838f"
                       flat
                       padding="none"
                       @click="logout"
@@ -94,7 +94,7 @@ export default defineComponent({
 }
 
 .header {
-  background: #267378;
+  background: #00838f;
   height: 50px;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
 }

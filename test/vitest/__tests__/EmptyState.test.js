@@ -1,99 +1,60 @@
 import { installQuasarPlugin } from "@quasar/quasar-app-extension-testing-unit-vitest";
 import { mount } from "@vue/test-utils";
 import { describe, expect, it } from "vitest";
-import ProductCard from "../../../src/components/administration/ProductCard.vue";
+import EmptyState from "../../../src/components/customer/EmptyState.vue";
 
 installQuasarPlugin();
 
-describe("Product Card", () => {
+describe("Empty State", () => {
   it("should mount component", () => {
-    const wrapper = mount(ProductCard, {
+    const wrapper = mount(EmptyState, {
       props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
+        image: "EmptyState.svg",
+        title: "Ooops test title",
+        message: "Ooops test message",
+        hasTabs: true,
       },
     });
     expect(wrapper).toBeTruthy();
     console.log(wrapper.html());
   });
 
-  it("should show product name", () => {
-    const wrapper = mount(ProductCard, {
+  it("should show empty state image", () => {
+    const wrapper = mount(EmptyState, {
       props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
+        image: "EmptyState.svg",
+        title: "Ooops test title",
+        message: "Ooops test message",
+        hasTabs: true,
       },
     });
-    const name = wrapper.find(".product");
-    console.log(name);
-    expect(name.text()).toContain("Fussili");
+    const image = wrapper.find("img");
+    expect(image.attributes().src).toBe("EmptyState.svg");
   });
 
-  it("should show product brand", () => {
-    const wrapper = mount(ProductCard, {
+  it("should show empty state title", () => {
+    const wrapper = mount(EmptyState, {
       props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
+        image: "EmptyState.svg",
+        title: "Ooops test title",
+        message: "Ooops test message",
+        hasTabs: true,
       },
     });
-    const brand = wrapper.find(".product");
-    expect(brand.text()).toContain("Barilla");
+    const title = wrapper.find(".empty-state__title");
+    expect(title.text()).toContain("Ooops test title");
   });
 
-  it("should show product weight", () => {
-    const wrapper = mount(ProductCard, {
+  it("should show empty state message", () => {
+    const wrapper = mount(EmptyState, {
       props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
+        image: "EmptyState.svg",
+        title: "Ooops test title",
+        message: "Ooops test message",
+        hasTabs: true,
       },
     });
-    const weight = wrapper.find(".product");
-    expect(weight.text()).toContain("500g");
-  });
-
-  it("should show product weight", () => {
-    const wrapper = mount(ProductCard, {
-      props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
-      },
-    });
-    const price = wrapper.find(".product");
-    expect(price.text()).toContain("10.49");
+    const message = wrapper.find(".message");
+    expect(message.text()).toContain("Ooops test message");
   });
 });

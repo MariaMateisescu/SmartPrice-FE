@@ -1,22 +1,16 @@
 import { installQuasarPlugin } from "@quasar/quasar-app-extension-testing-unit-vitest";
 import { mount } from "@vue/test-utils";
 import { describe, expect, it } from "vitest";
-import ProductCard from "../../../src/components/administration/ProductCard.vue";
+import FidelityCard from "../../../src/components/customer/FidelityCard.vue";
 
 installQuasarPlugin();
 
-describe("Product Card", () => {
+describe("Fidelity Card", () => {
   it("should mount component", () => {
-    const wrapper = mount(ProductCard, {
+    const wrapper = mount(FidelityCard, {
       props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
+        cardInfo: {
+          name: "test card name",
         },
       },
     });
@@ -24,76 +18,16 @@ describe("Product Card", () => {
     console.log(wrapper.html());
   });
 
-  it("should show product name", () => {
-    const wrapper = mount(ProductCard, {
+  it("should show card name", () => {
+    const wrapper = mount(FidelityCard, {
       props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
+        cardInfo: {
+          name: "test card name",
         },
       },
     });
-    const name = wrapper.find(".product");
+    const name = wrapper.find(".card-name");
     console.log(name);
-    expect(name.text()).toContain("Fussili");
-  });
-
-  it("should show product brand", () => {
-    const wrapper = mount(ProductCard, {
-      props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
-      },
-    });
-    const brand = wrapper.find(".product");
-    expect(brand.text()).toContain("Barilla");
-  });
-
-  it("should show product weight", () => {
-    const wrapper = mount(ProductCard, {
-      props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
-      },
-    });
-    const weight = wrapper.find(".product");
-    expect(weight.text()).toContain("500g");
-  });
-
-  it("should show product weight", () => {
-    const wrapper = mount(ProductCard, {
-      props: {
-        productInfo: {
-          name: "Fussili",
-          brand: "Barilla",
-          category: {
-            name: "Alimente de Baza",
-          },
-          weight: "500g",
-          price: "10.49",
-        },
-      },
-    });
-    const price = wrapper.find(".product");
-    expect(price.text()).toContain("10.49");
+    expect(name.text()).toContain("test card name");
   });
 });

@@ -16,9 +16,9 @@ describe("Shopping List", () => {
           status: "pending",
         },
       },
-      // global: {
-      //   plugins: [createTestingPinia()],
-      // },
+      global: {
+        plugins: [createTestingPinia()],
+      },
     });
     expect(wrapper).toBeTruthy();
     console.log(wrapper.html());
@@ -43,31 +43,26 @@ describe("Shopping List", () => {
       props: {
         shoppingListInfo: {
           name: "My test shopping list",
-          listItems: ["milk", "cheese", "asparagus", "oats", "water"].length,
+          listItems: ["milk", "cheese", "asparagus", "oats", "water"],
           status: "pending",
         },
       },
     });
     const listItems = wrapper.find(".q-item__label--caption");
-    console.log(listItems.text());
-    expect(listItems.text()).toContain("Barilla");
+    expect(listItems.text()).toContain("5");
   });
 
-  // it("should show product weight", () => {
-  //   const wrapper = mount(ProductCard, {
-  //     props: {
-  //       productInfo: {
-  //         name: "Fussili",
-  //         brand: "Barilla",
-  //         category: {
-  //           name: "Alimente de Baza",
-  //         },
-  //         weight: "500g",
-  //         price: "10.49",
-  //       },
-  //     },
-  //   });
-  //   const weight = wrapper.find(".product");
-  //   expect(weight.text()).toContain("500g");
-  // });
+  it("should show list status", () => {
+    const wrapper = mount(ShoppingList, {
+      props: {
+        shoppingListInfo: {
+          name: "My test shopping list",
+          listItems: ["milk", "cheese", "asparagus", "oats", "water"],
+          status: "pending",
+        },
+      },
+    });
+    const listStatus = wrapper.find(".q-item__label--caption");
+    expect(listStatus.text()).toContain("pending");
+  });
 });
