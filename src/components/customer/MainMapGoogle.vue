@@ -82,7 +82,7 @@
               v-for="category in categories"
               :key="category._id"
             >
-              <q-item-section thumbnail style="padding-left: 10px">
+              <q-item-section thumbnail style="color: #00838f">
                 <q-icon :name="category.icon" />
               </q-item-section>
               <q-item-section @click="viewProductsInCategory(category)">{{
