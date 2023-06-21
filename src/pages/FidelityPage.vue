@@ -1,8 +1,14 @@
 <template>
+  <div
+    v-if="!cards && userStore.authUser"
+    class="row justify-center loading-spinner"
+  >
+    <q-spinner-oval color="cyan-9" size="5em" />
+  </div>
   <div class="fideliy-page">
     <div v-if="userStore.authUser" class="fidelity-page-info">
       <div style="width: 100%">
-        <div class="fidelity-page__title" v-if="cards.length">
+        <div class="fidelity-page__title" v-if="cards && cards.length">
           <div class="text-h6">All cards</div>
           <q-btn
             class="newcard-btn"
@@ -10,7 +16,7 @@
             label="New Card"
           />
         </div>
-        <div v-if="cards.length">
+        <div v-if="cards && cards.length">
           <div class="fidelity-cards-style">
             <FidelityCard
               v-for="card in cards"
@@ -22,16 +28,9 @@
         </div>
       </div>
     </div>
-    <EmptyState
-      v-if="!userStore.authUser"
-      :image="image"
-      :title="title"
-      :message="message"
-    >
-    </EmptyState>
   </div>
   <EmptyData
-    v-if="!cards.length"
+    v-if="cards && !cards.length"
     :image="imageCards"
     :title="titleCards"
     :message="messageCards"
@@ -198,7 +197,7 @@ export default {
       imageCards: "FidelityCard.svg",
       titleCards: "Ooops! No cards to show!",
       messageCards: "Add your first card.",
-      cards: [],
+      cards: null,
       selectedCardInfo: null,
       showNewCardDialog: false,
       showDetailedCardDialog: false,
@@ -280,10 +279,10 @@ export default {
         }
       } catch (err) {
         this.$q.notify({
-          type: "positive",
+          type: "negative",
           position: "top",
           message: "Something went wrong!",
-          color: "positive",
+          color: "negative",
           timeout: "2500",
         });
       }
@@ -307,10 +306,10 @@ export default {
         }
       } catch (err) {
         this.$q.notify({
-          type: "positive",
+          type: "negative",
           position: "top",
           message: "Something went wrong!",
-          color: "positive",
+          color: "negative",
           timeout: "2500",
         });
       }

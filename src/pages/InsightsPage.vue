@@ -1,22 +1,33 @@
 <template>
+  <div
+    v-if="!completedLists && userStore.authUser"
+    class="row justify-center loading-spinner"
+  >
+    <q-spinner-oval color="cyan-9" size="5em" />
+  </div>
   <div class="insights-page">
     <div v-if="userStore.authUser">
       <div class="insights-page-title">
-        <div class="text-h6">See your shopping behaviour</div>
-        <div v-if="completedLists.length">
+        <div class="text-h6" v-if="completedLists">
+          See your shopping behaviour
+        </div>
+        <div v-if="completedLists && completedLists.length">
           Average time spent shopping:
           <strong>{{ averageTime }}</strong>
         </div>
       </div>
-      <BarChart v-if="completedLists.length" :completedLists="completedLists" />
-      <PieChart v-if="completedLists.length" />
+      <BarChart
+        v-if="completedLists && completedLists.length"
+        :completedLists="completedLists"
+      />
+      <PieChart v-if="completedLists && completedLists.length" />
     </div>
 
     <EmptyState v-else :image="image" :title="title" :message="message">
     </EmptyState>
   </div>
   <EmptyData
-    v-if="userStore.authUser && !completedLists.length"
+    v-if="userStore.authUser && completedLists && !completedLists.length"
     :image="imageEmptyData"
     :title="titleEmptyData"
     :message="messageEmptyData"
@@ -45,7 +56,7 @@ export default {
       titleEmptyData: "Ooops! Nothing to show",
       messageEmptyData: "Complete lists view your insights",
       lists: [],
-      completedLists: [],
+      completedLists: null,
       timeSpentArray: [],
       averageTime: null,
       $q: useQuasar(),

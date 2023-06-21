@@ -8,7 +8,7 @@ import axios from "axios";
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({
-  baseURL: "https://smart-price-be.onrender.com/api",
+  baseURL: "https://smart-price-be.vercel.app/api",
 });
 api.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem(
   "token"

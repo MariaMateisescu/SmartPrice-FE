@@ -1,48 +1,54 @@
 <template>
-  <div v-if="!recipes" class="q-gutter-md row justify-center">
+  <div v-if="!recipes" class="row justify-center loading-spinner">
     <q-spinner-oval color="cyan-9" size="5em" />
   </div>
-  <div v-else>
-    <div class="inspiration-page">
-      <div>
-        <q-tabs
-          v-model="tab"
-          dense
-          class="text-grey"
-          active-color="cyan-9"
-          indicator-color="cyan-9"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab name="allRecipes" label="All recipes" />
-          <q-tab name="myRecipes" label="My recipes" />
-        </q-tabs>
+  <div v-else class="inspiration-page">
+    <div>
+      <q-tabs
+        v-model="tab"
+        dense
+        class="text-grey"
+        active-color="cyan-9"
+        indicator-color="cyan-9"
+        align="justify"
+        narrow-indicator
+      >
+        <q-tab name="allRecipes" label="All recipes" />
+        <q-tab name="myRecipes" label="My recipes" />
+      </q-tabs>
 
-        <q-separator />
+      <q-separator />
 
-        <q-pull-to-refresh @refresh="refresh" color="cyan-9">
-          <q-tab-panels v-model="tab" animated>
-            <q-tab-panel name="allRecipes">
-              <div class="text-h6">Browse for recipes</div>
-              <RecipeCard
-                v-for="recipe in recipes"
-                :key="recipe.id"
-                :recipeInfo="recipe"
-                :isSaved="check(recipe.id)"
-                @recipeSaved="addRecipeToSavedRecipes"
-                @recipeUnsaved="removeRecipeFromSavedRecipes"
-                @detailedRecipe="showDetailedRecipeDialog"
-                @addToFavNoUser="tab = 'myRecipes'"
-              />
-              <EmptyData
-                v-if="!recipes.length"
-                image="Void.svg"
-                title="Nothing to show"
-                message=""
-              ></EmptyData>
-            </q-tab-panel>
+      <q-pull-to-refresh @refresh="refresh" color="cyan-9">
+        <q-tab-panels v-model="tab" animated>
+          <q-tab-panel name="allRecipes" class="all-recipes">
+            <div class="text-h6">Browse for recipes</div>
+            <RecipeCard
+              v-for="recipe in recipes"
+              :key="recipe.id"
+              :recipeInfo="recipe"
+              :isSaved="check(recipe.id)"
+              @recipeSaved="addRecipeToSavedRecipes"
+              @recipeUnsaved="removeRecipeFromSavedRecipes"
+              @detailedRecipe="showDetailedRecipeDialog"
+              @addToFavNoUser="tab = 'myRecipes'"
+            />
+            <EmptyData
+              v-if="!recipes.length"
+              image="Void.svg"
+              title="Nothing to show"
+              message=""
+            ></EmptyData>
+          </q-tab-panel>
 
-            <q-tab-panel name="myRecipes" v-if="userStore.authUser">
+          <q-tab-panel name="myRecipes" v-if="userStore.authUser">
+            <div
+              v-if="!savedRecipes"
+              class="row justify-center loading-spinner"
+            >
+              <q-spinner-oval color="cyan-9" size="5em" />
+            </div>
+            <div v-else>
               <div class="text-h6">Saved recipes</div>
               <RecipeCard
                 v-for="recipe in savedRecipes"
@@ -53,102 +59,102 @@
                 @detailedRecipe="showDetailedRecipeDialog"
               />
               <EmptyData
-                v-if="!savedRecipes.length"
+                v-if="savedRecipes && !savedRecipes.length"
                 image="Void.svg"
                 title="Nothing to show"
                 message="Save a recipe"
               ></EmptyData>
-            </q-tab-panel>
-            <q-tab-panel name="myRecipes" v-else style="padding: 0px">
-              <EmptyState
-                :image="image"
-                :title="title"
-                :message="message"
-                :hasTabs="true"
-              >
-              </EmptyState>
-            </q-tab-panel>
-          </q-tab-panels>
-        </q-pull-to-refresh>
-      </div>
-      <q-dialog seamless maximized v-model="showDetailedRecipe">
-        <q-card>
-          <q-card-section class="recipe-info-upper-section">
-            <div class="recipe-info-close-btn">
-              <q-btn icon="close" flat round dense v-close-popup size="lg" />
             </div>
-
-            <div class="asd">
-              <q-img
-                v-if="detailedRecipeToShow.image"
-                :src="detailedRecipeToShow.image"
-                alt="Recipe image"
-                class="recipe-info-image"
-              />
-              <q-img
-                v-if="!detailedRecipeToShow.image"
-                class="recipe-card__image"
-                src="src/assets/recipe-placeholder.jpg"
-              >
-              </q-img>
-            </div>
-          </q-card-section>
-          <q-card-section
-            ><div class="detailed-recipe-title">
-              {{ detailedRecipeToShow.title }}
-            </div></q-card-section
-          >
-          <q-card-section style="font-size: 16px">
-            <div class="flex justify-between">
-              <div class="ready-in">
-                <q-icon name="restaurant" color="blue-grey-9"></q-icon>
-                {{ detailedRecipeToShow.servings }}
-                {{ detailedRecipeToShow.servings > 1 ? "servings" : "serving" }}
-              </div>
-              <div>
-                <q-icon name="link" size="22px" class="q-mr-xs"></q-icon>
-                <a
-                  :href="detailedRecipeToShow.sourceUrl"
-                  style="text-decoration: none"
-                  >See recipe</a
-                >
-              </div>
-            </div>
-            <div class="ready-in">
-              <q-icon name="schedule" color="blue-grey-9"></q-icon> Ready in
-              {{ detailedRecipeToShow.readyInMinutes }} minutes
-            </div>
-          </q-card-section>
-
-          <q-card-section style="font-size: 16px">
-            <div class="recipe-ingredients">
-              <div class="you-will-need">
-                You will need:
-                <div>
-                  <q-btn
-                    color="cyan-9"
-                    icon="add_shopping_cart"
-                    round
-                    @click="createShoppingListFromRecipe"
-                  ></q-btn>
-                </div>
-              </div>
-              <li
-                v-for="ingredient in detailedRecipeToShow.extendedIngredients"
-                :key="ingredient.id"
-              >
-                {{ ingredient.amount }} {{ ingredient.unit }}
-                {{ ingredient.nameClean }}
-              </li>
-            </div>
-          </q-card-section>
-          <q-card-section style="font-size: 16px">
-            <div>Instructions:</div>
-            <div v-html="detailedRecipeToShow.instructions"></div>
-          </q-card-section>
-        </q-card>
-      </q-dialog>
+          </q-tab-panel>
+          <q-tab-panel name="myRecipes" v-else style="padding: 0px">
+            <EmptyState
+              :image="image"
+              :title="title"
+              :message="message"
+              :hasTabs="true"
+            >
+            </EmptyState>
+          </q-tab-panel>
+        </q-tab-panels>
+      </q-pull-to-refresh>
     </div>
+    <q-dialog seamless maximized v-model="showDetailedRecipe">
+      <q-card>
+        <q-card-section class="recipe-info-upper-section">
+          <div class="recipe-info-close-btn">
+            <q-btn icon="close" flat round dense v-close-popup size="lg" />
+          </div>
+
+          <div class="asd">
+            <q-img
+              v-if="detailedRecipeToShow.image"
+              :src="detailedRecipeToShow.image"
+              alt="Recipe image"
+              class="recipe-info-image"
+            />
+            <q-img
+              v-if="!detailedRecipeToShow.image"
+              class="recipe-card__image"
+              src="src/assets/recipe-placeholder.jpg"
+            >
+            </q-img>
+          </div>
+        </q-card-section>
+        <q-card-section
+          ><div class="detailed-recipe-title">
+            {{ detailedRecipeToShow.title }}
+          </div></q-card-section
+        >
+        <q-card-section style="font-size: 16px">
+          <div class="flex justify-between">
+            <div class="ready-in">
+              <q-icon name="restaurant" color="blue-grey-9"></q-icon>
+              {{ detailedRecipeToShow.servings }}
+              {{ detailedRecipeToShow.servings > 1 ? "servings" : "serving" }}
+            </div>
+            <div>
+              <q-icon name="link" size="22px" class="q-mr-xs"></q-icon>
+              <a
+                :href="detailedRecipeToShow.sourceUrl"
+                style="text-decoration: none"
+                >See recipe</a
+              >
+            </div>
+          </div>
+          <div class="ready-in">
+            <q-icon name="schedule" color="blue-grey-9"></q-icon> Ready in
+            {{ detailedRecipeToShow.readyInMinutes }} minutes
+          </div>
+        </q-card-section>
+
+        <q-card-section style="font-size: 16px">
+          <div class="recipe-ingredients">
+            <div class="you-will-need">
+              You will need:
+              <div>
+                <q-btn
+                  color="cyan-9"
+                  icon="add_shopping_cart"
+                  round
+                  @click="createShoppingListFromRecipe"
+                ></q-btn>
+              </div>
+            </div>
+            <li
+              v-for="ingredient in detailedRecipeToShow.extendedIngredients"
+              :key="ingredient.id"
+            >
+              {{ ingredient.amount }} {{ ingredient.unit }}
+              {{ ingredient.nameClean }}
+            </li>
+          </div>
+        </q-card-section>
+        <q-card-section style="font-size: 16px">
+          <div>Instructions:</div>
+          <div v-html="detailedRecipeToShow.instructions"></div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -175,7 +181,7 @@ export default {
       message: "Log in to see recipes",
       tab: "allRecipes",
       recipes: null,
-      savedRecipes: [],
+      savedRecipes: null,
       savedRecipesIds: [],
       showDetailedRecipe: false,
       detailedRecipeToShow: null,
@@ -235,6 +241,9 @@ export default {
         },
       };
       const resRecipe = await this.$api.request(options);
+      if (!this.savedRecipes) {
+        this.savedRecipes = [];
+      }
       this.savedRecipes = [...this.savedRecipes, ...resRecipe.data];
     },
     addRecipeToSavedRecipes(recipeInfo) {
@@ -272,7 +281,7 @@ export default {
           type: "positive",
           position: "top",
           message: "Shopping list created successfully",
-          color: "cyan-9",
+          color: "positive",
           timeout: "2500",
         });
       }

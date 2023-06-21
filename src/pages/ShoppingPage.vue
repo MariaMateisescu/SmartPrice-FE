@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!shoppingLists && userStore.authUser"
-    class="q-gutter-md row justify-center"
+    class="row justify-center loading-spinner"
   >
     <q-spinner-oval color="cyan-9" size="5em" />
   </div>
@@ -286,14 +286,14 @@ export default {
           selectedProducts: this.selectedProducts,
           isRecipe: 0,
         };
+        this.$q.loading.show({
+          message: "Creating list...",
+        });
 
         const res = await this.$api.post(
           "/shopping-lists/create-shopping-list",
           data
         );
-        this.$q.loading.show({
-          message: "Some important process  is in progress. Hang on...",
-        });
         if (res.data.status === "success") {
           this.$q.loading.hide();
           this.$q.notify({
@@ -357,8 +357,6 @@ export default {
 <style lang="scss" scoped>
 .newlist-btn {
   background-color: #00838f;
-  //#00838f cyan-9
-  // background-color: $cyan-9;
   color: white;
   margin: 10px;
 }
@@ -391,20 +389,5 @@ export default {
 }
 .q-card__section--vert {
   padding: 8px;
-}
-</style>
-
-<style>
-.q-drawer--on-top {
-  z-index: 7000 !important;
-}
-.q-select__dialog {
-  position: absolute;
-  top: 173px;
-  width: 100vw !important;
-  max-width: 100vw !important;
-}
-.q-drawer__backdrop {
-  z-index: 7000 !important;
 }
 </style>

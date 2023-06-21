@@ -32,7 +32,7 @@
         <q-input v-model="brand" type="text" label="Brand" />
         <q-input v-model="weight" type="text" label="Weight" />
         <q-input v-model="price" type="number" label="Price" />
-        <q-btn color="secondary" @click="saveProduct">Save Product</q-btn>
+        <q-btn color="cyan-9" @click="saveProduct">Save Product</q-btn>
       </q-card-section>
     </q-card>
   </q-dialog>

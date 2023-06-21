@@ -135,7 +135,10 @@ export default defineComponent({
   gap: 20px;
 }
 .q-page-container__style {
-  padding-top: 50px;
+  // margin-top: 50px;
+  // margin-bottom: 49px;
+  padding-top: 50px !important;
+  padding-bottom: 50px !important;
   height: calc(100vh - 99px);
 }
 .header {
