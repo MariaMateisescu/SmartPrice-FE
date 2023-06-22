@@ -24,7 +24,7 @@
       >
         <div class="flex list-item">
           <div>{{ listItem.item }}</div>
-          <q-icon v-if="listItem.status === 'bought'" name="done_outline" />
+          <q-icon v-if="listItem.status === 'bought'" name="check" />
           <q-icon v-if="listItem.status === 'not_bought'" name="close" />
         </div>
         <q-separator></q-separator>

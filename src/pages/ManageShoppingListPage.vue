@@ -5,8 +5,8 @@
       v-model="tab"
       dense
       class="text-grey"
-      active-color="teal"
-      indicator-color="teal"
+      active-color="cyan-9"
+      indicator-color="cyan-9"
       align="justify"
       narrow-indicator
     >
@@ -38,9 +38,9 @@
             :key="item._id"
           >
             <q-item-section>
-              <div>
+              <div class="flex justify-between">
                 {{ item.item }}
-                <q-icon v-if="item.status === 'bought'" name="done_outline" />
+                <q-icon v-if="item.status === 'bought'" name="done" />
                 <q-icon v-if="item.status === 'not_bought'" name="close" />
               </div>
               <q-separator v-if="index !== list.listItems.length - 1" />
@@ -120,19 +120,25 @@
             <q-card flat bordered v-if="location.count !== 0">
               <q-card-section>
                 <div>{{ location.name }}</div>
-                <div>
+                <i>
                   {{ location.count }}/{{ list.listItems.length }} items
                   available
-                </div>
+                </i>
                 <q-separator></q-separator>
                 <div
                   v-for="avItem in location.availableItems"
                   :key="avItem._id"
                 >
-                  {{ avItem.name }} | {{ avItem.price }} lei
+                  <div class="flex justify-between">
+                    <div>{{ avItem.name }}</div>
+                    <div>{{ avItem.price }} lei</div>
+                  </div>
                 </div>
                 <q-separator></q-separator>
-                <div>Total: {{ location.total.toFixed(2) }} lei</div>
+                <div class="flex justify-between">
+                  <strong>Total:</strong>
+                  <strong>{{ location.total.toFixed(2) }} lei</strong>
+                </div>
               </q-card-section>
             </q-card>
           </div>
