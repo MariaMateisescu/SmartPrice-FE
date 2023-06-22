@@ -223,13 +223,7 @@ export default {
       userStore: useUserStore(),
       $q: useQuasar(),
       timer: null,
-      name:
-        new Date().toLocaleDateString("en-GB") +
-        " " +
-        new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
+      name: null,
       categoryUniqueProductsInfo: null,
     };
   },
@@ -242,6 +236,17 @@ export default {
     isDisabled() {
       return !this.selectedProducts.length;
     },
+  },
+  beforeUpdate() {
+    if (!this.showNewListDialog) {
+      this.name =
+        new Date().toLocaleDateString("en-GB") +
+        " " +
+        new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+    }
   },
   async mounted() {
     const dashHeader = useDashHeaderStore();

@@ -111,45 +111,60 @@
             @change="sliderChanged"
           />
         </div>
-        <div v-if="filteredLocationsInRadius.length">
-          <div>Locations List</div>
-          <div
-            v-for="location in filteredLocationsInRadius"
-            :key="location.coordinates"
-          >
-            <q-card flat bordered v-if="location.count !== 0">
-              <q-card-section>
-                <div>{{ location.name }}</div>
-                <i>
-                  {{ location.count }}/{{ list.listItems.length }} items
-                  available
-                </i>
-                <q-separator></q-separator>
-                <div
-                  v-for="avItem in location.availableItems"
-                  :key="avItem._id"
-                >
-                  <div class="flex justify-between">
-                    <div>{{ avItem.name }}</div>
-                    <div>{{ avItem.price }} lei</div>
-                  </div>
-                </div>
-                <q-separator></q-separator>
-                <div class="flex justify-between">
-                  <strong>Total:</strong>
-                  <strong>{{ location.total.toFixed(2) }} lei</strong>
-                </div>
-              </q-card-section>
-            </q-card>
-          </div>
+        <div
+          v-if="!calculatedLocations"
+          class="row justify-center loading-spinner q-mt-xl"
+        >
+          <q-spinner-oval color="cyan-9" size="5em" />
         </div>
+        <div v-else class="q-mt-sm">
+          <div
+            v-if="filteredLocationsInRadius && filteredLocationsInRadius.length"
+          >
+            <div
+              v-for="location in filteredLocationsInRadius"
+              :key="location.coordinates"
+            >
+              <q-card
+                flat
+                bordered
+                v-if="location.count !== 0"
+                class="location-card"
+              >
+                <q-card-section>
+                  <div>{{ location.name }}</div>
+                  <i>
+                    {{ location.count }}/{{ list.listItems.length }} items
+                    available
+                  </i>
+                  <q-separator></q-separator>
+                  <div
+                    v-for="avItem in location.availableItems"
+                    :key="avItem._id"
+                  >
+                    <div class="flex justify-between">
+                      <div>{{ avItem.name }}</div>
+                      <div>{{ avItem.price }} lei</div>
+                    </div>
+                  </div>
+                  <q-separator></q-separator>
+                  <div class="flex justify-between">
+                    <strong>Total:</strong>
+                    <strong>{{ location.total.toFixed(2) }} lei</strong>
+                  </div>
+                </q-card-section>
+              </q-card>
+            </div>
+          </div>
 
-        <EmptyData
-          v-else
-          :image="image"
-          :title="title"
-          :message="message"
-        ></EmptyData>
+          <EmptyData
+            class="q-mt-xl"
+            v-else
+            :image="image"
+            :title="title"
+            :message="message"
+          ></EmptyData>
+        </div>
       </q-tab-panel>
     </q-tab-panels>
   </div>
@@ -169,7 +184,7 @@ export default {
   data() {
     return {
       boughtItems: [],
-      calculatedLocations: [],
+      calculatedLocations: null,
       list: null,
       tab: "list",
       latlng: "",
@@ -192,7 +207,10 @@ export default {
       } else return null;
     },
     filteredLocationsInRadius() {
-      return this.calculatedLocations.filter((location) => location.count != 0);
+      return (
+        this.calculatedLocations &&
+        this.calculatedLocations.filter((location) => location.count != 0)
+      );
     },
   },
   async mounted() {
@@ -342,6 +360,16 @@ export default {
   right: 0;
   margin: 0 auto;
   padding: 0 15px;
-  /* background: radial-gradient(#e5e5e5, #e5e5e562); */
+}
+.location-card {
+  margin-bottom: 8px;
+}
+.locations-list__title {
+  font-weight: 700;
+  padding: 10px 5px;
+  font-size: 14px;
+}
+.q-card__section--vert {
+  padding: 10px 16px;
 }
 </style>

@@ -13,7 +13,8 @@
     "test:unit": "vitest",
     "test:unit:ci": "vitest run",
     "start": "quasar dev",
-    "start:prod": "quasar run"
+    "start:prod": "quasar run",
+    "android:build": "quasar build -m android -d"
   },
   "dependencies": {
     "@fawmi/vue-google-maps": "0.9.67",
