@@ -30,7 +30,7 @@ import { Html5Qrcode } from "html5-qrcode";
 // import { Html5QrcodeScanner } from "html5-qrcode";
 export default {
   emits: ["cardSavedSuccessfully"],
-  // props: ["stopCamera"],
+  props: ["stopCamera"],
   data() {
     return {
       qrCodeScanner: null,
@@ -42,15 +42,7 @@ export default {
     };
   },
   async mounted() {
-    // TODO: check permissions according to platform
-    // let permissions = cordova.plugins.permissions;
-    // await permissions.requestPermission(
-    //   permissions.CAMERA,
-    //   this.success,
-    //   this.error
-    // );
-    if (this.$q.platform.is.mobile) {
-      console.log("mobbile");
+    if (this.$q.platform.is.cordova) {
       let permissions = cordova.plugins.permissions;
       await permissions.requestPermission(
         permissions.CAMERA,
@@ -96,8 +88,6 @@ export default {
       this.qrCodeScanner.pause(true);
     },
     onScanFailure(error) {
-      // handle scan failure, usually better to ignore and keep scanning.
-      // for example:
       console.warn(`Code scan error = ${error}`);
     },
     error() {
@@ -111,6 +101,11 @@ export default {
         { qrbox: 250 },
         this.onScanSuccess
       );
+    },
+  },
+  watch: {
+    stopCamera(after, before) {
+      if (after) this.qrCodeScanner.stop(true);
     },
   },
 };

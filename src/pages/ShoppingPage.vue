@@ -364,7 +364,6 @@ export default {
 .q-card__height {
   height: 100vh;
   max-height: calc(100vh - 50px) !important;
-  background-color: #eee;
 }
 
 .shopping-page-sticky {

@@ -24,7 +24,7 @@
           @closeclick="openMarker(null)"
           :opened="openedMarkerID === location.location._id"
         >
-          <div>{{ location.location.address }}</div>
+          <div style="color: black">{{ location.location.address }}</div>
           <button
             @click="showLocationDetailsDialog(location)"
             class="location-details-button"
