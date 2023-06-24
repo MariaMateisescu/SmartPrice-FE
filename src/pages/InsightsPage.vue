@@ -124,8 +124,8 @@ export default {
 
 <style scoped>
 .insights-page {
-  /* height: 100%; */
-  /* overflow-y: scroll; */
+  height: 100%;
+  overflow-y: scroll;
 }
 .insights-page-title {
   margin: 8px 20px;

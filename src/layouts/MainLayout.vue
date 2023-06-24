@@ -137,9 +137,9 @@ export default defineComponent({
 .q-page-container__style {
   // margin-top: 50px;
   // margin-bottom: 49px;
-  padding-top: 50px !important;
-  padding-bottom: 50px !important;
-  height: calc(100vh - 99px);
+  // padding-top: 50px !important;
+  // padding-bottom: 50px !important;
+  height: 100vh;
 }
 .header {
   background: $brand-color;

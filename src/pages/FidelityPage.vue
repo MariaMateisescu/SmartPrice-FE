@@ -115,6 +115,12 @@
         <BarcodeScanner
           @cardSavedSuccessfully="onCardSaved"
           :stopCamera="stopCamera"
+          v-if="!this.$q.platform.is.cordova"
+        />
+        <BarcodeScannerMobile
+          v-if="this.$q.platform.is.cordova"
+          @cardSavedSuccessfully="onCardSaved"
+          :stopCamera="stopCamera"
         />
       </q-card-section>
     </q-card>
@@ -188,6 +194,7 @@ import { useDashHeaderStore } from "src/stores/dash-header";
 import EmptyState from "src/components/customer/EmptyState.vue";
 import EmptyData from "src/components/customer/EmptyData.vue";
 import BarcodeScanner from "src/components/customer/BarcodeScanner.vue";
+import BarcodeScannerMobile from "src/components/customer/BarcodeScannerMobile.vue";
 import FidelityCard from "src/components/customer/FidelityCard.vue";
 import useQuasar from "quasar/src/composables/use-quasar.js";
 
@@ -198,6 +205,7 @@ export default {
     EmptyData,
     BarcodeScanner,
     FidelityCard,
+    BarcodeScannerMobile,
   },
   data() {
     return {

@@ -310,7 +310,8 @@ export default {
 
 <style scoped lang="scss">
 .inspiration-page {
-  // height: 100%;
+  height: 100%;
+  overflow-y: scroll;
 }
 
 .recipe-info-upper-section {

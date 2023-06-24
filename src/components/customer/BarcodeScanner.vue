@@ -42,21 +42,12 @@ export default {
     };
   },
   async mounted() {
-    if (this.$q.platform.is.cordova) {
-      let permissions = cordova.plugins.permissions;
-      await permissions.requestPermission(
-        permissions.CAMERA,
-        this.success,
-        this.error
-      );
-    } else {
-      this.qrCodeScanner = new Html5Qrcode("qr-code-reader");
-      this.qrCodeScanner.start(
-        { facingMode: "environment" },
-        { qrbox: 250 },
-        this.onScanSuccess
-      );
-    }
+    this.qrCodeScanner = new Html5Qrcode("qr-code-reader");
+    this.qrCodeScanner.start(
+      { facingMode: "environment" },
+      { qrbox: 250 },
+      this.onScanSuccess
+    );
   },
   methods: {
     async addCard() {
@@ -89,18 +80,6 @@ export default {
     },
     onScanFailure(error) {
       console.warn(`Code scan error = ${error}`);
-    },
-    error() {
-      console.warn("Camera permission is not turned on");
-    },
-    success(status) {
-      if (!status.hasPermission) error();
-      this.qrCodeScanner = new Html5Qrcode("qr-code-reader");
-      this.qrCodeScanner.start(
-        { facingMode: "environment" },
-        { qrbox: 250 },
-        this.onScanSuccess
-      );
     },
   },
   watch: {

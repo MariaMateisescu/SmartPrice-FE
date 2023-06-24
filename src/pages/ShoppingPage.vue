@@ -5,161 +5,159 @@
   >
     <q-spinner-oval color="cyan-9" size="5em" />
   </div>
-  <div v-if="shoppingLists && userStore.authUser">
-    <div class="shopping-page">
-      <q-drawer
-        side="right"
-        v-model="drawerRight"
-        bordered
-        elevated
-        :width="250"
-        :breakpoint="500"
-      >
-        <q-scroll-area class="fit">
-          <div class="drawer-products-list" style="font-size: 16px">
-            <div v-if="!selectedProducts.length">Shopping cart is empty.</div>
-            <div v-for="product in selectedProducts" :key="product">
-              <div class="flex justify-between" style="padding: 5px">
-                <div>
-                  {{ product }}
-                </div>
-                <div>
-                  <q-icon
-                    name="close"
-                    @click="removeFromSelectedProducts(product)"
-                  ></q-icon>
-                </div>
+  <div v-if="shoppingLists && userStore.authUser" class="shopping-page">
+    <q-drawer
+      side="right"
+      v-model="drawerRight"
+      bordered
+      elevated
+      :width="250"
+      :breakpoint="500"
+    >
+      <q-scroll-area class="fit">
+        <div class="drawer-products-list" style="font-size: 16px">
+          <div v-if="!selectedProducts.length">Shopping cart is empty.</div>
+          <div v-for="product in selectedProducts" :key="product">
+            <div class="flex justify-between" style="padding: 5px">
+              <div>
+                {{ product }}
               </div>
-              <q-separator></q-separator>
+              <div>
+                <q-icon
+                  name="close"
+                  @click="removeFromSelectedProducts(product)"
+                ></q-icon>
+              </div>
             </div>
+            <q-separator></q-separator>
           </div>
-          <div class="q-pa-md flex justify-end">
-            <q-btn
-              @click="createShoppingList"
-              label="Create List"
-              color="cyan-9"
-              rounded
-              :disable="isDisabled"
-            />
-          </div>
-        </q-scroll-area>
-      </q-drawer>
-      <q-dialog
-        v-model="showNewListDialog"
-        seamless
-        position="bottom"
-        class="addToListDialog"
-      >
-        <q-card class="q-card__height">
-          <q-card-section class="row items-center q-pb-none">
-            <div class="text-h6">What do you need?</div>
-            <q-space />
-            <q-btn icon="close" flat round dense v-close-popup />
-          </q-card-section>
-          <q-input
-            color="cyan-9"
-            filled
-            v-model="name"
-            label="List name"
-            class="q-mb-md"
-          >
-            <template v-slot:prepend>
-              <q-icon name="edit_note" />
-            </template>
-          </q-input>
-          <q-separator></q-separator>
-
-          <q-select
-            class="searchProduct"
-            ref="selectProduct"
-            label="Search for product"
-            filled
-            color="cyan-9"
-            v-model="query"
-            use-input
-            hide-selected
-            fill-input
-            input-debounce="0"
-            :options="search"
-            @filter="filterFn"
-            hint="Minimum 2 characters to trigger filtering"
-            style="width: 100%; padding-bottom: 32px"
-          >
-            <template v-slot:no-option>
-              <q-item>
-                <q-item-section class="text-grey"> No results </q-item-section>
-              </q-item>
-            </template>
-            <template v-slot:prepend>
-              <q-icon name="search" />
-            </template>
-            <template v-slot:option="scope">
-              <q-item>
-                <q-item-section avatar>
-                  <q-checkbox
-                    class="product-checkbox"
-                    color="cyan-9"
-                    v-model="selectedProducts"
-                    :label="scope.opt"
-                    :val="scope.opt"
-                  ></q-checkbox>
-                </q-item-section>
-              </q-item>
-            </template>
-          </q-select>
-          <div v-if="!categoryUniqueProductsInfo" class="addToListDialog">
-            <q-item
-              clickable
-              v-ripple
-              v-for="category in categories"
-              :key="category._id"
-            >
-              <q-item-section thumbnail style="padding-left: 10px">
-                <q-icon color="cyan-9" :name="category.icon" />
-              </q-item-section>
-              <q-item-section
-                @click="viewProductsInCategory(category)"
-                style="font-size: 16px"
-                >{{ category.name }}</q-item-section
-              >
-            </q-item>
-          </div>
-          <CategoryUniqueProducts
-            v-if="categoryUniqueProductsInfo"
-            :categoryUniqueProductsInfo="categoryUniqueProductsInfo"
-            @goBackToCategories="categoryUniqueProductsInfo = null"
-            :modelValue="selectedProducts"
-            @update:modelValue="(value) => (selectedProducts = value)"
-          />
+        </div>
+        <div class="q-pa-md flex justify-end">
           <q-btn
-            fab
-            icon="shopping_cart"
+            @click="createShoppingList"
+            label="Create List"
             color="cyan-9"
-            class="shopping-page-sticky-btn"
-            @click="openDrawer"
-          >
-            <q-badge color="red" floating v-if="selectedProducts.length">{{
-              selectedProducts.length
-            }}</q-badge></q-btn
-          >
-        </q-card>
-      </q-dialog>
+            rounded
+            :disable="isDisabled"
+          />
+        </div>
+      </q-scroll-area>
+    </q-drawer>
+    <q-dialog
+      v-model="showNewListDialog"
+      seamless
+      position="bottom"
+      class="addToListDialog"
+    >
+      <q-card class="q-card__height">
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">What do you need?</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+        <q-input
+          color="cyan-9"
+          filled
+          v-model="name"
+          label="List name"
+          class="q-mb-md"
+        >
+          <template v-slot:prepend>
+            <q-icon name="edit_note" />
+          </template>
+        </q-input>
+        <q-separator></q-separator>
 
-      <div v-if="userStore.authUser">
+        <q-select
+          class="searchProduct"
+          ref="selectProduct"
+          label="Search for product"
+          filled
+          color="cyan-9"
+          v-model="query"
+          use-input
+          hide-selected
+          fill-input
+          input-debounce="0"
+          :options="search"
+          @filter="filterFn"
+          hint="Minimum 2 characters to trigger filtering"
+          style="width: 100%; padding-bottom: 32px"
+        >
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey"> No results </q-item-section>
+            </q-item>
+          </template>
+          <template v-slot:prepend>
+            <q-icon name="search" />
+          </template>
+          <template v-slot:option="scope">
+            <q-item>
+              <q-item-section avatar>
+                <q-checkbox
+                  class="product-checkbox"
+                  color="cyan-9"
+                  v-model="selectedProducts"
+                  :label="scope.opt"
+                  :val="scope.opt"
+                ></q-checkbox>
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+        <div v-if="!categoryUniqueProductsInfo" class="addToListDialog">
+          <q-item
+            clickable
+            v-ripple
+            v-for="category in categories"
+            :key="category._id"
+          >
+            <q-item-section thumbnail style="padding-left: 10px">
+              <q-icon color="cyan-9" :name="category.icon" />
+            </q-item-section>
+            <q-item-section
+              @click="viewProductsInCategory(category)"
+              style="font-size: 16px"
+              >{{ category.name }}</q-item-section
+            >
+          </q-item>
+        </div>
+        <CategoryUniqueProducts
+          v-if="categoryUniqueProductsInfo"
+          :categoryUniqueProductsInfo="categoryUniqueProductsInfo"
+          @goBackToCategories="categoryUniqueProductsInfo = null"
+          :modelValue="selectedProducts"
+          @update:modelValue="(value) => (selectedProducts = value)"
+        />
         <q-btn
-          v-if="shoppingLists.length > 0"
-          class="newlist-btn"
-          @click="showNewListDialog = true"
-          label="New List"
-        />
-        <ShoppingList
-          v-for="shoppingList in shoppingLists"
-          :key="shoppingList.id"
-          :shoppingListInfo="shoppingList"
-          @deletedList="removeListFromArray"
-          @editedList="editListFromArray"
-        />
-      </div>
+          fab
+          icon="shopping_cart"
+          color="cyan-9"
+          class="shopping-page-sticky-btn"
+          @click="openDrawer"
+        >
+          <q-badge color="red" floating v-if="selectedProducts.length">{{
+            selectedProducts.length
+          }}</q-badge></q-btn
+        >
+      </q-card>
+    </q-dialog>
+
+    <div v-if="userStore.authUser">
+      <q-btn
+        v-if="shoppingLists.length > 0"
+        class="newlist-btn"
+        @click="showNewListDialog = true"
+        label="New List"
+      />
+      <ShoppingList
+        v-for="shoppingList in shoppingLists"
+        :key="shoppingList.id"
+        :shoppingListInfo="shoppingList"
+        @deletedList="removeListFromArray"
+        @editedList="editListFromArray"
+      />
     </div>
   </div>
   <EmptyData
@@ -370,7 +368,10 @@ export default {
   height: 100vh;
   max-height: calc(100vh - 50px) !important;
 }
-
+.shopping-page {
+  height: 100%;
+  overflow-y: scroll;
+}
 .shopping-page-sticky {
   transform: translate(0px, 0px) !important;
   display: flex;
