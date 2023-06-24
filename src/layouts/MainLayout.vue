@@ -15,6 +15,12 @@
           style="margin-left: 10px; font-size: 25px"
         ></q-icon>
         <q-toolbar-title>{{ dashHeader.title }}</q-toolbar-title>
+        <a
+          v-if="!this.$q.platform.is.cordova"
+          href="https://smart-price.s3.us-east-1.amazonaws.com/app-debug.apk"
+          download
+          >DOWNLOAD THE APP</a
+        >
         <div v-if="userStore.authUser">
           <q-avatar color="brown-3" text-color="white">{{
             userStore.authUser.name[0]
@@ -108,12 +114,13 @@
 import { defineComponent } from "vue";
 import { useUserStore } from "../stores/UserStore";
 import { useDashHeaderStore } from "../stores/dash-header";
-
+import useQuasar from "quasar/src/composables/use-quasar.js";
 export default defineComponent({
   name: "MainLayout",
   setup() {
     const userStore = useUserStore();
     const dashHeader = useDashHeaderStore();
+    const $q = useQuasar();
     return {
       userStore,
       dashHeader,
