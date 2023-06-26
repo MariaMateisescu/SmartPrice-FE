@@ -19,8 +19,15 @@
           v-if="!this.$q.platform.is.cordova"
           href="https://smart-price.s3.us-east-1.amazonaws.com/app-debug.apk"
           download
-          >DOWNLOAD THE APP</a
         >
+          <q-icon
+            name="install_mobile"
+            size="24px"
+            class="q-mr-sm download-apk"
+            @click="downloadApk"
+          ></q-icon
+        ></a>
+
         <div v-if="userStore.authUser">
           <q-avatar color="brown-3" text-color="white">{{
             userStore.authUser.name[0]
@@ -161,6 +168,9 @@ export default defineComponent({
   // justify-content: space-between;
 
   align-items: center;
+}
+.download-apk {
+  color: #fff !important;
 }
 </style>
 
