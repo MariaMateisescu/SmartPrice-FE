@@ -3,6 +3,7 @@
     <!-- <p>Scan barcode or QR code</p> -->
     <div id="qr-code-reader"></div>
     <div>Scanned code {{ qrCodeText }}</div>
+    <q-spinner-oval color="grey-1" size="1px" />
     <q-input type="text" placeholder="Card name" v-model="cardName"></q-input>
     <q-input
       filled
@@ -27,7 +28,7 @@
 <script>
 import { useQuasar } from "quasar";
 import { Html5Qrcode } from "html5-qrcode";
-// import { Html5QrcodeScanner } from "html5-qrcode";
+
 export default {
   emits: ["cardSavedSuccessfully"],
   props: ["stopCamera"],

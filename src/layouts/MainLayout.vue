@@ -24,7 +24,6 @@
             name="install_mobile"
             size="24px"
             class="q-mr-sm download-apk"
-            @click="downloadApk"
           ></q-icon
         ></a>
 

@@ -159,21 +159,21 @@
         @editedList="editListFromArray"
       />
     </div>
+    <EmptyData
+      v-if="shoppingLists && shoppingLists.length == 0 && userStore.authUser"
+      :image="imageEmptyList"
+      :title="titleEmptyList"
+      :message="messageEmptyList"
+    >
+      <template v-slot:button>
+        <q-btn
+          class="newlist-btn"
+          label="New List"
+          @click="showNewListDialog = true"
+        />
+      </template>
+    </EmptyData>
   </div>
-  <EmptyData
-    v-if="shoppingLists && shoppingLists.length == 0 && userStore.authUser"
-    :image="imageEmptyList"
-    :title="titleEmptyList"
-    :message="messageEmptyList"
-  >
-    <template v-slot:button>
-      <q-btn
-        class="newlist-btn"
-        label="New List"
-        @click="showNewListDialog = true"
-      />
-    </template>
-  </EmptyData>
   <EmptyState
     v-if="!userStore.authUser"
     :image="image"

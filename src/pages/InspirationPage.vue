@@ -62,6 +62,7 @@
                 v-if="savedRecipes && !savedRecipes.length"
                 image="Void.svg"
                 title="Nothing to show"
+                style="margin-top: 150px"
                 message="Save a recipe"
               ></EmptyData>
             </div>
